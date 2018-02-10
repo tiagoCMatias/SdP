@@ -1,8 +1,8 @@
 <template>
     <v-container >
         <v-slide-y-transition mode="out-in">
-            <v-layout column align-center>
-                <img src="@/assets/logo_0.png" alt="Vuetify.js" class="mb-5">
+            <v-layout column align-center justify-center>
+                <img src="@/assets/sitio_do_passal.png" width="50%" alt="Vuetify.js" >
             </v-layout>
         </v-slide-y-transition>
         <v-alert
@@ -38,9 +38,9 @@
             @click="submit"
             :disabled="!valid"
             >
-            submit
+            Submeter
             </v-btn>
-            <v-btn @click="clear">clear</v-btn>
+            <v-btn @click="clear">Limpar</v-btn>
         </v-form>
   </v-container>
 </template>
@@ -67,6 +67,10 @@ export default {
         select: null,
         checkbox: false
     }),
+    mounted () {
+        this.onResize()
+    },
+
     methods: {
         submit () {
             if (this.$refs.form.validate()) {
@@ -74,7 +78,7 @@ export default {
                 console.log(resposta);
 
                 if(resposta.message == "Sucessful"){
-                    this.$router.push('/estrado')
+                    this.$router.push('/menu')
                 }
                 else {
                     this.alert = true;
@@ -82,9 +86,13 @@ export default {
                 });
             }
         },
-        clear () {
+        clear () { 
         this.$refs.form.reset()
-        }
+        },
+        
+        onResize () {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight }
+        },   
     }
 }
 </script>
