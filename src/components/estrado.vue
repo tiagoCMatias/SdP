@@ -30,7 +30,7 @@
       <v-flex xs12 sm6 offset-sm3 class="text-xs-right" >
         <v-btn class="primary"
         @click.stop="loadIt"
-        >Send</v-btn>
+        >Calcular</v-btn>
         <v-btn @click="clear">clear</v-btn></v-flex>
     </v-layout>
 </v-form>
@@ -60,6 +60,8 @@
 
 <script>
 import { getEstrado } from '../utils/configuration-manager'
+import { calcEstrado } from '../utils/helper'
+
 export default {
   data(){
       return {
@@ -111,9 +113,9 @@ export default {
   methods: {
     loadIt: function() {
       if (this.$refs.form.validate()) {   
-          console.log(this.largura + " - " + this.comprimento);
-          getEstrado(this.largura, this.comprimento).then((resposta) => {
-          console.log(resposta);
+          //console.log(this.largura + " - " + this.comprimento);
+          calcEstrado(this.largura, this.comprimento).then((resposta) => {
+          //console.log(resposta);
           
           this.dialog = true;
           this.items[0].quantidade = resposta.taipal;

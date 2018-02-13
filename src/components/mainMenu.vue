@@ -1,9 +1,12 @@
 <template>
-  <v-container class="text-sm-center">
+  <v-container class="text-sm-center" grid-list-xs>
       <v-layout row wrap>
-          <v-flex xs12 sm6 offset-sm3 
+          <v-flex xs10 offset-xs2 >
+            <v-btn large class="primary" router-link to='/estrado'>Calcular Estrado</v-btn>
+          </v-flex>
+          <v-flex xs10 offset-xs2
           v-for="itens in menuItens" :key="itens.title">
-            <v-btn large class="primary" router :to="itens.link">{{itens.title}}</v-btn>
+            <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
           </v-flex>
       </v-layout>
   </v-container>
@@ -15,7 +18,6 @@ export default {
   data() {
       return {
         menuItens: [
-            { icon: '', title: 'Calcular Estrado', link: '/estrado' },
             { icon: '', title: 'Calcular Tendas', link: '/configurar' },
             { icon: '', title: 'Obras', link: '/adicionar' },
             { icon: '', title: 'Serralharia', link: '/adicionar' },

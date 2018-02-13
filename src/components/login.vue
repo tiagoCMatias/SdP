@@ -34,12 +34,7 @@
               counter
             ></v-text-field>
 
-            <v-btn
-            @click="submit"
-            :disabled="!valid"
-            >
-            Submeter
-            </v-btn>
+            <v-btn @click="submit" :disabled="!valid" focused >Submeter</v-btn>
             <v-btn @click="clear">Limpar</v-btn>
         </v-form>
   </v-container>
@@ -74,6 +69,17 @@ export default {
     methods: {
         submit () {
             if (this.$refs.form.validate()) {
+
+            if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
+            {
+                console.log("In");
+                this.$router.push('/menu');
+            }
+            else
+            {
+                this.alert = true;4
+            }
+            /*
             signIn(this.name, this.password).then((resposta) => {
                 console.log(resposta);
 
@@ -83,7 +89,7 @@ export default {
                 else {
                     this.alert = true;
                 }
-                });
+                });*/
             }
         },
         clear () { 
