@@ -37,7 +37,7 @@
       <v-dialog v-model="dialog" max-width="330">
       <v-card align-center >
         <v-data-table
-          v-bind:headers="headers"
+          v-bind:headers="header"
           :items="items"
           hide-actions
           class="elevation-1"
@@ -61,12 +61,14 @@
 <script>
 import { getEstrado } from '../utils/configuration-manager'
 import { calcEstrado } from '../utils/helper'
+import jsPDF from 'jspdf'
+require('jspdf-autotable');
 
 export default {
   data(){
       return {
 
-        headers: [
+        header: [
           {
             text: 'Material',
             align: 'left',
@@ -122,12 +124,30 @@ export default {
           this.items[1].quantidade = resposta.b25_total;
           this.items[2].quantidade = resposta.b125;
           this.items[3].quantidade = resposta.pontoApoio;
+
+          
           
         });
       }
     },
     clear () {
       this.$refs.form.reset()
+    },
+
+    generatePDF() {
+          let colunas = [];
+          this.colunas.forEach(element => {
+            colunas.push(element.text);
+          });
+
+          let linhas = [];
+          this.linhas.forEach(element => {
+            linhas.push([ element.name, element.quantidade  ]);
+          });
+
+          var doc = new jsPDF('p', 'pt');
+          doc.autoTable(colunas, linhas);
+          doc.save('table.pdf');
     }
   }
 }
