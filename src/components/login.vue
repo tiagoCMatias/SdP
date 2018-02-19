@@ -1,8 +1,8 @@
 <template>
     <v-container >
         <v-slide-y-transition mode="out-in">
-            <v-layout column align-center>
-                <img src="@/assets/logo_0.png" alt="Vuetify.js" class="mb-5">
+            <v-layout column align-center justify-center>
+                <img src="@/assets/sitio_do_passal.png" width="50%" alt="Vuetify.js" >
             </v-layout>
         </v-slide-y-transition>
         <v-alert
@@ -34,13 +34,8 @@
               counter
             ></v-text-field>
 
-            <v-btn
-            @click="submit"
-            :disabled="!valid"
-            >
-            submit
-            </v-btn>
-            <v-btn @click="clear">clear</v-btn>
+            <v-btn @click="submit" :disabled="!valid" focused >Submeter</v-btn>
+            <v-btn @click="clear">Limpar</v-btn>
         </v-form>
   </v-container>
 </template>
@@ -67,24 +62,43 @@ export default {
         select: null,
         checkbox: false
     }),
+    mounted () {
+        this.onResize()
+    },
+
     methods: {
         submit () {
             if (this.$refs.form.validate()) {
+
+            if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
+            {
+                console.log("In");
+                this.$router.push('/menu');
+            }
+            else
+            {
+                this.alert = true;4
+            }
+            /*
             signIn(this.name, this.password).then((resposta) => {
                 console.log(resposta);
 
                 if(resposta.message == "Sucessful"){
-                    this.$router.push('/estrado')
+                    this.$router.push('/menu')
                 }
                 else {
                     this.alert = true;
                 }
-                });
+                });*/
             }
         },
-        clear () {
+        clear () { 
         this.$refs.form.reset()
-        }
+        },
+        
+        onResize () {
+            this.windowSize = { x: window.innerWidth, y: window.innerHeight }
+        },   
     }
 }
 </script>

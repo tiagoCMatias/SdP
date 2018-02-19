@@ -30,14 +30,14 @@
       <v-flex xs12 sm6 offset-sm3 class="text-xs-right" >
         <v-btn class="primary"
         @click.stop="loadIt"
-        >Send</v-btn>
+        >Calcular</v-btn>
         <v-btn @click="clear">clear</v-btn></v-flex>
     </v-layout>
 </v-form>
       <v-dialog v-model="dialog" max-width="330">
       <v-card align-center >
         <v-data-table
-          v-bind:headers="headers"
+          v-bind:headers="header"
           :items="items"
           hide-actions
           class="elevation-1"
@@ -60,11 +60,15 @@
 
 <script>
 import { getEstrado } from '../utils/configuration-manager'
+import { calcEstrado } from '../utils/helper'
+import jsPDF from 'jspdf'
+require('jspdf-autotable');
+
 export default {
   data(){
       return {
 
-        headers: [
+        header: [
           {
             text: 'Material',
             align: 'left',
@@ -111,21 +115,39 @@ export default {
   methods: {
     loadIt: function() {
       if (this.$refs.form.validate()) {   
-          console.log(this.largura + " - " + this.comprimento);
-          getEstrado(this.largura, this.comprimento).then((resposta) => {
-          console.log(resposta);
+          //console.log(this.largura + " - " + this.comprimento);
+          calcEstrado(this.largura, this.comprimento).then((resposta) => {
+          //console.log(resposta);
           
           this.dialog = true;
           this.items[0].quantidade = resposta.taipal;
           this.items[1].quantidade = resposta.b25_total;
           this.items[2].quantidade = resposta.b125;
           this.items[3].quantidade = resposta.pontoApoio;
+
+          
           
         });
       }
     },
     clear () {
       this.$refs.form.reset()
+    },
+
+    generatePDF() {
+          let colunas = [];
+          this.colunas.forEach(element => {
+            colunas.push(element.text);
+          });
+
+          let linhas = [];
+          this.linhas.forEach(element => {
+            linhas.push([ element.name, element.quantidade  ]);
+          });
+
+          var doc = new jsPDF('p', 'pt');
+          doc.autoTable(colunas, linhas);
+          doc.save('table.pdf');
     }
   }
 }

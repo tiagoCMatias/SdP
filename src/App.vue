@@ -20,8 +20,8 @@
       <v-toolbar-side-icon 
         @click.native.stop="sideNav = !sideNav"
         class="hidden-sm-and-up"></v-toolbar-side-icon>
-      <v-toolbar-title v-text=title>
-        <router-link to="/" style="cursor : pointer">Sitio do Passal</router-link> 
+      <v-toolbar-title >
+        <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
       </v-toolbar-title>
       <v-spacer></v-spacer>   
     </v-toolbar>

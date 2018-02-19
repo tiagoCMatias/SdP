@@ -22,6 +22,8 @@ const devWebpackConfig = merge(baseWebpackConfig, {
 
   // these devServer options should be customized in /config/index.js
   devServer: {
+    host: '0.0.0.0',
+    disableHostCheck: true,
     clientLogLevel: 'warning',
     historyApiFallback: {
       rewrites: [
