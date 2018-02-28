@@ -184,35 +184,24 @@ function calcularBarras2Verticais(largura, comprimento){
     return b_vertical;
 }
 
-export function getImageFromUrl(url, callback) {
-    return new Promise(function (resolve, reject) {
-        var img = new Image, data, ret={n: null, pending: true};
-	
-        img.onError = function() {
-            throw new Error('Cannot load image: "'+url+'"');
-        }
-        img.onload = function() {
-            var canvas = document.createElement('canvas');
-            document.body.appendChild(canvas);
-            canvas.width = img.width;
-            canvas.height = img.height;
-    
-            var ctx = canvas.getContext('2d');
-            ctx.drawImage(img, 0, 0);
-            // Grab the image as a jpeg encoded in base64, but only the data
-            data = canvas.toDataURL('image/jpeg').slice('data:image/jpeg;base64,'.length);
-            // Convert the data to binary form
-            data = atob(data)
-            document.body.removeChild(canvas);
-    
-            ret['data'] = data;
-            ret['pending'] = false;
-            if (typeof callback === 'function') {
-                callback(data);
-            }
-        }
-        img.src = url;
-    
-        return resolve(ret);
+function getBase64Image(url) {
+    return new Promise(function(resolve, reject) {
+  
+      var img = new Image();
+      // To prevent: "Uncaught SecurityError: Failed to execute 'toDataURL' on 'HTMLCanvasElement': Tainted canvases may not be exported."
+      img.crossOrigin = "Anonymous"; 
+      img.onload = function() {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        resolve(dataURL.replace(/^data:image\/(png|jpg|jpeg|pdf);base64,/, ""));
+      };  
+      img.src = url;   
+      
+      return resolve(url);
     });
-}
+  
+};

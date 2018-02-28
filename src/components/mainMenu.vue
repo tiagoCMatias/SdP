@@ -4,6 +4,9 @@
           <v-flex xs10 offset-xs2 >
             <v-btn large class="primary" router-link to='/estrado'>Calcular Estrado</v-btn>
           </v-flex>
+          <v-flex xs10 offset-xs2 >
+            <v-btn large class="primary" router-link to='/tendas'>Calcular Tendas</v-btn>
+          </v-flex>
           <v-flex xs10 offset-xs2
           v-for="itens in menuItens" :key="itens.title">
             <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
@@ -18,7 +21,6 @@ export default {
   data() {
       return {
         menuItens: [
-            { icon: '', title: 'Calcular Tendas', link: '/configurar' },
             { icon: '', title: 'Obras', link: '/adicionar' },
             { icon: '', title: 'Serralharia', link: '/adicionar' },
             { icon: '', title: 'Gestão de Stock', link: '/stock' }
