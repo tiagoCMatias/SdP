@@ -1,29 +1,92 @@
-export function calcularIglo(tenda)
+export function EstruturaIglo(tenda)
 {
     let iglo = [];
     let resto = tenda.comprimento%5;
     let modulos_5 = Math.floor(tenda.comprimento/5);
 
-    calcularModulosIglo(tenda);
+    let modulos = calcularModulosIglo(tenda);
+
+    let cabos = 0;
 
     if(modulos_5%2 == 0)
-        calcularCabosAco(tenda, modulos_5/2);
+        cabos = calcularCabosAco(tenda, modulos_5/2);
     else
-        calcularCabosAco(tenda, ((modulos_5-1)/2));
+        cabos = calcularCabosAco(tenda, ((modulos_5-1)/2));
 
-    calcularAsnasIglo(tenda);
+    let asnas = calcularAsnasIglo(tenda);
 
     let quantidade = (tenda.largura/5)+1;
-    calcularMeiaAsna(tenda, quantidade);
-    calcularMeioModulo(tenda, quantidade);
+    let meia_asna = calcularMeiaAsna(tenda, quantidade);
+    let meio_mod = calcularMeioModulo(tenda, quantidade);
 
-    if(tenda.tipo_topo == "Direito")
-        calcularTopoDireitoIglo(tenda);
+    let topo = [];
+
+    if(tenda.tipo_topo === "Direito" || tenda.tipo_topo === "direito")
+        topo = calcularTopoDireitoIglo(tenda);
     else
-        calcularTopoRedondo(tenda);
+        topo = calcularTopoRedondo(tenda);
 
 
-    return iglo;
+
+    console.log(modulos);
+    console.log(cabos);
+    console.log(meia_asna);
+    console.log(meio_mod);
+    console.log(topo);
+
+    let comp = [];
+
+    comp = comp.concat(modulos);
+    comp = comp.concat(cabos);
+    comp = comp.concat(meia_asna);
+    comp = comp.concat(meio_mod);
+    comp = comp.concat(asnas);
+
+    //teste.push(modulos, cabos, meia_asna, meio_mod);
+    //teste.push(cabos);
+    //teste.push(meia_asna);
+    //teste.push(meio_mod);
+
+    console.log(comp);
+
+    return UpdateRepeatedValues(comp);
+ 
+    //return iglo;
+}
+
+export function CoberturaIglo(tenda)
+{
+    
+    let resto = tenda.comprimento%5;
+    let modulos_5 = Math.floor(tenda.comprimento/5);
+
+    let cobertura = { qt: modulos_5, title: "Cobertura Iglo - "+tenda.cobertura+'*'+tenda.largura, codigo: 'x'};
+    cobertura = { qt: 1, title: "Cobertura Iglo - "+tenda.cobertura+'*'+resto, codigo: 'x'};
+
+    return cobertura;
+}
+
+function UpdateRepeatedValues(componentes)
+{
+    let repetidos;
+
+
+    for(var i = 0; i < componentes.length; i++)
+    {
+        for(var j = 0 ; j < componentes.length; j++)
+        {
+            if(j != i && componentes[i].title == componentes[j].title)
+            {
+                componentes[i].qt += componentes[j].qt;
+                console.log("Repetido: " + componentes[i].title);
+                componentes.splice (j, 1);
+
+            }
+        }
+    }
+    console.log(componentes);
+
+    return componentes;
 }
 
 
@@ -98,8 +161,10 @@ function calcularTopoDireitoIglo(tenda)
         );
     }
 
-    console.log("topoDireito");
-    console.log(topo);
+    //console.log("topoDireito");
+    //console.log(topo);
+
+    return topo;
 }
 
 
@@ -149,8 +214,10 @@ function calcularMeiaAsna(tenda, quantidade)
         );
     }
 
-    console.log("MeiaAsna");
-    console.log(meia_asna);
+    //console.log("MeiaAsna");
+    //console.log(meia_asna);
+
+    return meia_asna;
 }
 
 function calcularCabosAco(tenda, quantidade)
@@ -161,9 +228,9 @@ function calcularCabosAco(tenda, quantidade)
         { qt: 6 * quantidade, title: 'Cabos de Aço Teto Iglo*'+tenda.largura, codigo:''},
         { qt: 2 * quantidade, title: 'Cabos de Aço Pé Iglo*'+tenda.largura, codigo:''}
     );
-    console.log("cabosAco");
+    //console.log("cabosAco");
 
-    console.log(cabosAco);
+    //console.log(cabosAco);
 
     return cabosAco;
 }
@@ -248,9 +315,9 @@ function calcularAsnasIglo(tenda)
             
         }
     }
-    console.log("asnas");
+    //console.log("asnas");
 
-    console.log(asnas);
+    //console.log(asnas);
 
     return asnas;
 }
@@ -277,8 +344,10 @@ function calcularMeioModulo(tenda, quantidade)
         );
     }
 
-    console.log("Meio_Modulo");
-    console.log(meio_modulo);
+    //console.log("Meio_Modulo");
+    //console.log(meio_modulo);
+
+    return meio_modulo;
 }
 
 function calcularTopoRedondo(tenda)
@@ -291,9 +360,10 @@ function calcularTopoRedondo(tenda)
 
     );
 
-    console.log("Topo");
-    console.log(topo);
+    //console.log("Topo");
+    //console.log(topo);
 
+    return topo;
 }
 
 
@@ -331,9 +401,9 @@ function calcularFerroEsticarCobertura(tenda)
             );
         }
     }
-    console.log("ferro_esticar_cobertura");
+    //console.log("ferro_esticar_cobertura");
 
-    console.log(ferro_esticar_cobertura);
+    //console.log(ferro_esticar_cobertura);
     return ferro_esticar_cobertura;
 }
 
@@ -382,8 +452,10 @@ function calcularModulosIglo(tenda)
         }
         calcularFerroEsticarCobertura(tenda);
     }
-    console.log("Modulos");
-    console.log(modulos);
+    //console.log("Modulos");
+    //console.log(modulos);
+
+    return modulos;
 }
 
 
@@ -421,8 +493,8 @@ function calcularFerroEsticarCobertura(tenda)
             );
         }
     }
-    console.log("ferro_esticar_cobertura");
+    //console.log("ferro_esticar_cobertura");
 
-    console.log(ferro_esticar_cobertura);
+    //console.log(ferro_esticar_cobertura);
     return ferro_esticar_cobertura;
 }

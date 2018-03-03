@@ -98,7 +98,7 @@
                     <v-slider label="Transparente" :max="4"  v-model="tenda.lateral_transparante"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_transparante" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_transparante" :rules="sliderRules" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
                     <v-slider label="Blackout" :max="4"   v-model="tenda.lateral_blackout"></v-slider>
@@ -214,6 +214,9 @@ export default {
       form_base_rule: [
           v => !!v || "Introduzir Valor"
       ],
+      sliderRules: [
+          v => v <= 4 || "Bad"
+      ],
       lateral_rules: [
           v => ( v.lateral_opaco + v.lateral_transparante + v.lateral_blackout ) <= 4 || "Quantidade errada" 
       ],
@@ -300,11 +303,11 @@ export default {
             let resposta = calcularEstruturaConica(this.tenda);
             console.log(resposta);
             resposta.forEach(element => {
-            this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-                title: element.title,
-                qt: element.qt
-            });
+                this.items.push({
+                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    title: element.title,
+                    qt: element.qt
+                });
             });
         }
     },

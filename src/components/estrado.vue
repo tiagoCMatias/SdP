@@ -31,6 +31,7 @@
             <v-checkbox
               :label="'Gerar PDF'"
               v-model="pdf_checkbox"
+              :checked="revealDialog()"
             ></v-checkbox>
             <v-btn class="primary"
             @click.stop="loadIt"
@@ -58,6 +59,60 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+  <!-- Cabeçalho -->
+    <v-dialog v-model="adicionar_info_dialog" max-width="500px">
+      <v-card>
+        <v-card-title>
+            Preencher Cabeçalho
+        </v-card-title>   
+
+        <v-form v-model="info_form" ref="info_form">
+          <v-layout row>
+            <v-flex mx-4>
+              <v-text-field
+              label="Local de Montagem"
+              v-model="local_montagem"
+              >
+
+              </v-text-field>
+            </v-flex>
+            <v-flex mx-4>
+              <v-menu
+                ref="menu"
+                lazy
+                :close-on-content-click="false"
+                v-model="menu"
+                transition="scale-transition"
+                offset-y
+                full-width
+                :nudge-right="40"
+                min-width="290px"
+                :return-value.sync="date"
+              >
+                <v-text-field
+                  slot="activator"
+                  label="Picker in menu"
+                  v-model="date"
+                  prepend-icon="event"
+                  readonly
+                ></v-text-field>
+                <v-date-picker v-model="date" no-title scrollable>
+                  <v-spacer></v-spacer>
+                  <v-btn flat color="primary" @click.native="menu = false">Cancel</v-btn>
+                  <v-btn flat color="primary" @click.native="$refs.menu.save(date)">OK</v-btn>
+                </v-date-picker>
+              </v-menu>
+            </v-flex>
+          </v-layout>
+          <v-flex class="text-xs-right">
+            <v-btn class="primary">Ok</v-btn>
+          </v-flex>
+        </v-form> 
+      </v-card>
+    </v-dialog>
+  
+
   </v-container>
 </template>
 
@@ -81,7 +136,11 @@ export default {
           },
           { text: 'Quantidade', value: 'Quantidade' }
         ],
-
+        local_montagem: '',
+        adicionar_info_dialog: false,
+        info_form: false,
+        date: null,
+        menu: false,
         items: [
           {
             name: "Taipal",
@@ -116,8 +175,11 @@ export default {
         ],
       }
   },
+
+  
+
   methods: {
-    loadIt: function() {
+    loadIt() {
       if (this.$refs.form.validate()) {   
           //console.log(this.largura + " - " + this.comprimento);
           calcEstrado(this.largura, this.comprimento).then((resposta) => {
@@ -135,8 +197,25 @@ export default {
         });
       }
     },
+    save (date) {
+      console.log("teste");
+      this.$refs.menu.save(date)
+    },
     clear () {
       this.$refs.form.reset()
+    },
+
+    revealDialog() {
+      if(this.pdf_checkbox == true)
+      {
+        this.adicionar_info_dialog = true;
+        this.local_montagem = null;
+        this.data_evento = null;
+        //console.log("checked");
+      }
+      else
+        this.adicionar_info_dialog = false;
+      
     },
 
     generatePDF() {
