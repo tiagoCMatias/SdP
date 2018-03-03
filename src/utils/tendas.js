@@ -588,11 +588,6 @@ function calcularAsnasIglo(tenda)
     return asnas;
 }
 
-function calcularTopoIglo(tenda)
-{
-
-}
-
 function calcularIgloParafusos(tenda)
 {
     let parafusos = [];
