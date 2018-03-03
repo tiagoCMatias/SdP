@@ -86,25 +86,25 @@
             <v-container fluid grid-list-md>
                 <v-layout row wrap>
                 <v-flex xs12 text-xs-center>
-                    <v-subheader>laterais</v-subheader>
+                    <v-subheader>Laterais</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Opaco" :max="4"  v-model="tenda.lateral_opaco"></v-slider>
+                    <v-slider label="Opaco" :max=maxOpaco :min=min v-model="tenda.lateral_opaco"  @click.native="calcularMaximo"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_opaco"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Transparente" :max="4"  v-model="tenda.lateral_transparante"></v-slider>
+                    <v-slider label="Transparente" :max=maxTransparente :min=min v-model="tenda.lateral_transparante"  @click.native="calcularMaximo"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_transparante" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_transparante"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Blackout" :max="4"   v-model="tenda.lateral_blackout"></v-slider>
+                    <v-slider label="Blackout" :max=maxBlackout :min=min  v-model="tenda.lateral_blackout" @click.native="calcularMaximo"></v-slider>
                 </v-flex>
                 <v-flex xs3 >
-                    <v-text-field v-model="tenda.lateral_blackout" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_blackout"  type="number"></v-text-field>
                 </v-flex>
                 </v-layout>
             </v-container>
@@ -178,6 +178,11 @@ import { calcularEstruturaConica, calcularCoberturaConica, calcularLateraisConic
 export default {
   data() {
     return {
+
+      min:"0",
+      maxOpaco:"4",
+      maxTransparente:"4",
+      maxBlackout:"4",
       tenda: {
           tipo: "",
           largura: "",
@@ -282,6 +287,28 @@ export default {
                   qt: element.qt
               });
           });
+    },
+    calcularMaximo(){
+
+        if(this.tenda.lateral_opaco==4) 
+        {
+            this.maxTransparente = "0";
+            this.maxBlackout = "0";
+        
+        }
+        if(this.tenda.lateral_transparante==4)
+        {
+            this.maxOpaco = "0";
+            this.maxBlackout = "0";
+     
+        }
+        if(tenda.lateral_blackout==4)
+        {
+            this.maxOpaco = "0";
+            this.maxTransparente = "0";
+            
+        }
+
     },
     cobertura_form(){
         this.mySlider = 3;

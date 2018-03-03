@@ -16,7 +16,7 @@
     </v-navigation-drawer>
 -->
     <!-- Laptop -->
-    <v-toolbar dark >
+    <!-- <v-toolbar dark >
       <v-toolbar-side-icon 
         @click.native.stop="sideNav = !sideNav"
         class="hidden-sm-and-up"></v-toolbar-side-icon>
@@ -24,20 +24,44 @@
         <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
       </v-toolbar-title>
       <v-spacer></v-spacer>   
-    </v-toolbar>
-    <main>
-      <router-view></router-view>
-    </main>
+    </v-toolbar>-->
+
+  <v-toolbar dark color="primary">
+    <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
+    <v-spacer></v-spacer>
+     <v-menu bottom left v-if="!['login'].indexOf($router.name)>-1">
+            <v-btn icon slot="activator" dark>
+              <v-icon>menu</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile v-for="(item, i) in items" :key="i" @click="">
+                <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+    </v-menu>
+  </v-toolbar>
+   <main>
+     <router-view></router-view>
+   </main> 
+
+
   </v-app>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      title: 'Sitio do Passal'
-    }
-  },
+
+  data: () => ({ 
+      title: 'Sitio do Passal',
+      items: [
+        { iten: 'Menu' },
+        { iten: 'Logout' }]
+    }),
   name: 'App'
+
 }
 </script>
+
+
+
+
