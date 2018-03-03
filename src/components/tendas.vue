@@ -7,7 +7,7 @@
         </v-flex>
     </v-layout>
 
-    <!-- Dialog Cabeçalho -->
+    <!-- Dialog Cabeçalho
     <v-dialog v-model="cabecalho_dialog" max-width="500px">
             <v-card>
             <v-card-title>
@@ -36,7 +36,8 @@
         </v-card>
       </v-dialog>
   
-  </v-container>
+   -->
+   </v-container>
 </template>
 
 
@@ -66,115 +67,11 @@ export default {
     },
 
   methods: {
-    addRow: function() {
-      console.log("a tentar");
-      var elem = document.createElement("tr");
-      this.rows.push({});
-    },
-    disableSlide: function() {
-        if(this.tenda.lateral_opaco + this.tenda.lateral_transparante + this.tenda.lateral_blackout < 4)
-            return true;
-        else
-            return false;
-    },
-    resto: function() {
-        let tenda = 
-            { 
-                tipo: "iglo",
-                largura: "10",
-                comprimento: "15",
-                altura_do_pe: "",
-                fixacao: "Estrado",
-                tipo_topo: "redondo",
-                cobertura: "blackout",
-                laterais: "",
-                lateral_opaco: "",
-                lateral_transparante: "",
-                lateral_blackout: "",
-                triangulo_opaco: "",
-                triangulo_transparente: "",
-                triangulo_blackout: "",
-                triangulo: ""
-
-            };
-        
-        console.log("Iglo" + calcularIglo(tenda))
-    },
-    removeRow: function() {
-      this.rows.splice(-1, 1);
-    },
-    loadContent: function(index) {
-      this.dialog_slider = true;
-      this.index_tamanho = index;
-      if(index == 0) this.tenda.tipo = "conica";
-      if(index == 1) this.tenda.tipo = "2aguas";
-      if(index == 2) this.tenda.tipo = "iglo";
-    },
+    
     clear() {
       this.$refs.form_tenda.reset();
     },
-    submit_form() {
-      if (this.$refs.form_tenda.validate()) {
-        this.items = [];
-        //console.log(this.quantidade_tendas);
-        let resposta = calcularTenda(this.tenda, this.quantidade_tendas);
-        let index = 0;
-        resposta.forEach(element => {
-          this.items.push({
-            codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-            title: element.title,
-            qt: element.qt
-          });
-        });
-        this.table_dialog = true;
-        //console.log(this.items);//this.cabecalho_dialog = true;
-
-        //this.generatePDF();
-      }
-    },
-    laterais_form() {
-        if(this.tenda.tipo == "conica")
-            this.mySlider = 5;
-        else
-            this.mySlider = 4;
-        let resposta = calcularLaterais(this.tenda);
-        console.log(resposta);
-
-            resposta.forEach(element => {
-                this.items.push({
-                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-                    title: element.title,
-                    qt: element.qt
-                });
-            });
-        
-
-    },
-    cobertura_form(){
-        this.mySlider = 3;
-        let resposta = calcularCobertura(this.tenda);
-        console.log(resposta);
-            this.items.push({
-            codigo: "",
-            title: resposta.title,
-            qt: resposta.qt
-        });
-    },
-    estrutura_form() {
-        if (this.$refs.form_estrutura.validate()) {
-            this.items = [];
-            this.mySlider = 2;
-            let resposta = calcularEstrutura(this.tenda);
-            console.log(resposta);
-            resposta.forEach(element => {
-            this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-                title: element.title,
-                qt: element.qt
-            });
-            });
-        }
-    },
+    
     editItem (item) {
         this.editedIndex = this.items.indexOf(item)
         this.editedItem = Object.assign({}, item)

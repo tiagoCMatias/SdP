@@ -315,13 +315,8 @@ export default {
     },
 
     deleteItem (item) {
-        //this.snackbar = true;
-
         const index = this.items.indexOf(item)
-        //this.snackbar_text = "Apagar Item?"
         confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
-        //if(this.snackbar == false)
-        //    this.items.splice(index, 1);
     },
     close_table_dialog () {
         this.table_edit_dialog = false

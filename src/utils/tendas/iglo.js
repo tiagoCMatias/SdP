@@ -12,17 +12,160 @@ export function calcularIglo(tenda)
         calcularCabosAco(tenda, ((modulos_5-1)/2));
 
     calcularAsnasIglo(tenda);
-    calcularCortineiroIglo(tenda);
-    calcularIgloFina(tenda);    
-    calcularTopoDireitoIglo(tenda);
 
     let quantidade = (tenda.largura/5)+1;
     calcularMeiaAsna(tenda, quantidade);
     calcularMeioModulo(tenda, quantidade);
 
-    calcularTopoRedondo(tenda);
+    if(tenda.tipo_topo == "Direito")
+        calcularTopoDireitoIglo(tenda);
+    else
+        calcularTopoRedondo(tenda);
+
 
     return iglo;
+}
+
+
+function calcularTopoDireitoIglo(tenda)
+{
+    let topo = [];
+    let resto = tenda.comprimento%5;
+    let modulos_5 = Math.floor(tenda.comprimento/5);
+
+    let n_prumo = (tenda.largura/5)-1;
+
+    topo.push(
+        { qt: 2+n_prumo, title: 'Roquete Esticar', codigo:''},
+        { qt: 1, title: 'Tranca Esquerda Topo Direito Iglo*'+tenda.largura, codigo:''},
+        { qt: 1, title: 'Tranca Direita Topo Direito Iglo*'+tenda.largura, codigo:''},
+        { qt: (tenda.largura/5), title: 'Ferro Esticar Lateral Iglo*'+tenda.largura, codigo:''}
+
+    );
+
+    if(tenda.largura >= 15)
+    {
+        topo.push(
+            { qt: 1*((tenda.largura/5)-2), title: 'Tranca Central Topo Direito Iglo*'+tenda.largura, codigo:''}
+        );
+    }
+    if(tenda.largura > 10)
+    {
+        topo.push(
+            { qt: n_prumo+2, title: 'Fita Esticar Gancho Duplo Iglo*'+tenda.largura, codigo:''}
+        );
+    }
+    if(n_prumo > 2)
+    {
+        topo.push(
+            { qt: n_prumo, title: 'Prumo Topo Direito 15', codigo:''},
+            { qt: 2, title: 'Aumento Prumo Topo Direito Lateral Iglo*'+tenda.largura, codigo:''},
+            { qt: n_prumo-2, title: 'Aumento Prumo Topo Direito Central Iglo*'+tenda.largura, codigo:''},
+        );
+    }
+    else{
+        topo.push(
+            { qt: n_prumo, title: 'Prumo Topo Direito Iglo*'+tenda.largura, codigo:''}
+        );
+    }
+
+    if(tenda.largura == 10)
+    {
+        topo.push(
+            { qt: 2, title: 'Ferro Esticar Triangulo Iglo*'+tenda.largura, codigo:''},
+            { qt: 2, title: 'Entrega Canto Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 1, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 1, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 3, title: 'Fita Esticar Iglo*'+tenda.largura, codigo:''}
+        );
+    }
+
+    if(tenda.fixacao == "Estacas" || tenda.fixacao == "Pesos" )
+    {
+        topo.push(
+            { qt: 1 * n_prumo, title: 'Sapata Chão Iglo*'+tenda.largura, codigo: ''},
+            { qt: 1 * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
+            { qt: 2 * n_prumo, title: 'Parafuso Esticar Lateral ', codigo: ''}
+        );
+    }
+    else if(tenda.fixacao == "Estrado")
+    {
+        topo.push(
+            { qt: 1 * n_prumo, title: 'Sapata Estrado Topo Direito Iglo*'+tenda.largura, codigo: ''},
+            { qt: 1 * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
+            { qt: 2 * n_prumo, title: 'Parafuso Esticar Lateral ', codigo: ''},
+            { qt: 1 * n_prumo, title: 'Chaveta Meia-Lua ', codigo: ''}
+        );
+    }
+
+    console.log("topoDireito");
+    console.log(topo);
+}
+
+
+function calcularMeiaAsna(tenda, quantidade)
+{
+    let meia_asna = [];
+
+    meia_asna.push(
+        { qt: 1 * quantidade, title: 'Pé Iglo*'+tenda.largura, codigo: ''},
+        { qt: 2 * quantidade, title: 'Viga Normal Iglo*'+tenda.largura, codigo: ''},
+        { qt: 1 * quantidade, title: 'Viga Topo Redondo Iglo*'+tenda.largura, codigo: ''},
+        { qt: 2 * quantidade, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
+        { qt: 2 * quantidade, title: 'Gulpilha R3.5', codigo: ''},
+    );
+
+    if(tenda.largura == 10)
+    {
+        meia_asna.push(
+            { qt: (2 * quantidade)+2, title: 'Fita Esticar', codigo: ''},
+            { qt: (2 * quantidade)+2, title: 'Roquete Esticar ', codigo: ''},
+            { qt: (2 * quantidade)+2, title: 'Entrega Normal Cobertura Iglo*'+tenda.largura, codigo: ''}
+
+        );
+    }
+    else if(tenda.largura > 10)
+    {
+        meia_asna.push(
+            { qt: (1 * quantidade)+2, title: 'Fita Esticar Gancho Duplo ', codigo: ''},
+            { qt: (1 * quantidade)+2, title: 'Roquete Esticar ', codigo: ''}
+
+        );
+    
+    }
+    if(tenda.fixacao == "Estacas" || tenda.fixacao == "Pesos" )
+    {
+        meia_asna.push(
+            { qt: 1 * quantidade, title: 'Sapata Chão Iglo*'+tenda.largura, codigo: ''},
+            { qt: 2 * quantidade, title: 'Parafuso Esticar Lateral ', codigo: ''}
+        );
+    }
+    else if(tenda.fixacao == "Estrado")
+    {
+        meia_asna.push(
+            { qt: 1 * quantidade, title: 'Sapata Estrado Topo Redondo Iglo*'+tenda.largura, codigo: ''},
+            { qt: 2 * quantidade, title: 'Parafuso Esticar Lateral ', codigo: ''},
+            { qt: 1 * quantidade, title: 'Chaveta Meia-Lua ', codigo: ''}
+        );
+    }
+
+    console.log("MeiaAsna");
+    console.log(meia_asna);
+}
+
+function calcularCabosAco(tenda, quantidade)
+{
+    let cabosAco = [];
+
+    cabosAco.push(
+        { qt: 6 * quantidade, title: 'Cabos de Aço Teto Iglo*'+tenda.largura, codigo:''},
+        { qt: 2 * quantidade, title: 'Cabos de Aço Pé Iglo*'+tenda.largura, codigo:''}
+    );
+    console.log("cabosAco");
+
+    console.log(cabosAco);
+
+    return cabosAco;
 }
 
 function calcularAsnasIglo(tenda)

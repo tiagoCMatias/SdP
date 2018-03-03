@@ -50,9 +50,21 @@
             <v-text-field box 
                 v-model="tenda.comprimento"
                 :rules="comprimentoRules"
+                label="Comprimento"
                 required></v-text-field>
             </v-flex>
-        </v-layout>  
+        </v-layout>
+        <v-layout row wrap >
+            <v-flex xs3 hidden-xs-only>
+                <v-subheader>Topo</v-subheader>
+            </v-flex>
+            <v-flex mr-2>
+              <v-radio-group label="Topo" v-model="tenda.tipo_topo" row>
+                <v-radio label="Direito" value="Direito" ></v-radio>
+                <v-radio label="Redondo" value="Redondo"></v-radio>
+              </v-radio-group>
+            </v-flex> 
+        </v-layout>     
         <v-layout row >
             <v-flex xs3 hidden-xs-only>
                 <v-subheader>Altura do Pé</v-subheader>
@@ -60,6 +72,7 @@
             <v-flex mr-2>
             <v-text-field box 
                 v-model="tenda.altura_do_pe"
+                label="Altura do Pé"
                 required></v-text-field>
             </v-flex>
         </v-layout>              
@@ -79,7 +92,7 @@
                 ></v-select>
             </v-flex>
         </v-layout>
-        <v-btn color="primary" @click.native="estrutura_form()">Continue</v-btn>
+        <v-btn color="primary" @click.native="mockIglo()">Continue</v-btn>
         <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn> 
         </v-form>
         </v-stepper-content>
@@ -190,8 +203,8 @@
                 </v-card-text>
                 <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" flat @click.native="close_table_dialog">Cancel</v-btn>
-                <v-btn color="blue darken-1" flat @click.native="save_table_dialog">Save</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="close_table_dialog()">Cancel</v-btn>
+                <v-btn color="blue darken-1" flat @click.native="save_table_dialog()">Save</v-btn>
                 </v-card-actions>
             </v-card>
             </v-dialog>
@@ -229,6 +242,7 @@
 
 
 <script>
+import { calcularIglo } from "@/utils/tendas/iglo.js";
 export default {
   data() {
     return {
@@ -313,15 +327,9 @@ export default {
         this.editedItem = Object.assign({}, item)
         this.table_edit_dialog = true
     },
-
     deleteItem (item) {
-        //this.snackbar = true;
-
         const index = this.items.indexOf(item)
-        //this.snackbar_text = "Apagar Item?"
         confirm('Are you sure you want to delete this item?') && this.items.splice(index, 1)
-        //if(this.snackbar == false)
-        //    this.items.splice(index, 1);
     },
     close_table_dialog () {
         this.table_edit_dialog = false
@@ -337,7 +345,29 @@ export default {
         } else {
             this.items.push(this.editedItem)
         }
-        this.close()
+        this.close_table_dialog()
+    },
+    mockIglo: function() {
+        let tenda = 
+            { 
+                tipo: "iglo",
+                largura: "20",
+                comprimento: "15",
+                altura_do_pe: "",
+                fixacao: "Estrado",
+                tipo_topo: "redondo",
+                cobertura: "blackout",
+                laterais: "",
+                lateral_opaco: "",
+                lateral_transparante: "",
+                lateral_blackout: "",
+                triangulo_opaco: "",
+                triangulo_transparente: "",
+                triangulo_blackout: "",
+                triangulo: ""
+
+            };
+      calcularIglo(tenda);
     }
   }
 }
