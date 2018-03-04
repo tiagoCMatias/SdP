@@ -27,15 +27,15 @@
     </v-toolbar>-->
 
   <v-toolbar dark color="primary">
-    <v-toolbar-title class="white--text">{{title}}</v-toolbar-title>
+    <v-toolbar-title class="white--text" router-link to="'/home'" style="cursor : pointer">{{title}}</v-toolbar-title>
     <v-spacer></v-spacer>
      <v-menu bottom left v-if="!['login'].indexOf($router.name)>-1">
             <v-btn icon slot="activator" dark>
               <v-icon>menu</v-icon>
             </v-btn>
             <v-list>
-              <v-list-tile v-for="(item, i) in items" :key="i" @click="">
-                <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
+              <v-list-tile v-for="(item, i) in items" :key="i" router-link :to=item.link> 
+                  <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
     </v-menu>
@@ -54,11 +54,11 @@ export default {
   data: () => ({ 
       title: 'Sitio do Passal',
       items: [
-        { iten: 'Menu' },
-        { iten: 'Logout' }]
+        { iten: 'Menu', link:'/menu'},
+        { iten: 'Logout', link: '/'}],
     }),
-  name: 'App'
-
+  name: 'App',
+  home: '/menu'
 }
 </script>
 

@@ -89,19 +89,19 @@
                     <v-subheader>Laterais</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Opaco" :max=maxOpaco :min=min v-model="tenda.lateral_opaco"  @click.native="calcularMaximo"></v-slider>
+                    <v-slider label="Opaco" :max="4-tenda.lateral_transparante-tenda.lateral_blackout" :min=min v-model="tenda.lateral_opaco" ></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_opaco"  type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Transparente" :max=maxTransparente :min=min v-model="tenda.lateral_transparante"  @click.native="calcularMaximo"></v-slider>
+                    <v-slider label="Transparente" :max="4-tenda.lateral_opaco-tenda.lateral_blackout"  :min=min v-model="tenda.lateral_transparante"  ></v-slider>
                 </v-flex>
                 <v-flex xs3>
                     <v-text-field v-model="tenda.lateral_transparante"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Blackout" :max=maxBlackout :min=min  v-model="tenda.lateral_blackout" @click.native="calcularMaximo"></v-slider>
+                    <v-slider label="Blackout" :max="4-tenda.lateral_transparante-tenda.lateral_blackout"  :min=min  v-model="tenda.lateral_blackout" ></v-slider>
                 </v-flex>
                 <v-flex xs3 >
                     <v-text-field v-model="tenda.lateral_blackout"  type="number"></v-text-field>
@@ -124,13 +124,13 @@
                   <v-container grid-list-md>
                       <v-layout wrap>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Nome" v-model="editedItem.title"></v-text-field>
+                          <v-text label="Nome" v-model="editedItem.title"></v-text>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Quantidade" v-model="editedItem.qt"></v-text-field>
+                          <v-text label="Quantidade" v-model="editedItem.qt"></v-text>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Codigo" v-model="editedItem.codigo"></v-text-field>
+                          <v-text label="Codigo" v-model="editedItem.codigo"></v-text>
                       </v-flex>
                       </v-layout>
                   </v-container>
@@ -180,6 +180,7 @@ export default {
     return {
 
       min:"0",
+      max:"0",
       maxOpaco:"4",
       maxTransparente:"4",
       maxBlackout:"4",
@@ -287,28 +288,6 @@ export default {
                   qt: element.qt
               });
           });
-    },
-    calcularMaximo(){
-
-        if(this.tenda.lateral_opaco==4) 
-        {
-            this.maxTransparente = "0";
-            this.maxBlackout = "0";
-        
-        }
-        if(this.tenda.lateral_transparante==4)
-        {
-            this.maxOpaco = "0";
-            this.maxBlackout = "0";
-     
-        }
-        if(tenda.lateral_blackout==4)
-        {
-            this.maxOpaco = "0";
-            this.maxTransparente = "0";
-            
-        }
-
     },
     cobertura_form(){
         this.mySlider = 3;
