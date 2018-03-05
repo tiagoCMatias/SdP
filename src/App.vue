@@ -16,20 +16,18 @@
     </v-navigation-drawer>
 -->
     <!-- Laptop -->
-    <!-- <v-toolbar dark >
-      <v-toolbar-side-icon 
-        @click.native.stop="sideNav = !sideNav"
-        class="hidden-sm-and-up"></v-toolbar-side-icon>
-      <v-toolbar-title >
-        <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
-      </v-toolbar-title>
-      <v-spacer></v-spacer>   
-    </v-toolbar>-->
-
+   
   <v-toolbar dark color="primary">
-    <v-toolbar-title class="white--text" router-link to="'/home'" style="cursor : pointer">{{title}}</v-toolbar-title>
+    <v-toolbar-title class="white--text"  v-if="$route.path!='/'" >
+       <router-link to="/menu" style="cursor : pointer">
+        <v-btn flat small color="white">{{title}}</v-btn>
+       </router-link>
+    </v-toolbar-title>
+    <v-toolbar-title class="white--text"  v-else>
+        <v-btn flat small color="white">{{title}}</v-btn>
+    </v-toolbar-title>
     <v-spacer></v-spacer>
-     <v-menu bottom left v-if="!['login'].indexOf($router.name)>-1">
+     <v-menu bottom left v-if="$route.path!='/'">
             <v-btn icon slot="activator" dark>
               <v-icon>menu</v-icon>
             </v-btn>
@@ -38,7 +36,7 @@
                   <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
-    </v-menu>
+      </v-menu>
   </v-toolbar>
    <main>
      <router-view></router-view>
@@ -52,14 +50,25 @@
 export default {
 
   data: () => ({ 
-      title: 'Sitio do Passal',
+      title: ' Sitio do Passal ',
       items: [
         { iten: 'Menu', link:'/menu'},
         { iten: 'Logout', link: '/'}],
     }),
   name: 'App',
-  home: '/menu'
-}
+  home: '/menu',
+
+  methods: {
+     shoulddisplay(){
+       if(this.$route.path=='/'){
+        this.false;
+       }
+       else
+        this.true;
+     }
+  }
+
+}  
 </script>
 
 
