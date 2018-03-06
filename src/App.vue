@@ -16,7 +16,7 @@
     </v-navigation-drawer>
 -->
     <!-- Laptop -->
-   
+    
   <v-toolbar dark color="primary">
     <v-toolbar-title class="white--text"  v-if="$route.path!='/'" >
        <router-link to="/menu" style="cursor : pointer">
@@ -38,16 +38,27 @@
             </v-list>
       </v-menu>
   </v-toolbar>
-   <main>
+   <main> 
      <router-view></router-view>
    </main> 
-
-
   </v-app>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
+
+  created () {
+       console.log("i was created")
+       const userObj = JSON.parse(window.localStorage.getItem('authUser'))
+       this.$store.dispatch('setUserObject', userObj)
+      },
+
+  computed: {
+    ...mapState({
+      userStore: state => state.userStore
+    })
+  },
 
   data: () => ({ 
       title: ' Sitio do Passal ',

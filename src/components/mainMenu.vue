@@ -1,4 +1,5 @@
-<template>
+
+<template v-if="userStore.state=='loged'">
   <v-container class="text-sm-center" grid-list-xs>
       <v-layout row wrap>
           <v-flex xs10 offset-xs2 >
@@ -11,13 +12,22 @@
           v-for="itens in menuItens" :key="itens.title">
             <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
           </v-flex>
+           {{userStore}}
       </v-layout>
   </v-container>
 </template>
 
 
 <script>
+import {mapState} from 'vuex'
 export default {
+
+    computed: {
+    ...mapState({
+      userStore: state => state.userStore
+       })
+    },
+
   data() {
       return {
         menuItens: [
