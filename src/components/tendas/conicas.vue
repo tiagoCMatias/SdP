@@ -89,22 +89,22 @@
                     <v-subheader>laterais</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Opaco" :max="4"  v-model="tenda.lateral_opaco"></v-slider>
+                    <v-slider label="Opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Transparente" :max="4"  v-model="tenda.lateral_transparante"></v-slider>
+                    <v-slider label="Transparente" :max="4 - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparante"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_transparante" :rules="sliderRules" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_transparante" :max="4 - tenda.lateral_opaco - tenda.lateral_blackout" :rules="sliderRules" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Blackout" :max="4"   v-model="tenda.lateral_blackout"></v-slider>
+                    <v-slider label="Blackout" :max="4 - tenda.lateral_opaco - tenda.lateral_transparante"   v-model="tenda.lateral_blackout"></v-slider>
                 </v-flex>
                 <v-flex xs3 >
-                    <v-text-field v-model="tenda.lateral_blackout" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_blackout" :max="4 - tenda.lateral_opaco - tenda.lateral_transparante"  type="number"></v-text-field>
                 </v-flex>
                 </v-layout>
             </v-container>
@@ -154,10 +154,10 @@
                 <!--<td class="text-xs-right">{{ props.item.codigo }}</td>-->
                 <td class="justify-center layout px-0">
                 <v-btn icon class="mx-0" @click="editItem(props.item)">
-                    <v-icon color="teal">edit</v-icon>
+                    <v-icon color="blue ">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                    <v-icon color="pink">delete</v-icon>
+                    <v-icon color="red darken-2">delete</v-icon>
                 </v-btn>
                 </td>
                 </template>
