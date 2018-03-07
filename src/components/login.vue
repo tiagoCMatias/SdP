@@ -34,8 +34,8 @@
            :type="e1 ? 'password' : 'text'"
            counter
          ></v-text-field>
-         <v-btn @click="submit" :disabled="!valid" focused >Submeter</v-btn>
-         <v-btn @click="clear">Limpar</v-btn>
+         <v-btn color="primary" @click="submit" :disabled="!valid" focused >Submeter</v-btn>
+         <v-btn color="primary" @click="clear">Limpar</v-btn>
      </v-form>
 </v-container>
 </template>

@@ -17,41 +17,64 @@
 -->
     <!-- Laptop -->
     
-  <v-toolbar dark color="primary">
-    <v-toolbar-title class="white--text"  v-if="$route.path!='/'" >
-       <router-link to="/menu" style="cursor : pointer">
-        <v-btn flat small color="white">{{title}}</v-btn>
-       </router-link>
-    </v-toolbar-title>
+    <v-toolbar dark color="primary">
+      <v-toolbar-title class="white--text"  v-if="$route.path!='/'" >
+        <router-link to="/menu" style="cursor : pointer">
+          <v-btn flat small color="white">{{title}}</v-btn>
+        </router-link>
+      </v-toolbar-title>
     <v-toolbar-title class="white--text"  v-else>
         <v-btn flat small color="white">{{title}}</v-btn>
     </v-toolbar-title>
-    <v-spacer></v-spacer>
-     <v-menu bottom left v-if="$route.path!='/' && $route.path!='/out'">
+      <v-spacer></v-spacer>
+        <v-menu bottom left v-if="$route.path!='/' && $route.path!='/out'">
             <v-btn icon slot="activator" dark>
               <v-icon>menu</v-icon>
             </v-btn>
             <v-list>
-              <v-list-tile v-for="(item, i) in items" :key="i" router-link :to=item.link> 
+              <v-list-tile v-for="(item, i) in items" :key="i" router-link :to=item.link>
                   <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
               </v-list-tile>
             </v-list>
-      </v-menu>
-  </v-toolbar>
-   <main> 
+        </v-menu>
+    </v-toolbar>
+
+    <main> 
      <router-view></router-view>
-   </main> 
+    </main> 
   </v-app>
 </template>
 
 <script>
+import {mapState} from 'vuex'
 export default {
 
   created () {
     if(this.$store.getters.isLoged != 'admin'){
       this.$router.push('/')
     }
+  },
+
+  computed: {
+    ...mapState({
+      userStore: state => state.userStore
+    })
+  },
+
+  data: () => ({ 
+      title: ' Sitio do Passal ',
+      items: [
+        { iten: 'Menu', link:'/menu', funcao:'continuar()'},
+        { iten: 'Logout', link: '/out',funcao:'cancelar()'}],
+    }),
+  name: 'App',
+  home: '/out',
+
+  methods: {
+
   }
+
+}  
 </script>
 
 
