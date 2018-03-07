@@ -38,6 +38,15 @@ export default {
       title: 'Sitio do Passal'
     }
   },
+  created () {
+    if(localStorage.getItem("userName") != 'admin')
+    {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    
+  },
   name: 'App'
 }
 </script>

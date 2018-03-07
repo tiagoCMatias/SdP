@@ -26,7 +26,7 @@ export default {
             { icon: '', title: 'Gestão de Stock', link: '/stock' }
         ]
       }
-  }
+  },
 }
 </script>
 

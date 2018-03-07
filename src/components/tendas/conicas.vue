@@ -86,7 +86,7 @@
             <v-container fluid grid-list-md>
                 <v-layout row wrap>
                 <v-flex xs12 text-xs-center>
-                    <v-subheader>laterais</v-subheader>
+                    <v-subheader>Laterais</v-subheader>
                 </v-flex>
                 <v-flex xs9>
                     <v-slider label="Opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
