@@ -16,37 +16,44 @@
     </v-navigation-drawer>
 -->
     <!-- Laptop -->
-    <v-toolbar dark >
-      <v-toolbar-side-icon 
-        @click.native.stop="sideNav = !sideNav"
-        class="hidden-sm-and-up"></v-toolbar-side-icon>
-      <v-toolbar-title >
-        <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
-      </v-toolbar-title>
-      <v-spacer></v-spacer>   
-    </v-toolbar>
-    <main>
-      <router-view></router-view>
-    </main>
+    
+  <v-toolbar dark color="primary">
+    <v-toolbar-title class="white--text"  v-if="$route.path!='/'" >
+       <router-link to="/menu" style="cursor : pointer">
+        <v-btn flat small color="white">{{title}}</v-btn>
+       </router-link>
+    </v-toolbar-title>
+    <v-toolbar-title class="white--text"  v-else>
+        <v-btn flat small color="white">{{title}}</v-btn>
+    </v-toolbar-title>
+    <v-spacer></v-spacer>
+     <v-menu bottom left v-if="$route.path!='/' && $route.path!='/out'">
+            <v-btn icon slot="activator" dark>
+              <v-icon>menu</v-icon>
+            </v-btn>
+            <v-list>
+              <v-list-tile v-for="(item, i) in items" :key="i" router-link :to=item.link> 
+                  <v-list-tile-title>{{ item.iten }}</v-list-tile-title>
+              </v-list-tile>
+            </v-list>
+      </v-menu>
+  </v-toolbar>
+   <main> 
+     <router-view></router-view>
+   </main> 
   </v-app>
 </template>
 
 <script>
 export default {
-  data () {
-    return {
-      title: 'Sitio do Passal'
-    }
-  },
+
   created () {
-    if(localStorage.getItem("userName") != 'admin')
-    {
-      this.$router.push('/');
+    if(this.$store.getters.isLoged != 'admin'){
+      this.$router.push('/')
     }
-  },
-  methods: {
-    
-  },
-  name: 'App'
-}
+  }
 </script>
+
+
+
+

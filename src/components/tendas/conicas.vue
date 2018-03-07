@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-card-text>
-            
     <v-stepper v-model="mySlider">
         <v-stepper-header>
             <v-stepper-step step="1" :complete="mySlider > 1">Estrutura</v-stepper-step>
@@ -89,22 +88,22 @@
                     <v-subheader>Laterais</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
+                    <v-slider label="Opaco" :max="4-tenda.lateral_transparante-tenda.lateral_blackout" :min=min v-model="tenda.lateral_opaco" ></v-slider>
                 </v-flex>
                 <v-flex xs3>
                     <v-text-field v-model="tenda.lateral_opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Transparente" :max="4 - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparante"></v-slider>
+                    <v-slider label="Transparente" :max="4-tenda.lateral_opaco-tenda.lateral_blackout"  :min=min v-model="tenda.lateral_transparante"  ></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_transparante" :max="4 - tenda.lateral_opaco - tenda.lateral_blackout" :rules="sliderRules" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_transparante"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Blackout" :max="4 - tenda.lateral_opaco - tenda.lateral_transparante"   v-model="tenda.lateral_blackout"></v-slider>
+                    <v-slider label="Blackout" :max="4-tenda.lateral_transparante-tenda.lateral_blackout"  :min=min  v-model="tenda.lateral_blackout" ></v-slider>
                 </v-flex>
                 <v-flex xs3 >
-                    <v-text-field v-model="tenda.lateral_blackout" :max="4 - tenda.lateral_opaco - tenda.lateral_transparante"  type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_blackout"  type="number"></v-text-field>
                 </v-flex>
                 </v-layout>
             </v-container>
@@ -124,13 +123,13 @@
                   <v-container grid-list-md>
                       <v-layout wrap>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Nome" v-model="editedItem.title"></v-text-field>
+                          <v-text label="Nome" v-model="editedItem.title"></v-text>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Quantidade" v-model="editedItem.qt"></v-text-field>
+                          <v-text label="Quantidade" v-model="editedItem.qt"></v-text>
                       </v-flex>
                       <v-flex xs12 sm6 md4>
-                          <v-text-field label="Codigo" v-model="editedItem.codigo"></v-text-field>
+                          <v-text label="Codigo" v-model="editedItem.codigo"></v-text>
                       </v-flex>
                       </v-layout>
                   </v-container>
@@ -178,6 +177,12 @@ import { calcularEstruturaConica, calcularCoberturaConica, calcularLateraisConic
 export default {
   data() {
     return {
+
+      min:"0",
+      max:"0",
+      maxOpaco:"4",
+      maxTransparente:"4",
+      maxBlackout:"4",
       tenda: {
           tipo: "",
           largura: "",

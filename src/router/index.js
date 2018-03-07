@@ -7,6 +7,7 @@ import MenuTendas from '@/components/tendas'
 import Aguas from '@/components/tendas/aguas'
 import Iglo from '@/components/tendas/iglo'
 import Conica from '@/components/tendas/conicas'
+import Logout from '@/components/logout'
 
 Vue.use(Router)
 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/out',
+      name: 'logout',
+      component: Logout
     },
     {
       path: '/estrado',

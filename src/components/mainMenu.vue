@@ -1,4 +1,5 @@
-<template>
+
+<template v-if="userStore.state=='loged'">
   <v-container class="text-sm-center" grid-list-xs>
       <v-layout row wrap>
           <v-flex xs10 offset-xs2 >
@@ -26,7 +27,7 @@ export default {
             { icon: '', title: 'Gestão de Stock', link: '/stock' }
         ]
       }
-  },
+  }
 }
 </script>
 

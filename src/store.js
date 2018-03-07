@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import * as Cookies from 'js-cookie'
 
-Vue.use(Vuex);
+
 
 export const store = new Vuex.Store({
     state: {
@@ -15,7 +15,7 @@ export const store = new Vuex.Store({
             return state.user;
         }
     },
-    mutations: {
+    mutations: { 
         login (state, payload) {
             state.user = payload.user;
         },
