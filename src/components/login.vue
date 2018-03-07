@@ -22,7 +22,6 @@
          :counter="10"
          required
          ></v-text-field>
-
          <v-text-field
            name="input-10-1"
            label="Enter your password"
@@ -44,11 +43,6 @@
 <script>
 import {signIn} from '../utils/configuration-manager'
 export default { 
-
-    computed: {
-
-    },
-
    data: () => ({
      valid: true,
      alert: false,

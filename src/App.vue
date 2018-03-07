@@ -45,41 +45,13 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
 export default {
 
   created () {
     if(this.$store.getters.isLoged != 'admin'){
       this.$router.push('/')
     }
-  },
-
-  computed: {
-    ...mapState({
-      userStore: state => state.userStore
-    })
-  },
-
-  data: () => ({ 
-      title: ' Sitio do Passal ',
-      items: [
-        { iten: 'Menu', link:'/menu'},
-        { iten: 'Logout', link: '/out'}],
-    }),
-  name: 'App',
-  home: '/menu',
-
-  methods: {
-     shoulddisplay(){
-       if(this.$route.path=='/'){
-        this.false;
-       }
-       else
-        this.true;
-     }
   }
-
-}  
 </script>
 
 

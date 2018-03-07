@@ -19,11 +19,6 @@
 
 <script>
 export default {
-
-  computed: {
-
-  },
-
   data() {
       return {
         menuItens: [
@@ -32,9 +27,6 @@ export default {
             { icon: '', title: 'Gestão de Stock', link: '/stock' }
         ]
       }
-  },
-  methods: {
-    
   }
 }
 </script>

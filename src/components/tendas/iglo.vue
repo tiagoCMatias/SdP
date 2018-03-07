@@ -59,9 +59,9 @@
                 <v-subheader>Topo</v-subheader>
             </v-flex>
             <v-flex mr-2>
-              <v-radio-group label="Topo" v-model="tenda.tipo_topo" row>
+              <v-radio-group  label="Topo" v-model="tenda.tipo_topo" row>
                 <v-radio label="Direito" value="Direito" ></v-radio>
-                <v-radio label="Redondo" value="Redondo"></v-radio>
+                <v-radio label="Redondo" value="Redondo" ></v-radio>
               </v-radio-group>
             </v-flex> 
         </v-layout>     
@@ -92,7 +92,7 @@
                 ></v-select>
             </v-flex>
         </v-layout>
-        <v-btn color="primary" @click.native="mockIglo()">Continue</v-btn>
+        <v-btn color="primary" @click.native="estrutura_iglo()">Continue</v-btn>
         <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn> 
         </v-form>
         </v-stepper-content>
@@ -112,7 +112,7 @@
                     ></v-select>
                 </v-flex>
             </v-layout>                        
-            <v-btn color="primary" @click.native="cobertura_form()">Continue</v-btn>
+            <v-btn color="primary" @click.native="cobertura_iglo()">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-content step="3">
@@ -121,7 +121,7 @@
             <v-container fluid grid-list-md>
                 <v-layout row wrap>
                 <v-flex xs12 text-xs-center>
-                    <v-subheader>laterais</v-subheader>
+                    <v-subheader class="display-2" >Laterais - {{ max_laterais }}</v-subheader>
                 </v-flex>
                 <v-flex xs9>
                     <v-slider label="Opaco" :max="4"  v-model="tenda.lateral_opaco"></v-slider>
@@ -145,7 +145,7 @@
             </v-container>
             </v-card-text>
             </v-card>
-            <v-btn color="primary" @click.native="laterais_form()">Continue</v-btn>
+            <v-btn color="primary" @click.native="lateraisIglo()">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
         </v-stepper-content>
        <v-stepper-content step="4">
@@ -153,29 +153,32 @@
           <v-card-text>
           <v-container fluid grid-list-md>
               <v-layout row wrap>
+                <v-flex xs12 text-xs-center>
+                    <v-subheader class="display-2" >Triangulo</v-subheader>
+                </v-flex>
               <v-flex xs9>
-                  <v-slider label="Opaco" :max="4" :rules="lateral_rules" v-model="tenda.triangulo_opaco"></v-slider>
+                  <v-slider label="Opaco" v-model="tenda.triangulo_opaco"></v-slider>
               </v-flex>
               <v-flex xs3>
-                  <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                  <v-text-field v-model="tenda.triangulo_opaco" type="number"></v-text-field>
               </v-flex>
               <v-flex xs9>
-                  <v-slider label="Transparente" :max="4" :rules="lateral_rules" v-model="tenda.triangulo_transparante"></v-slider>
+                  <v-slider label="Transparente"  v-model="tenda.triangulo_transparante"></v-slider>
               </v-flex>
               <v-flex xs3>
-                  <v-text-field v-model="tenda.lateral_transparante" type="number"></v-text-field>
+                  <v-text-field v-model="tenda.triangulo_transparante" type="number"></v-text-field>
               </v-flex>
               <v-flex xs9>
-                  <v-slider label="Blackout" :max="4"  :rules="lateral_rules" v-model="tenda.triangulo_blackout"></v-slider>
+                  <v-slider label="Blackout" v-model="tenda.triangulo_blackout"></v-slider>
               </v-flex>
               <v-flex xs3 >
-                  <v-text-field v-model="tenda.lateral_blackout" type="number"></v-text-field>
+                  <v-text-field v-model="tenda.triangulo_blackout" type="number"></v-text-field>
               </v-flex>
               </v-layout>
           </v-container>
           </v-card-text>
           </v-card>
-          <v-btn color="primary" @click.native="laterais_form()">Continue</v-btn>
+          <v-btn color="primary" @click.native="trianguloIglo()">Continue</v-btn>
           <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
         </v-stepper-content>
 
@@ -242,7 +245,7 @@
 
 
 <script>
-import { calcularIglo } from "@/utils/tendas/iglo.js";
+import { EstruturaIglo, CoberturaIglo, LateraisIglo } from "@/utils/tendas/iglo.js";
 export default {
   data() {
     return {
@@ -255,7 +258,7 @@ export default {
             comprimento: "",
             altura_do_pe: "",
             fixacao: "",
-            tipo_topo: "",
+            tipo_topo: "Direito",
             cobertura: "",
             laterais: "",
             lateral_opaco: "",
@@ -274,7 +277,6 @@ export default {
                 value: "title"
             },
             { text: "Qt", value: "qt" }
-            //{ text: "Cod", value: "codigo" }
         ],
         items: [],
         index_tamanho: 0,
@@ -301,6 +303,7 @@ export default {
         dia_carga: "",
         dialog_slider: false,
         mySlider: 0,
+        max_laterais: 0,
         table_edit_dialog: false,
 
         editedIndex: -1,
@@ -347,7 +350,7 @@ export default {
         }
         this.close_table_dialog()
     },
-    mockIglo: function() {
+    estrutura_iglo: function() {
         let tenda = 
             { 
                 tipo: "iglo",
@@ -355,7 +358,7 @@ export default {
                 comprimento: "15",
                 altura_do_pe: "",
                 fixacao: "Estrado",
-                tipo_topo: "redondo",
+                tipo_topo: "direito",
                 cobertura: "blackout",
                 laterais: "",
                 lateral_opaco: "",
@@ -367,7 +370,42 @@ export default {
                 triangulo: ""
 
             };
-      calcularIglo(tenda);
+        if (this.$refs.form_estrutura.validate()) {
+        //calcularIglo(tenda);
+        let resposta = EstruturaIglo(this.tenda);
+        console.log(resposta);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+        let resto = this.tenda.comprimento%5;
+        let modulos_5 = Math.floor(this.tenda.comprimento/5);
+
+        this.max_laterais = modulos_5*2; 
+        this.mySlider = 2;
+        }
+    },
+    cobertura_iglo: function() {
+        this.mySlider = 3;
+        let resposta = CoberturaIglo(this.tenda);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+    },
+    lateraisIglo: function() {
+        
+        this.mySlider = 4;
+
+    },
+    trianguloIglo: function() {
+        this.mySlider = 5;
     }
   }
 }

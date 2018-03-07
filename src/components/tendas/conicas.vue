@@ -1,7 +1,6 @@
 <template>
   <v-container>
     <v-card-text>
-            
     <v-stepper v-model="mySlider">
         <v-stepper-header>
             <v-stepper-step step="1" :complete="mySlider > 1">Estrutura</v-stepper-step>
@@ -92,7 +91,7 @@
                     <v-slider label="Opaco" :max="4-tenda.lateral_transparante-tenda.lateral_blackout" :min=min v-model="tenda.lateral_opaco" ></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                    <v-text-field v-model="tenda.lateral_opaco" :max="4 - tenda.lateral_transparante - tenda.lateral_blackout"  type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
                     <v-slider label="Transparente" :max="4-tenda.lateral_opaco-tenda.lateral_blackout"  :min=min v-model="tenda.lateral_transparante"  ></v-slider>
@@ -154,10 +153,10 @@
                 <!--<td class="text-xs-right">{{ props.item.codigo }}</td>-->
                 <td class="justify-center layout px-0">
                 <v-btn icon class="mx-0" @click="editItem(props.item)">
-                    <v-icon color="teal">edit</v-icon>
+                    <v-icon color="blue ">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                    <v-icon color="pink">delete</v-icon>
+                    <v-icon color="red darken-2">delete</v-icon>
                 </v-btn>
                 </td>
                 </template>
@@ -219,6 +218,9 @@ export default {
       index_tamanho: 0,
       form_base_rule: [
           v => !!v || "Introduzir Valor"
+      ],
+      sliderRules: [
+          v => v <= 4 || "Bad"
       ],
       lateral_rules: [
           v => ( v.lateral_opaco + v.lateral_transparante + v.lateral_blackout ) <= 4 || "Quantidade errada" 
@@ -306,11 +308,11 @@ export default {
             let resposta = calcularEstruturaConica(this.tenda);
             console.log(resposta);
             resposta.forEach(element => {
-            this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-                title: element.title,
-                qt: element.qt
-            });
+                this.items.push({
+                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    title: element.title,
+                    qt: element.qt
+                });
             });
         }
     },
