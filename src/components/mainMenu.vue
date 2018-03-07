@@ -2,16 +2,17 @@
 <template>
   <v-container class="text-sm-center" grid-list-xs>
       <v-layout row wrap>
-          <v-flex xs10 offset-xs2 >
+        <v-flex fill-height>
+          <v-flex fill-height>
             <v-btn large class="primary" router-link to='/estrado'>Calcular Estrado</v-btn>
           </v-flex>
-          <v-flex xs10 offset-xs2 >
+          <v-flex fill-height>
             <v-btn large class="primary" router-link to='/tendas'>Calcular Tendas</v-btn>
           </v-flex>
-          <v-flex xs10 offset-xs2
-          v-for="itens in menuItens" :key="itens.title">
+          <v-flex fill-height v-for="itens in menuItens" :key="itens.title">
             <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
           </v-flex>
+        </v-flex>
       </v-layout>
   </v-container>
 </template>
