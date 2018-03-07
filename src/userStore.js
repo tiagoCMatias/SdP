@@ -8,6 +8,9 @@ const mutations = {
    },
    CLEAR_AUTH_USER (state) {
        state.authUser = null
+   },
+   RETURN_AUTH_USER (state){
+       return state.authUser
    }
 
 }
@@ -18,6 +21,9 @@ const actions = {
     },
     clearUserObject: ({commit}) => { 
         commit('CLEAR_AUTH_USER')
+    },
+    getUserObject: ({commit}) => {
+        commit('RETURN_AUTH_USER')
     }
 }
 

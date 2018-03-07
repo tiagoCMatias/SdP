@@ -12,21 +12,17 @@
           v-for="itens in menuItens" :key="itens.title">
             <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
           </v-flex>
-           {{userStore}}
       </v-layout>
   </v-container>
 </template>
 
 
 <script>
-import {mapState} from 'vuex'
 export default {
 
-    computed: {
-    ...mapState({
-      userStore: state => state.userStore
-       })
-    },
+  computed: {
+
+  },
 
   data() {
       return {
@@ -36,6 +32,9 @@ export default {
             { icon: '', title: 'Gestão de Stock', link: '/stock' }
         ]
       }
+  },
+  methods: {
+    
   }
 }
 </script>

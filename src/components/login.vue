@@ -1,6 +1,5 @@
 <template>
  <v-container>
-    {{state.userStore}}
      <v-slide-y-transition mode="out-in">
          <v-layout column align-center justify-center>
              <img src="@/assets/sitio_do_passal.png" width="50%" alt="Vuetify.js" >
@@ -44,13 +43,10 @@
 
 <script>
 import {signIn} from '../utils/configuration-manager'
-import {mapState} from 'vuex'
 export default { 
 
     computed: {
-    ...mapState({
-      userStore: state => state.userStore
-       })
+
     },
 
    data: () => ({
@@ -82,8 +78,13 @@ export default {
 
          if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
          {
-             console.log("In");
-             this.$store.dispatch('setUserObject', 'loged')
+             console.log(this.$store.getters.isLogged);
+             this.$store.commit({
+                 type: 'login', 
+                 user: 'admin'
+             });
+
+             console.log("In")
              this.$router.push('/menu');
          }
          else

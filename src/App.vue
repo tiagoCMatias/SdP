@@ -27,7 +27,7 @@
         <v-btn flat small color="white">{{title}}</v-btn>
     </v-toolbar-title>
     <v-spacer></v-spacer>
-     <v-menu bottom left v-if="$route.path!='/'">
+     <v-menu bottom left v-if="$route.path!='/' && $route.path!='/out'">
             <v-btn icon slot="activator" dark>
               <v-icon>menu</v-icon>
             </v-btn>
@@ -49,10 +49,10 @@ import {mapState} from 'vuex'
 export default {
 
   created () {
-       console.log("i was created")
-       const userObj = JSON.parse(window.localStorage.getItem('authUser'))
-       this.$store.dispatch('setUserObject', userObj)
-      },
+    if(this.$store.getters.isLoged != 'admin'){
+      this.$router.push('/')
+    }
+  },
 
   computed: {
     ...mapState({
@@ -64,7 +64,7 @@ export default {
       title: ' Sitio do Passal ',
       items: [
         { iten: 'Menu', link:'/menu'},
-        { iten: 'Logout', link: '/'}],
+        { iten: 'Logout', link: '/out'}],
     }),
   name: 'App',
   home: '/menu',
