@@ -27,10 +27,10 @@ export const store = new Vuex.Store({
         createPersistedState({
             getState: (key) => {
                 //Cookies.getJSON(key)
-                Cookies.getJSON(key);
+                Cookies.getJSON('username');
             },
             setState: (key, state) => {
-                Cookies.set(key, state.user, { expires: 3, secure: true });
+                Cookies.set('username', state.user, { expires: 3, secure: true });
                 //Cookies.set(key, state, { expires: 3, secure: true })
 
             },

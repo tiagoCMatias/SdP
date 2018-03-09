@@ -1,9 +1,9 @@
 <template>
-  <v-container class="text-sm-center" >
-    <v-layout row wrap d-flex>
-        <v-flex xs3 offset-xs1
+  <v-container fluid class="text-sm-center" >
+    <v-layout row wrap>
+        <v-flex xs12 sm4
             v-for="itens in menuItens" :key="itens.select_index">
-        <v-btn large class="primary" router :to="itens.link">{{itens.title}}</v-btn>
+            <v-btn large class="primary" router :to="itens.link">{{itens.title}}</v-btn>
         </v-flex>
     </v-layout>
    </v-container>

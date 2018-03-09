@@ -141,7 +141,7 @@ export default {
         ],
         items: [
           {
-            name: "Taipal",
+            name: "Madeira",
             quantidade : 0
           },
           {
@@ -153,7 +153,15 @@ export default {
             quantidade : 0
           },
           {
-            name: "Pontos de Apoio",
+            name: "Pé",
+            quantidade : 0
+          },
+          {
+            name: "Chapa Base",
+            quantidade : 0
+          },
+          {
+            name: "Chaveta Normal",
             quantidade : 0
           }
         ],
@@ -196,6 +204,8 @@ export default {
           this.items[1].quantidade = resposta.b25_total;
           this.items[2].quantidade = resposta.b125;
           this.items[3].quantidade = resposta.pontoApoio;
+          this.items[4].quantidade = resposta.pontoApoio;
+          this.items[5].quantidade = resposta.pontoApoio;
 
           console.log(this.items);
           if(this.pdf_checkbox == true)

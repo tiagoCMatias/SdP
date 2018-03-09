@@ -79,7 +79,7 @@
                 ></v-select>
             </v-flex>
         </v-layout>
-        <v-btn color="primary" @click.native="estrutura_form()">Continue</v-btn>
+        <v-btn color="primary" @click.native="mockAguas()">Continue</v-btn>
         <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn> 
         </v-form>
         </v-stepper-content>
@@ -229,11 +229,12 @@
 
 
 <script>
+import { calcularAguas } from "@/utils/tendas/aguas.js";
 export default {
   data() {
     return {
       tamanho_tendas: [
-            ["10", "15", "20", "25"]
+            ["5", "7.5", "10", "12.5", "15", "17.5", "20"]
         ],
         tenda: {
             tipo: "",
@@ -334,6 +335,27 @@ export default {
             this.items.push(this.editedItem)
         }
         this.close_table_dialog()
+    },
+
+    mockAguas: function() {
+        var tenda= {
+            tipo: "",
+            largura: 10,
+            comprimento: 15,
+            altura_do_pe: 4,
+            fixacao: "Estacas",
+            tipo_topo: "",
+            cobertura: "",
+            laterais: "",
+            lateral_opaco: "",
+            lateral_transparante: "",
+            lateral_blackout: "",
+            triangulo_opaco: "",
+            triangulo_transparente: "",
+            triangulo_blackout: "",
+            triangulo: ""
+        };
+        let resposta = calcularAguas(tenda);
     }
   }
 }
