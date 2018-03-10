@@ -35,9 +35,17 @@
 export default {
   data () {
     return {
-
       title: 'Sitio do Passal'
     }
+  },
+  created () {
+    if(localStorage.getItem("userName") != 'admin')
+    {
+      this.$router.push('/');
+    }
+  },
+  methods: {
+    
   },
   name: 'App'
 }

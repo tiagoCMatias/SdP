@@ -34,7 +34,7 @@
               counter
             ></v-text-field>
 
-            <v-btn @click="submit" :disabled="!valid" focused >Submeter</v-btn>
+            <v-btn @click="submit()" :disabled="!valid" focused >Submeter</v-btn>
             <v-btn @click="clear">Limpar</v-btn>
         </v-form>
   </v-container>
@@ -65,31 +65,29 @@ export default {
     mounted () {
         this.onResize()
     },
+    computed: {
+        doneTodosCount () {
+            return this.$store.getters.isLogged
+        }
+    },
 
     methods: {
         submit () {
             if (this.$refs.form.validate()) {
-
-            if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
-            {
-                console.log("In");
-                this.$router.push('/menu');
-            }
-            else
-            {
-                this.alert = true;4
-            }
-            /*
-            signIn(this.name, this.password).then((resposta) => {
-                console.log(resposta);
-
-                if(resposta.message == "Sucessful"){
-                    this.$router.push('/menu')
+                if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
+                {
+                    localStorage.setItem("userName", this.name);
+                    console.log(this.$store.getters.isLogged);
+                    this.$store.commit({ 
+                        type: 'login', 
+                        user: 'admin'
+                    });
+                    this.$router.push('/menu');
                 }
-                else {
+                else
+                {
                     this.alert = true;
                 }
-                });*/
             }
         },
         clear () { 
@@ -98,7 +96,7 @@ export default {
         
         onResize () {
             this.windowSize = { x: window.innerWidth, y: window.innerHeight }
-        },   
+        }
     }
 }
 </script>

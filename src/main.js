@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import {store} from './store'
 import router from './router'
 import {
   Vuetify,
@@ -15,9 +16,17 @@ import {
   VSubheader,
   VAlert,
   VTextField,
+  VSelect,
+  VMenu,
   VDialog,
   VDataTable,
   VCheckbox,
+  VStepper,
+  VDivider,
+  VDatePicker,
+  VRadioGroup,
+  VSlider,
+  VSnackbar,
   VForm,
   VCard,
   VToolbar,
@@ -31,8 +40,16 @@ Vue.use(Vuetify, {
     VNavigationDrawer,
     VFooter,
     VList,
+    VSnackbar,
+    VRadioGroup,
+    VDatePicker,
     VBtn,
+    VSelect,
+    VSlider,
     VForm,
+    VStepper,
+    VDivider,
+    VMenu,
     VCheckbox,
     VAlert,
     VIcon,
@@ -53,6 +70,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })
