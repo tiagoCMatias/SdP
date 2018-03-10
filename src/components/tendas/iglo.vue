@@ -152,19 +152,19 @@
                     <v-subheader class="display-2" >Laterais - {{ max_laterais }}</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider  :max="max_laterais - tenda.lateral_transparante - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
+                    <v-slider  :max="max_laterais - tenda.lateral_transparente - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
                 </v-flex>
                 <v-flex xs3>
                     <v-text-field readonly label="Opaco" v-model="tenda.lateral_opaco" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider  :max="max_laterais - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparante"></v-slider>
+                    <v-slider  :max="max_laterais - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparente"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field readonly label="Transparente" v-model="tenda.lateral_transparante" type="number"></v-text-field>
+                    <v-text-field readonly label="Transparente" v-model="tenda.lateral_transparente" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider :max="max_laterais - tenda.lateral_opaco - tenda.lateral_transparante"   v-model="tenda.lateral_blackout"></v-slider>
+                    <v-slider :max="max_laterais - tenda.lateral_opaco - tenda.lateral_transparente"   v-model="tenda.lateral_blackout"></v-slider>
                 </v-flex>
                 <v-flex xs3 >
                     <v-text-field readonly label="Blackout" v-model="tenda.lateral_blackout" type="number"></v-text-field>
@@ -298,22 +298,22 @@
                     <v-subheader class="display-2" >Bacalhau - {{ max_topo }}</v-subheader>
                 </v-flex>
               <v-flex xs9>
-                  <v-slider  v-model="tenda.bacalhau_opaco"></v-slider>
+                  <v-slider :max="max_topo - tenda.bacalhau_transparente - tenda.bacalhau_blackout" v-model="tenda.bacalhau_opaco"></v-slider>
               </v-flex>
               <v-flex xs3>
-                  <v-text-field label="Opaco" v-model="tenda.bacalhau_opaco" type="number"></v-text-field>
+                  <v-text-field label="Opaco" readonly v-model="tenda.bacalhau_opaco" type="number"></v-text-field>
               </v-flex>
               <v-flex xs9>
-                  <v-slider  v-model="tenda.bacalhau_transparente"></v-slider>
+                  <v-slider :max="max_topo - tenda.bacalhau_opaco - tenda.bacalhau_blackout"  v-model="tenda.bacalhau_transparente"></v-slider>
               </v-flex>
               <v-flex xs3>
-                  <v-text-field label="Transparente" v-model="tenda.bacalhau_transparente" type="number"></v-text-field>
+                  <v-text-field label="Transparente" readonly v-model="tenda.bacalhau_transparente" type="number"></v-text-field>
               </v-flex>
               <v-flex xs9>
-                  <v-slider   v-model="tenda.bacalhau_blackout"></v-slider>
+                  <v-slider :max="max_topo - tenda.bacalhau_opaco - tenda.bacalhau_transparente" v-model="tenda.bacalhau_blackout"></v-slider>
               </v-flex>
               <v-flex xs3 >
-                  <v-text-field label="Blackout" v-model="tenda.bacalhau_blackout" type="number"></v-text-field>
+                  <v-text-field label="Blackout" readonly v-model="tenda.bacalhau_blackout" type="number"></v-text-field>
               </v-flex>
               </v-layout>
               <v-layout row wrap v-if="tenda.tipo_topo_1 == 'Direito' || tenda.tipo_topo_2 == 'Direito'">
@@ -416,10 +416,10 @@
                 <!--<td class="text-xs-right">{{ props.item.codigo }}</td>-->
                 <td class="justify-center layout px-0">
                 <v-btn icon class="mx-0" @click="editItem(props.item)">
-                    <v-icon color="teal">edit</v-icon>
+                    <v-icon color="primary">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                    <v-icon color="pink">delete</v-icon>
+                    <v-icon color="red">delete</v-icon>
                 </v-btn>
                 </td>
                 </template>
@@ -490,7 +490,7 @@
 
 <script>
 
-import { EstruturaIglo, CoberturaIglo, LateraisIglo, calcularTopoIglo, calcularBola } from "@/utils/tendas/iglo.js";
+import { EstruturaIglo, CoberturaIglo, LateraisIglo, calcularTopoIglo, calcularBola, UpdateRepeatedValues } from "@/utils/tendas/iglo.js";
 import jsPDF from 'jspdf'
 require('jspdf-autotable');
 export default {
@@ -511,7 +511,7 @@ export default {
             cobertura_blackout: 0,
             cobertura_especial: null,
             lateral_opaco: 0,
-            lateral_transparante: 0,
+            lateral_transparente: 0,
             lateral_blackout: 0,
             lateral_topo_redondo_1: null,
             lateral_topo_redondo_2: null,
@@ -623,15 +623,7 @@ export default {
     estrutura_iglo: function() {
         if (this.$refs.form_estrutura.validate()) {
             //calcularIglo(tenda);
-            let resposta = EstruturaIglo(this.tenda);
-            console.log(resposta);
-            resposta.forEach(element => {
-                this.items.push({
-                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
-                    title: element.title,
-                    qt: element.qt
-                });
-            });
+            this.mySlider = 2;
             this.resto = this.tenda.comprimento%5;
             this.max_topo = 0;
             let modulos_5 = 0;
@@ -654,7 +646,6 @@ export default {
             }
             if(this.tenda.tipo_topo_2 == "Redondo" || this.tenda.tipo_topo_1 == "Redondo")
             {
-                //console.log("Novo: " + new_comprimento);
                 this.resto = new_comprimento%5;    
                 modulos_5 = Math.floor(new_comprimento/5);
                 this.max_laterais = (modulos_5*2);
@@ -684,11 +675,27 @@ export default {
             else {
                 this.show_cobertura = false;
             }
-                this.mySlider = 2;
+            if(this.tenda.comprimento == this.tenda.largura && (this.tenda.tipo_topo_1 == "Redondo" && this.tenda.tipo_topo_2 == "Redondo"))
+                return;
+            let resposta = EstruturaIglo(this.tenda);
+            console.log(resposta);
+            resposta.forEach(element => {
+                this.items.push({
+                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    title: element.title,
+                    qt: element.qt
+                });
+            });
+            
+
+            console.log("Bacalhau: " +this.max_topo);
+                
         }
     },
     cobertura_iglo: function() {
         this.mySlider = 3;
+        if(this.tenda.comprimento == this.tenda.largura && (this.tenda.tipo_topo_1 == "Redondo" && this.tenda.tipo_topo_2 == "Redondo"))                
+            return;
         let resposta = CoberturaIglo(this.tenda);
         console.log(resposta);
         resposta.forEach(element => {
@@ -701,10 +708,12 @@ export default {
     },
     lateraisIglo: function() {
         console.log("Opaco: " + this.tenda.lateral_opaco);
-        console.log("Transparente: " + this.tenda.lateral_transparante);
+        console.log("Transparente: " + this.tenda.lateral_transparente);
         console.log("Blackout: " + this.tenda.lateral_blackout);
 
         this.mySlider = 4;
+        if(this.tenda.comprimento == this.tenda.largura && (this.tenda.tipo_topo_1 == "Redondo" && this.tenda.tipo_topo_2 == "Redondo"))
+                return;
         let resposta = LateraisIglo(this.tenda);
         resposta.forEach(element => {
             this.items.push({
@@ -713,49 +722,83 @@ export default {
                 qt: element.qt
             });
         });
-        console.log(resposta);
+        //console.log(resposta);
 
     },
     trianguloIglo: function() {
-        this.mySlider = 5;
-        let resposta = calcularTopoIglo(this.tenda);
-        resposta.forEach(element => {
+        
+        if(this.tenda.comprimento == this.tenda.largura && (this.tenda.tipo_topo_1 == "Redondo" && this.tenda.tipo_topo_2 == "Redondo"))
+        {
+           let resposta =  calcularBola(this.tenda);
+           resposta.forEach(element => {
+                this.items.push({
+                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    title: element.title,
+                    qt: element.qt
+                });
+            });
+        }
+        else
+        {
+            let resposta = calcularTopoIglo(this.tenda);
+            resposta.forEach(element => {
+                this.items.push({
+                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    title: element.title,
+                    qt: element.qt
+                });
+            });
+        }
+
+        let new_items = UpdateRepeatedValues(this.items);
+        this.items = [];
+        new_items.forEach(element => {
             this.items.push({
                 codigo: "1.1." + this.tenda.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
         });
-        console.log(resposta);
-        calcularBola(this.tenda);
+
+        this.mySlider = 5;
+        //console.log(resposta);
+        
     },
     generatePDF() {
-      if(this.$refs.info_form.validate())
-      {
-          let columns = [];
-          this.header.forEach(element => {
+        if(this.$refs.info_form.validate())
+        {
+            let columns = [];
+            this.header.forEach(element => {
             columns.push(element.text);
-          });
+            });
 
-          let rows = [];
-          this.items.forEach(element => {
+            let rows = [];
+            this.items.forEach(element => {
             rows.push([ element.title, element.qt  ]);
-          });
-          var doc = new jsPDF('p', 'pt');
-          
-          
-          var currentDate = new Date();
-          doc.setFontSize(24);
-          doc.text(250, 40, "Tenda Iglo");
-          //doc.addImage(imgData, 'JPEG', 350, 20, 180, 160);
-          doc.setFontSize(14);
-          doc.text(100, 80, "Data: "+ this.date);
-          doc.text(100, 120, "Dimensões - "+ this.tenda.largura + "x"+this.tenda.comprimento);
+            });
+            var doc = new jsPDF('p', 'pt');
 
-          doc.text(100, 160, "Local: "+this.local_montagem);
-          doc.autoTable(columns, rows, { startY: 200});
-          doc.save(currentDate + " - " + this.largura +"x"+this.comprimento);
-      }
+            var currentDate = new Date();
+            doc.setFontSize(24);
+            doc.text(250, 40, "Tenda Iglo");
+            //doc.addImage(imgData, 'JPEG', 350, 20, 180, 160);
+            doc.setFontSize(14);
+            doc.text(100, 80, "Data: "+ this.date);
+            
+            doc.text(100, 120, "Dimensões - "+ this.tenda.largura + "x"+this.tenda.comprimento );
+                
+            if(this.tenda.tipo_topo_1 != this.tenda.tipo_topo_2)
+            {
+                doc.text(100, 140, "Topo - "+ this.tenda.tipo_topo_1 + " e "+this.tenda.tipo_topo_2 );
+            }
+            else
+            {
+                doc.text(100, 140, "Topo - "+ this.tenda.tipo_topo_1 );
+            }
+            doc.text(100, 160, "Local: "+this.local_montagem);
+            doc.autoTable(columns, rows, { startY: 200});
+            doc.save(currentDate + " - " + this.largura +"x"+this.comprimento);
+        }
     },
   }
 }

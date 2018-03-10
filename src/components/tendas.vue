@@ -1,7 +1,7 @@
 <template>
   <v-container fluid class="text-sm-center" >
     <v-layout row wrap>
-        <v-flex xs12 sm4
+        <v-flex xs12 sm4 class="text-sm-center"  my-2
             v-for="itens in menuItens" :key="itens.select_index">
             <v-btn large class="primary" router :to="itens.link">{{itens.title}}</v-btn>
         </v-flex>

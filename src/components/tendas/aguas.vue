@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container fluid>
     <v-card-text>
     <v-stepper v-model="mySlider">
         <v-stepper-header>
@@ -58,9 +58,17 @@
                 <v-subheader>Altura do Pé</v-subheader>
             </v-flex>
             <v-flex mr-2>
-            <v-text-field box 
-                v-model="tenda.altura_do_pe"
-                required></v-text-field>
+            <v-flex mr-2>
+                    <v-select
+                    :items="altura_do_pe"
+                    v-model="tenda.altura_do_pe"
+                    :rules="form_base_rule"
+                    label="Altura do Pé"
+                    class="input-group"
+                    item-value="text"
+                    required
+                    ></v-select>
+                </v-flex>
             </v-flex>
         </v-layout>              
         <v-layout row>
@@ -84,23 +92,51 @@
         </v-form>
         </v-stepper-content>
         <v-stepper-content step="2">
-            <v-layout row>
-                <v-flex xs3 hidden-xs-only>
-                    <v-subheader>Cobertura</v-subheader>
+            <v-card>
+            <v-card-text>
+            <v-container>
+            <v-layout row wrap>
+                <v-flex xs12 text-xs-center>
+                    <v-subheader class="display-1" >Cobertura - {{ max_cobertura }}</v-subheader>
                 </v-flex>
-                <v-flex >
+                <v-flex xs9>
+                    <v-slider  :max="max_cobertura - tenda.cobertura_blackout - tenda.cobertura_transparente"  v-model="tenda.cobertura_opaco"></v-slider>
+                </v-flex>
+                <v-flex xs3>
+                    <v-text-field readonly label="Opaco" v-model="tenda.cobertura_opaco" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs9>
+                    <v-slider  :max="max_cobertura - tenda.cobertura_blackout - tenda.cobertura_opaco"  v-model="tenda.cobertura_transparente"></v-slider>
+                </v-flex>
+                <v-flex xs3>
+                    <v-text-field readonly label="Transparente" v-model="tenda.cobertura_transparente" type="number"></v-text-field>
+                </v-flex>
+                <v-flex xs9>
+                    <v-slider  :max="max_cobertura - tenda.cobertura_transparente - tenda.cobertura_opaco"   v-model="tenda.cobertura_blackout"></v-slider>
+                </v-flex>
+                <v-flex xs3 >
+                    <v-text-field readonly label="Blackout" v-model="tenda.cobertura_blackout" type="number"></v-text-field>
+                </v-flex>
+            </v-layout>
+            <v-layout row wrap v-if="show_cobertura">
+                <v-flex xs3 hidden-xs-only>
+                    <v-subheader>Cobertura - {{ modulo_especial }}</v-subheader>
+                </v-flex>
+                <v-flex mr-2>
                     <v-select
                     :items="tipo_de_telas"
-                    v-model="tenda.cobertura"
-                    label="Cobertura"
+                    v-model="tenda.cobertura_especial"
+                    :rules="form_base_rule"
+                    label="Cobertura Especial"
                     class="input-group"
                     item-value="text"
                     required
                     ></v-select>
                 </v-flex>
-            </v-layout>                        
-            <v-btn color="primary" @click.native="cobertura_form()">Continue</v-btn>
+            </v-layout>
+            <v-btn color="primary" @click.native="calcularCobertura()">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>
+            </v-container></v-card-text></v-card>
         </v-stepper-content>
         <v-stepper-content step="3">
             <v-card >
@@ -108,67 +144,142 @@
             <v-container fluid grid-list-md>
                 <v-layout row wrap>
                 <v-flex xs12 text-xs-center>
-                    <v-subheader>laterais</v-subheader>
+                    <v-subheader class="display-1">Laterais 5m - {{ max_laterais }}</v-subheader>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Opaco" :max="4"  v-model="tenda.lateral_opaco"></v-slider>
+                    <v-slider label="Opaco" :max="max_laterais - tenda.lateral_transparente - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                    <v-text-field readonly v-model="tenda.lateral_opaco" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Transparente" :max="4"  v-model="tenda.lateral_transparante"></v-slider>
+                    <v-slider label="Transparente" :max="max_laterais - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparente"></v-slider>
                 </v-flex>
                 <v-flex xs3>
-                    <v-text-field v-model="tenda.lateral_transparante" type="number"></v-text-field>
+                    <v-text-field readonly v-model="tenda.lateral_transparente" type="number"></v-text-field>
                 </v-flex>
                 <v-flex xs9>
-                    <v-slider label="Blackout" :max="4"   v-model="tenda.lateral_blackout"></v-slider>
+                    <v-slider label="Blackout" :max="max_laterais - tenda.lateral_transparente - tenda.lateral_opaco" v-model="tenda.lateral_blackout"></v-slider>
                 </v-flex>
                 <v-flex xs3 >
-                    <v-text-field v-model="tenda.lateral_blackout" type="number"></v-text-field>
+                    <v-text-field readonly v-model="tenda.lateral_blackout" type="number"></v-text-field>
                 </v-flex>
+                </v-layout>
+
+                <v-layout row wrap v-if="tenda.largura==7.5 || tenda.largura==17.5 || tenda.largura==12.5">
+                    <v-flex xs12 text-xs-center>
+                        <v-subheader class="display-1">Laterais {{ lateral_diferente }}m - {{ max_laterais_triangulo }}</v-subheader>
+                    </v-flex>
+                    <v-flex xs9>
+                        <v-slider label="Opaco" :max="max_laterais_triangulo - tenda.lateral_transparante_diferente - tenda.lateral_blackout_diferente"  v-model="tenda.lateral_opaco_diferente"></v-slider>
+                    </v-flex>
+                    <v-flex xs3>
+                        <v-text-field readonly v-model="tenda.lateral_opaco_diferente" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs9>
+                        <v-slider label="Transparente" :max="max_laterais_triangulo - tenda.lateral_opaco_diferente - tenda.lateral_blackout_diferente"  v-model="tenda.lateral_transparante_diferente"></v-slider>
+                    </v-flex>
+                    <v-flex xs3>
+                        <v-text-field readonly v-model="tenda.lateral_transparante_diferente" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs9>
+                        <v-slider label="Blackout" :max="max_laterais_triangulo - tenda.lateral_transparante_diferente - tenda.lateral_opaco_diferente" v-model="tenda.lateral_blackout_diferente"></v-slider>
+                    </v-flex>
+                    <v-flex xs3 >
+                        <v-text-field readonly v-model="tenda.lateral_blackout_diferente" type="number"></v-text-field>
+                    </v-flex>
+                </v-layout>
+
+                <v-layout row wrap v-if="show_cobertura">
+                    <v-flex xs3 hidden-xs-only>
+                        <v-subheader class="display-1">Laterais Modulo {{ modulo_especial }}</v-subheader>
+                    </v-flex>
+                    <v-flex mr-2>
+                        <v-select
+                        :items="tipo_de_telas"
+                        v-model="tenda.lateral_especial_1"
+                        :rules="form_base_rule"
+                        label="Lateral Especial"
+                        class="input-group"
+                        item-value="text"
+                        required
+                        ></v-select>
+                    </v-flex>
+                    <v-flex mr-2>
+                        <v-select
+                        :items="tipo_de_telas"
+                        v-model="tenda.lateral_especial_2"
+                        :rules="form_base_rule"
+                        label="Lateral Especial"
+                        class="input-group"
+                        item-value="text"
+                        required
+                        ></v-select>
+                    </v-flex>
                 </v-layout>
             </v-container>
             </v-card-text>
             </v-card>
-            <v-btn color="primary" @click.native="laterais_form()">Continue</v-btn>
+            <v-btn color="primary" @click.native="calcularLateral()">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
         </v-stepper-content>
        <v-stepper-content step="4">
           <v-card >
           <v-card-text>
           <v-container fluid grid-list-md>
-              <v-layout row wrap>
-              <v-flex xs9>
-                  <v-slider label="Opaco" :max="4" :rules="lateral_rules" v-model="tenda.triangulo_opaco"></v-slider>
-              </v-flex>
-              <v-flex xs3>
-                  <v-text-field v-model="tenda.lateral_opaco" type="number"></v-text-field>
-              </v-flex>
-              <v-flex xs9>
-                  <v-slider label="Transparente" :max="4" :rules="lateral_rules" v-model="tenda.triangulo_transparante"></v-slider>
-              </v-flex>
-              <v-flex xs3>
-                  <v-text-field v-model="tenda.lateral_transparante" type="number"></v-text-field>
-              </v-flex>
-              <v-flex xs9>
-                  <v-slider label="Blackout" :max="4"  :rules="lateral_rules" v-model="tenda.triangulo_blackout"></v-slider>
-              </v-flex>
-              <v-flex xs3 >
-                  <v-text-field v-model="tenda.lateral_blackout" type="number"></v-text-field>
-              </v-flex>
-              </v-layout>
+              <v-layout row wrap class="text-xs-center">
+                <v-flex xs12 >
+                    <v-subheader>Triangulos </v-subheader>
+                </v-flex>
+                <v-flex xs12 sm4 mr-2>
+                    <v-select
+                    :items="tipo_de_telas"
+                    v-model="tenda.triangulo_1"
+                    :rules="form_base_rule"
+                    label="Triangulo 1"
+                    class="input-group"
+                    item-value="text"
+                    required
+                    ></v-select>
+                </v-flex>
+                <v-flex xs12 sm4 mr-2>
+                    <v-select
+                    :items="tipo_de_telas"
+                    v-model="tenda.triangulo_2"
+                    :rules="form_base_rule"
+                    label="Triangulo 2"
+                    class="input-group"
+                    item-value="text"
+                    required
+                    ></v-select>
+                </v-flex>
+                </v-layout>
           </v-container>
           </v-card-text>
           </v-card>
-          <v-btn color="primary" @click.native="laterais_form()">Continue</v-btn>
+          <v-btn color="primary" @click.native="calcularTriangulo()">Continue</v-btn>
           <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
         </v-stepper-content>
 
         <v-stepper-content step="5">
+            <v-layout>
+                <v-flex xs3 mx-2>
+                    <v-btn color="primary" dark slot="activator">New Item</v-btn>
+                </v-flex>
+                <v-flex xs6 mx-2>
+                    <v-text-field
+                        append-icon="search"
+                        label="Search"
+                        single-line
+                        hide-details
+                        v-model="search"
+                    ></v-text-field>
+                </v-flex>
+                <v-flex xs3 mx-2 class="text-xs-right">
+                    <v-btn color="primary" dark @click.native="adicionar_info_dialog = true" class="mb-2">PDF</v-btn>
+                </v-flex>
+            </v-layout>
             <v-dialog v-model="table_edit_dialog" max-width="500px">
-            <v-btn color="primary" dark slot="activator" class="mb-2">New Item</v-btn>
             <v-card>
                 <v-card-title>
                 <span class="headline">Novo</span>
@@ -201,6 +312,7 @@
                 v-bind:headers="header"
                 :items="items"
                 hide-actions
+                :search="search"
                 class="elevation-1"
                 >
                 <template slot="items" slot-scope="props">
@@ -209,10 +321,10 @@
                 <!--<td class="text-xs-right">{{ props.item.codigo }}</td>-->
                 <td class="justify-center layout px-0">
                 <v-btn icon class="mx-0" @click="editItem(props.item)">
-                    <v-icon color="teal">edit</v-icon>
+                    <v-icon color="blue">edit</v-icon>
                 </v-btn>
                 <v-btn icon class="mx-0" @click="deleteItem(props.item)">
-                    <v-icon color="pink">delete</v-icon>
+                    <v-icon color="red">delete</v-icon>
                 </v-btn>
                 </td>
                 </template>
@@ -220,6 +332,60 @@
             
             <v-btn color="primary" @click.native="mySlider = 1">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn>
+
+            <!-- PDF -->
+            <v-dialog v-model="adicionar_info_dialog" max-width="500px">
+                <v-card>
+                    <v-card-title>
+                        Preencher Cabeçalho
+                    </v-card-title>   
+
+                    <v-form v-model="info_form" ref="info_form">
+                    <v-layout row wrap>
+                        <v-flex xs12 mx-4>
+                        <v-text-field
+                        label="Local de Montagem"
+                        v-model="local_montagem"
+                        :rules="form_base_rule"
+                        >
+                        </v-text-field>
+                        </v-flex>
+                        <v-flex xs12 mx-4>
+                        <v-dialog
+                            persistent
+                            v-model="data_evento_dialog"
+                            lazy
+                            full-width
+                            width="290px"
+                            :return-value.sync="date"
+                        >
+                            <v-text-field
+                            slot="activator"
+                            label="Data de Evento"
+                            v-model="date"
+                            prepend-icon="event"
+                            :rules="form_base_rule"
+                            readonly
+                            ></v-text-field>
+                            <v-card class="text-xs-right">
+                            <v-date-picker v-model="date" scrollable></v-date-picker>
+                                <v-spacer></v-spacer>
+                                <v-btn color="primary"  @click="data_evento_dialog = false">Cancel</v-btn>
+                                <v-btn color="primary" class="text-xs-right" @click="data_evento_dialog = false">OK</v-btn>
+                            
+                            </v-card>
+                        </v-dialog>
+                        </v-flex>
+                    </v-layout>
+                    <v-flex xs12 class="text-xs-right">
+                        <v-btn @click="pdf_checkbox = false;">Cancelar</v-btn>
+                        <v-btn class="primary" @click="generatePDF()">Ok</v-btn>
+                    </v-flex>
+                    </v-form> 
+                </v-card>
+            </v-dialog>
+
+
         </v-stepper-content>
         </v-stepper-items>
       </v-stepper>
@@ -229,13 +395,17 @@
 
 
 <script>
-import { calcularAguas } from "@/utils/tendas/aguas.js";
+import { calcularAguas, calcularTriangulo, calcularCobertura, calcularLaterais, UpdateRepeatedValues } from "@/utils/tendas/aguas.js";
+import jsPDF from 'jspdf'
+require('jspdf-autotable');
 export default {
   data() {
     return {
       tamanho_tendas: [
             ["5", "7.5", "10", "12.5", "15", "17.5", "20"]
         ],
+        altura_do_pe: [ "3", "4" ],
+        search: '',
         tenda: {
             tipo: "",
             largura: "",
@@ -243,15 +413,22 @@ export default {
             altura_do_pe: "",
             fixacao: "",
             tipo_topo: "",
-            cobertura: "",
-            laterais: "",
-            lateral_opaco: "",
-            lateral_transparante: "",
-            lateral_blackout: "",
-            triangulo_opaco: "",
-            triangulo_transparente: "",
-            triangulo_blackout: "",
-            triangulo: ""
+            cobertura_opaco: 0,
+            cobertura_transparente: 0,
+            cobertura_blackout: 0,
+            cobertura_especial: null,
+            lateral_opaco: 0,
+            lateral_transparente: 0,
+            lateral_blackout: 0,
+            
+            lateral_opaco_diferente: 0,
+            lateral_transparante_diferente: 0,
+            lateral_blackout_diferente: 0,
+
+            lateral_especial_1: null,
+            lateral_especial_2: null,
+            triangulo_1: null,
+            triangulo_2: null,
         },
         header: [
             {
@@ -268,10 +445,6 @@ export default {
         form_base_rule: [
             v => !!v || "Introduzir Valor"
         ],
-        lateral_rules: [
-            
-        ],
-
         comprimentoRules: [
             v => !!v || "Introduzir Comprimento",
             v => (v >= 1 && v % 1.25 === 0) || "Comprimento (multiplo 1.25)"
@@ -282,6 +455,7 @@ export default {
         form_estrutura: false,
         cabecalho_form: false,
         cabecalho_dialog: false,
+        lateral_diferente: 0,
         local_montagem: "",
         dia_evento: "",
         quantidade_tendas: "",
@@ -289,6 +463,11 @@ export default {
         dialog_slider: false,
         mySlider: 0,
         table_edit_dialog: false,
+        show_cobertura: false,
+        max_cobertura: 0,
+        max_laterais: 0,
+        modulo_especial: 0,
+        max_laterais_triangulo: 0,
 
         editedIndex: -1,
         editedItem: {
@@ -305,7 +484,15 @@ export default {
         snackbar_x: null,
         snackbar_mode: '',
         snackbar_timeout: null,
-        snackbar_text: ''
+        snackbar_text: '',
+        adicionar_info_dialog: false,
+        local_montagem: '',
+        adicionar_info_dialog: false,
+        info_form: false,
+        data_evento: null,
+        data_evento_dialog: false,
+        date: null,
+
     };
   },
   methods: {
@@ -338,24 +525,133 @@ export default {
     },
 
     mockAguas: function() {
-        var tenda= {
-            tipo: "",
-            largura: 10,
-            comprimento: 15,
-            altura_do_pe: 4,
-            fixacao: "Estacas",
-            tipo_topo: "",
-            cobertura: "",
-            laterais: "",
-            lateral_opaco: "",
-            lateral_transparante: "",
-            lateral_blackout: "",
-            triangulo_opaco: "",
-            triangulo_transparente: "",
-            triangulo_blackout: "",
-            triangulo: ""
-        };
-        let resposta = calcularAguas(tenda);
+        this.max_cobertura = 0;
+        let modulos_5 = Math.floor(this.tenda.comprimento/5);
+        let modulo_especial = this.tenda.comprimento%5;
+
+        //console.log("Especial -" + modulo_especial);
+        if(modulo_especial != 0)
+        {
+            //console.log("Especial");
+            this.show_cobertura = true;
+            //this.max_cobertura++;
+            this.modulo_especial = modulo_especial;
+        }
+
+        let n_triangulo = 0;
+
+        n_triangulo = Math.floor(this.tenda.largura/5)*2;
+        
+        if(this.tenda.largura%5)
+            n_triangulo -= 2;
+        if(this.tenda.largura == 12.5)
+            n_triangulo =Math.floor(this.tenda.largura/5)*2;
+        this.max_laterais = modulos_5*2 + n_triangulo;
+        this.max_cobertura += modulos_5;
+        this.max_laterais_triangulo = 4;
+        
+        if(this.tenda.largura == 12.5)
+            this.max_laterais_triangulo = 2;
+        if(this.tenda.largura == 7.5  || this.tenda.largura == 17.5)
+            this.lateral_diferente = 3.75;
+        else if(this.tenda.largura == 12.5)
+            this.lateral_diferente = 2.5;
+        let resposta = calcularAguas(this.tenda);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+        this.goToNextSlider();
+
+    },
+    calcularCobertura: function() {
+    
+        let resposta = calcularCobertura(this.tenda);
+        console.log(resposta);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+        this.goToNextSlider();
+    },
+    calcularTriangulo: function() {
+        console.log(this.tenda.triangulo_1);
+        console.log(this.tenda.triangulo_2);
+        let resposta = calcularTriangulo(this.tenda);
+        console.log(resposta);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+
+        let new_items = UpdateRepeatedValues(this.items);
+        this.items = [];
+        new_items.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+
+        
+
+
+        this.goToNextSlider();
+    },
+    calcularLateral: function () {
+        let resposta = calcularLaterais(this.tenda);
+        console.log(resposta);
+        resposta.forEach(element => {
+            this.items.push({
+                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                title: element.title,
+                qt: element.qt
+            });
+        });
+
+
+        this.goToNextSlider();
+    },
+    goToNextSlider: function() {
+        this.mySlider++;
+    },
+    generatePDF() {
+        if(this.$refs.info_form.validate())
+        {
+            let columns = [];
+            this.header.forEach(element => {
+            columns.push(element.text);
+            });
+
+            let rows = [];
+            this.items.forEach(element => {
+            rows.push([ element.title, element.qt  ]);
+            });
+            var doc = new jsPDF('p', 'pt');
+
+            var currentDate = new Date();
+            doc.setFontSize(24);
+            doc.text(250, 40, "Tenda 2 Águas");
+            //doc.addImage(imgData, 'JPEG', 350, 20, 180, 160);
+            doc.setFontSize(14);
+            doc.text(100, 80, "Data: "+ this.date);
+            
+            doc.text(100, 120, "Dimensões - "+ this.tenda.largura + "x"+this.tenda.comprimento );
+
+            doc.text(100, 160, "Local: "+this.local_montagem);
+            doc.autoTable(columns, rows, { startY: 200});
+            doc.save(currentDate + " - " + this.largura +"x"+this.comprimento);
+        }
     }
   }
 }
