@@ -702,12 +702,12 @@ function calcularModulosIglo(tenda)
                 );
             }            
         }
-        if(tenda.largura == 10)
+        /*if(tenda.largura == 10)
         {
             modulos.push(
                 { qt: 6 * modulos_5, title: 'Tranca Fina 5m Iglo*'+tenda.largura, codigo:''}
             );
-        }
+        }*/
         if(resto)
         {
             modulos.push(
