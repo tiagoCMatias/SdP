@@ -175,7 +175,7 @@ export function TrianguloIglo(tenda)
 export function UpdateRepeatedValues(componentes)
 {
     let repetidos;
-    console.log(componentes);
+    console.log(componentes.length);
     for(var i = 0; i < componentes.length; i++)
     {
         for(var j = 0 ; j < componentes.length; j++)
@@ -299,8 +299,8 @@ function calcularTopoDireitoIglo(tenda)
         );
     }
 
-    //console.log("topoDireito");
-    //console.log(topo);
+    console.log("topoDireito");
+    console.log(topo);
 
     return topo;
 }
@@ -373,9 +373,6 @@ function calcularMeiaAsna(tenda, quantidade)
             { qt: 1 * quantidade, title: 'Chaveta Meia-Lua ', codigo: ''}
         );
     }
-
-    //console.log("MeiaAsna");
-    //console.log(meia_asna);
 
     return meia_asna;
 }
@@ -529,6 +526,26 @@ export function calcularTopoIglo(tenda)
 {
     let topo_1 = [];
     let topo_2 = [];
+
+    let topo_direito = [];
+
+    let topo_redondo = [];
+
+    if(tenda.tipo_topo_1 != tenda.tipo_topo_2)
+    {
+        topo_direito = calcularTopoDireitoIglo(tenda);
+        topo_redondo = calcularTopoRedondo(tenda);
+    }
+    else if(tenda.tipo_topo_1 == "Direito" || tenda.tipo_topo_1 == "direito")
+    {
+        topo_direito = calcularTopoDireitoIglo(tenda);
+    }
+    else {
+        topo_redondo = calcularTopoRedondo(tenda);
+        topo_redondo = topo_redondo.concat(calcularTopoRedondo(tenda));
+    }
+
+    /*
     if(tenda.tipo_topo_1 == "Direito" || tenda.tipo_topo_1 == "direito")
         topo_1 = calcularTopoDireitoIglo(tenda);
     else
@@ -538,12 +555,15 @@ export function calcularTopoIglo(tenda)
         topo_2 = calcularTopoDireitoIglo(tenda);
     else
         topo_2 = calcularTopoRedondo(tenda);
-
+*/
     let comp = [];
 
-    comp = comp.concat(topo_1);
-    comp = comp.concat(topo_2);
+    if(topo_direito.length > 0)
+        comp = comp.concat(topo_direito);
+    if(topo_redondo.length >0)
+        comp = comp.concat(topo_redondo);
 
+    console.log("Comp");
     console.log(comp);
 
     return UpdateRepeatedValues(comp);

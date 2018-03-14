@@ -741,6 +741,7 @@ export default {
         else
         {
             let resposta = calcularTopoIglo(this.tenda);
+            console.log("Update");
             resposta.forEach(element => {
                 this.items.push({
                     codigo: "1.1." + this.tenda.largura + "." + element.codigo,
