@@ -1,5 +1,5 @@
 <template>
-  <v-container class="text-sm-center" grid-list-xs>
+  <v-container class="text-xs-center" grid-list-xs>
       <v-layout row wrap>
           <v-flex xs12 sm12>
             <v-btn large class="primary" router-link to='/estrado'>Calcular Estrado</v-btn>
