@@ -23,7 +23,17 @@
       <v-toolbar-title >
         <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
       </v-toolbar-title>
-      <v-spacer></v-spacer>   
+      <v-spacer></v-spacer> 
+      <v-menu offset-y v-if="$route.path!='/'">
+      <v-btn icon slot="activator" dark >
+        <v-icon>more_vert</v-icon>
+      </v-btn>
+      <v-list>
+        <v-list-tile v-for="item in menuitems" :key="item.title" router :to="item.link">
+          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+        </v-list-tile>
+      </v-list>
+    </v-menu>
     </v-toolbar>
     <main>
       <router-view></router-view>
@@ -35,16 +45,27 @@
 export default {
   data () {
     return {
-      title: 'Sitio do Passal'
+      title: 'Sitio do Passal',
+      menuitems: [
+        { title: "Menu" , link: '/menu'},
+        { title: "Logout" , link: '/'}
+      ]
     }
   },
-  created () {
+  created () {  
     if(localStorage.getItem("userName") != 'admin')
     {
       this.$router.push('/');
     }
+    this.accessMenu();
   },
   methods: {
+    redirect: function() {
+      
+    },
+    accessMenu: function (){
+       return this.$route.name === 'login'
+    }
     
   },
   name: 'App'

@@ -216,17 +216,25 @@ export function calcularBola(tenda)
 
 function calcularTopoDireitoIglo(tenda)
 {
+    
     let topo = [];
     let resto = tenda.comprimento%5;
     let modulos_5 = Math.floor(tenda.comprimento/5);
 
     let n_prumo = (tenda.largura/5)-1;
 
+    let quantidade = 1;
+    if(tenda.tipo_topo_1 == tenda.tipo_topo_2)
+        quantidade = 2;
+    else    
+        quantidade = 1;
+
+    
     topo.push(
-        { qt: 2+n_prumo, title: 'Roquete Esticar', codigo:''},
-        { qt: 1, title: 'Tranca Corno Esquerda Topo Direito Iglo*'+tenda.largura, codigo:''},
-        { qt: 1, title: 'Tranca Corno Direita Topo Direito Iglo*'+tenda.largura, codigo:''},
-        { qt: (tenda.largura/5), title: 'Ferro Esticar Lateral 5m Iglo*'+tenda.largura, codigo:''}
+        { qt: (2+n_prumo)*quantidade, title: 'Roquete Esticar', codigo:''},
+        { qt: 1 * quantidade, title: 'Tranca Corno Esquerda Topo Direito Iglo*'+tenda.largura, codigo:''},
+        { qt: 1 * quantidade, title: 'Tranca Corno Direita Topo Direito Iglo*'+tenda.largura, codigo:''},
+        { qt: (tenda.largura/5) * quantidade, title: 'Ferro Esticar Lateral 5m Iglo*'+tenda.largura, codigo:''}
 
     );
     if(tenda.triangulo_1 != null)
@@ -244,65 +252,67 @@ function calcularTopoDireitoIglo(tenda)
     if(tenda.largura >= 15)
     {
         topo.push(
-            { qt: 1*((tenda.largura/5)-2), title: 'Tranca Corno Central Topo Direito Iglo*'+tenda.largura, codigo:''}
+            { qt: quantidade*((tenda.largura/5)-2), title: 'Tranca Corno Central Topo Direito Iglo*'+tenda.largura, codigo:''}
         );
     }
     if(tenda.largura > 10)
     {
         topo.push(
-            { qt: n_prumo+2, title: 'Fita Esticar Gancho Duplo', codigo:''}
+            { qt: (n_prumo+2)*quantidade, title: 'Fita Esticar Gancho Duplo', codigo:''}
         );
     }
     if(n_prumo > 2)
     {
         topo.push(
-            { qt: n_prumo, title: 'Prumo Topo Direito 15', codigo:''},
-            { qt: n_prumo, title: 'Gulpilha R3.5', codigo:''},
-            { qt: 2, title: 'Aumento Prumo Topo Direito Lateral Iglo*'+tenda.largura, codigo:''},
-            { qt: n_prumo-2, title: 'Aumento Prumo Topo Direito Central Iglo*'+tenda.largura, codigo:''},
+            { qt: n_prumo * quantidade, title: 'Prumo Topo Direito 15', codigo:''},
+            { qt: n_prumo * quantidade, title: 'Gulpilha R3.5', codigo:''},
+            { qt: 2 * quantidade, title: 'Aumento Prumo Topo Direito Lateral Iglo*'+tenda.largura, codigo:''},
+            { qt: (n_prumo-2) * quantidade, title: 'Aumento Prumo Topo Direito Central Iglo*'+tenda.largura, codigo:''},
         );
     }
     else{
         topo.push(
-            { qt: n_prumo, title: 'Prumo Topo Direito Iglo*'+tenda.largura, codigo:''},
-            { qt: n_prumo, title: 'Gulpilha R3.5', codigo:''}
+            { qt: n_prumo * quantidade, title: 'Prumo Topo Direito Iglo*'+tenda.largura, codigo:''},
+            { qt: n_prumo * quantidade, title: 'Gulpilha R3.5', codigo:''}
         );
     }
 
     if(tenda.largura == 10)
     {
         topo.push(
-            { qt: 2, title: 'Ferro Esticar Triangulo Iglo*'+tenda.largura, codigo:''},
-            { qt: 2, title: 'Entrega Canto Regua Aluminio Iglo*'+tenda.largura, codigo:''},
-            { qt: 1, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
-            { qt: 1, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
-            { qt: 3, title: 'Fita Esticar Iglo*'+tenda.largura, codigo:''}
+            { qt: 2 * quantidade, title: 'Ferro Esticar Triangulo Iglo*'+tenda.largura, codigo:''},
+            { qt: 2 * quantidade, title: 'Entrega Canto Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 1 * quantidade, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 1 * quantidade, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
+            { qt: 3 * quantidade, title: 'Fita Esticar Iglo*'+tenda.largura, codigo:''}
         );
     }
 
     if(tenda.fixacao == "Estacas" || tenda.fixacao == "Pesos" )
     {
         topo.push(
-            { qt: 1 * n_prumo, title: 'Sapata Chão Iglo*'+tenda.largura, codigo: ''},
-            { qt: 1 * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
-            { qt: (2 * n_prumo)+2, title: 'Parafuso Esticar Lateral', codigo: ''},
-            { qt: 2 * n_prumo, title: (tenda.fixacao == "Estacas")? "Estacas": "Pesos", codigo: ''}
+            { qt: quantidade * n_prumo, title: 'Sapata Chão Iglo*'+tenda.largura, codigo: ''},
+            { qt: quantidade * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
+            { qt: ((2 * n_prumo)+2)*quantidade, title: 'Parafuso Esticar Lateral', codigo: ''},
+            { qt: (2 * n_prumo)*quantidade, title: (tenda.fixacao == "Estacas")? "Estacas": "Pesos", codigo: ''}
         );
     }
     else if(tenda.fixacao == "Estrado")
     {
         topo.push(
-            { qt: 1 * n_prumo, title: 'Sapata Estrado Topo Direito Iglo*'+tenda.largura, codigo: ''},
-            { qt: 1 * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
-            { qt: (2 * n_prumo)+2, title: 'Parafuso Esticar Lateral', codigo: ''},
-            { qt: 1 * n_prumo, title: 'Chaveta Meia-Lua ', codigo: ''}
+            { qt: quantidade * n_prumo, title: 'Sapata Estrado Topo Direito Iglo*'+tenda.largura, codigo: ''},
+            { qt: quantidade * n_prumo, title: 'Chaveta Sapata Pé Iglo*'+tenda.largura, codigo: ''},
+            { qt: ((2 * n_prumo)+2)*quantidade, title: 'Parafuso Esticar Lateral', codigo: ''},
+            { qt: quantidade * n_prumo, title: 'Chaveta Meia-Lua ', codigo: ''}
         );
     }
 
     console.log("topoDireito");
     console.log(topo);
+    console.log("quant: ");
+    console.log(quantidade);
 
-    return topo;
+    return UpdateRepeatedValues(topo);
 }
 
 
@@ -536,7 +546,7 @@ export function calcularTopoIglo(tenda)
         topo_direito = calcularTopoDireitoIglo(tenda);
         topo_redondo = calcularTopoRedondo(tenda);
     }
-    else if(tenda.tipo_topo_1 == "Direito" || tenda.tipo_topo_1 == "direito")
+    else if(tenda.tipo_topo_1 == "Direito" || tenda.tipo_topo_2 == "Direito")
     {
         topo_direito = calcularTopoDireitoIglo(tenda);
     }

@@ -354,11 +354,11 @@
             <v-card>
                 <v-card-text>
                     <v-container>
-                    <v-layout>
-                        <v-flex xs3 mx-2>
+                    <v-layout row wrap class="text-xs-center">
+                        <v-flex xs12 sm2 mx-3>
                             <v-btn color="primary" dark slot="activator">New Item</v-btn>
                         </v-flex>
-                        <v-flex xs6 mx-2>
+                        <v-flex xs12 sm6 mx-2>
                             <v-text-field
                                 append-icon="search"
                                 label="Search"
@@ -367,7 +367,7 @@
                                 v-model="search"
                             ></v-text-field>
                         </v-flex>
-                        <v-flex xs3 mx-2 class="text-xs-right">
+                        <v-flex xs12 sm2 mx-1 >
                             <v-btn color="primary" dark @click.native="adicionar_info_dialog = true" class="mb-2">PDF</v-btn>
                         </v-flex>
                     </v-layout>
@@ -473,7 +473,7 @@
                         </v-flex>
                     </v-layout>
                     <v-flex xs12 class="text-xs-right">
-                        <v-btn @click="pdf_checkbox = false;">Cancelar</v-btn>
+                        <v-btn @click="adicionar_info_dialog = false">Cancelar</v-btn>
                         <v-btn class="primary" @click="generatePDF()">Ok</v-btn>
                     </v-flex>
                     </v-form> 
@@ -539,7 +539,6 @@ export default {
         ],
         adicionar_info_dialog: false,
         local_montagem: '',
-        adicionar_info_dialog: false,
         info_form: false,
         data_evento: null,
         data_evento_dialog: false,

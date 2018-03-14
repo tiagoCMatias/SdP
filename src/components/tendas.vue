@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid class="text-sm-center" >
+  <v-container fluid class="text-xs-center" >
     <v-layout row wrap>
         <v-flex xs12 sm4 class="text-sm-center"  my-2
             v-for="itens in menuItens" :key="itens.select_index">
