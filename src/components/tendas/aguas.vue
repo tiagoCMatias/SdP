@@ -88,36 +88,61 @@
             </v-flex>
         </v-layout>
         <v-btn color="primary" @click.native="mockAguas()">Continue</v-btn>
-        <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn> 
+        <!--<v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn> -->
         </v-form>
         </v-stepper-content>
         <v-stepper-content step="2">
             <v-card>
             <v-card-text>
             <v-container>
-            <v-layout row wrap>
-                <v-flex xs12 text-xs-center>
-                    <v-subheader class="display-1" >Cobertura - {{ max_cobertura }}</v-subheader>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider  :max="max_cobertura - tenda.cobertura_blackout - tenda.cobertura_transparente"  v-model="tenda.cobertura_opaco"></v-slider>
-                </v-flex>
-                <v-flex xs3>
-                    <v-text-field readonly label="Opaco" v-model="tenda.cobertura_opaco" type="number"></v-text-field>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider  :max="max_cobertura - tenda.cobertura_blackout - tenda.cobertura_opaco"  v-model="tenda.cobertura_transparente"></v-slider>
-                </v-flex>
-                <v-flex xs3>
-                    <v-text-field readonly label="Transparente" v-model="tenda.cobertura_transparente" type="number"></v-text-field>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider  :max="max_cobertura - tenda.cobertura_transparente - tenda.cobertura_opaco"   v-model="tenda.cobertura_blackout"></v-slider>
-                </v-flex>
-                <v-flex xs3 >
-                    <v-text-field readonly label="Blackout" v-model="tenda.cobertura_blackout" type="number"></v-text-field>
-                </v-flex>
-            </v-layout>
+                <v-form>
+                <v-layout row wrap>
+                    <v-flex xs12 text-xs-center>
+                        <v-subheader class="display-2" >Cobertura - {{ max_cobertura }}</v-subheader>
+                    </v-flex>
+                    <v-flex xs6 sm9>
+                        <v-text-field label="Opaco" :rules="maxCobertura" readonly v-model="tenda.cobertura_opaco" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_opaco = tenda.cobertura_opaco+1" color="dark" fab small>
+                            <v-icon >add</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_opaco > 0 ? tenda.cobertura_opaco-- : tenda.cobertura_opaco = 0" color="dark" fab small>
+                            <v-icon >remove</v-icon>
+                        </v-btn>
+                    </v-flex>
+
+                    <v-flex xs6 sm9>
+                        <v-text-field label="Transparente" readonly :rules="maxCobertura" v-model="tenda.cobertura_transparente" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_transparente = tenda.cobertura_transparente+1" color="dark" fab small >
+                            <v-icon >add</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_transparente > 0 ? tenda.cobertura_transparente-- : tenda.cobertura_transparente = 0" color="dark" fab small >
+                            <v-icon >remove</v-icon>
+                        </v-btn>
+                    </v-flex>
+
+                    <v-flex xs6 sm9>
+                        <v-text-field label="Blackout" readonly :rules="maxCobertura" v-model="tenda.cobertura_blackout" type="number"></v-text-field>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_blackout = tenda.cobertura_blackout+1" color="dark" fab small >
+                            <v-icon >add</v-icon>
+                        </v-btn>
+                    </v-flex>
+                    <v-flex xs3 sm1 text-xs-right>
+                        <v-btn @click.native="tenda.cobertura_blackout > 0 ? tenda.cobertura_blackout-- : tenda.cobertura_blackout = 0" color="dark" fab small >
+                            <v-icon >remove</v-icon>
+                        </v-btn>
+                    </v-flex>
+                </v-layout>
+            </v-form>
             <v-layout row wrap v-if="show_cobertura">
                 <v-flex xs3 hidden-xs-only>
                     <v-subheader>Cobertura - {{ modulo_especial }}</v-subheader>
@@ -135,59 +160,107 @@
                 </v-flex>
             </v-layout>
             <v-btn color="primary" @click.native="calcularCobertura()">Continue</v-btn>
-            <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>
+            <!--<v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn> -->
             </v-container></v-card-text></v-card>
         </v-stepper-content>
         <v-stepper-content step="3">
             <v-card >
             <v-card-text>
             <v-container fluid grid-list-md>
+                <v-form>
                 <v-layout row wrap>
-                <v-flex xs12 text-xs-center>
-                    <v-subheader class="display-1">Laterais 5m - {{ max_laterais }}</v-subheader>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider label="Opaco" :max="max_laterais - tenda.lateral_transparente - tenda.lateral_blackout"  v-model="tenda.lateral_opaco"></v-slider>
-                </v-flex>
-                <v-flex xs3>
-                    <v-text-field readonly v-model="tenda.lateral_opaco" type="number"></v-text-field>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider label="Transparente" :max="max_laterais - tenda.lateral_opaco - tenda.lateral_blackout"  v-model="tenda.lateral_transparente"></v-slider>
-                </v-flex>
-                <v-flex xs3>
-                    <v-text-field readonly v-model="tenda.lateral_transparente" type="number"></v-text-field>
-                </v-flex>
-                <v-flex xs9>
-                    <v-slider label="Blackout" :max="max_laterais - tenda.lateral_transparente - tenda.lateral_opaco" v-model="tenda.lateral_blackout"></v-slider>
-                </v-flex>
-                <v-flex xs3 >
-                    <v-text-field readonly v-model="tenda.lateral_blackout" type="number"></v-text-field>
-                </v-flex>
+                    <v-flex xs12 text-xs-center>
+                        <v-subheader class="display-1" >Laterais - {{ max_laterais }}</v-subheader>
+                    </v-flex>
+                        <v-flex xs6 sm9>
+                            <v-text-field label="Opaco" readonly v-model="tenda.lateral_opaco" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_opaco = tenda.lateral_opaco+1" color="dark" fab small>
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_opaco > 0 ? tenda.lateral_opaco-- : tenda.lateral_opaco = 0" color="dark" fab small>
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
+
+                        <v-flex xs6 sm9>
+                            <v-text-field label="Transparente" readonly v-model="tenda.lateral_transparente" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_transparente = tenda.lateral_transparente+1" color="dark" fab small >
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_transparente > 0 ? tenda.lateral_transparente-- : tenda.lateral_transparente = 0" color="dark" fab small >
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
+
+                        <v-flex xs6 sm9>
+                            <v-text-field label="Blackout" readonly v-model="tenda.lateral_blackout" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_blackout = tenda.lateral_blackout+1" color="dark" fab small >
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_blackout > 0 ? tenda.lateral_blackout-- : tenda.lateral_blackout = 0" color="dark" fab small >
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
                 </v-layout>
+                </v-form>
 
                 <v-layout row wrap v-if="tenda.largura==7.5 || tenda.largura==17.5 || tenda.largura==12.5">
                     <v-flex xs12 text-xs-center>
                         <v-subheader class="display-1">Laterais {{ lateral_diferente }}m - {{ max_laterais_triangulo }}</v-subheader>
                     </v-flex>
-                    <v-flex xs9>
-                        <v-slider label="Opaco" :max="max_laterais_triangulo - tenda.lateral_transparante_diferente - tenda.lateral_blackout_diferente"  v-model="tenda.lateral_opaco_diferente"></v-slider>
-                    </v-flex>
-                    <v-flex xs3>
-                        <v-text-field readonly v-model="tenda.lateral_opaco_diferente" type="number"></v-text-field>
-                    </v-flex>
-                    <v-flex xs9>
-                        <v-slider label="Transparente" :max="max_laterais_triangulo - tenda.lateral_opaco_diferente - tenda.lateral_blackout_diferente"  v-model="tenda.lateral_transparante_diferente"></v-slider>
-                    </v-flex>
-                    <v-flex xs3>
-                        <v-text-field readonly v-model="tenda.lateral_transparante_diferente" type="number"></v-text-field>
-                    </v-flex>
-                    <v-flex xs9>
-                        <v-slider label="Blackout" :max="max_laterais_triangulo - tenda.lateral_transparante_diferente - tenda.lateral_opaco_diferente" v-model="tenda.lateral_blackout_diferente"></v-slider>
-                    </v-flex>
-                    <v-flex xs3 >
-                        <v-text-field readonly v-model="tenda.lateral_blackout_diferente" type="number"></v-text-field>
-                    </v-flex>
+                    <v-flex xs6 sm9>
+                            <v-text-field label="Opaco" readonly v-model="tenda.lateral_opaco_diferente" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_opaco_diferente = tenda.lateral_opaco_diferente+1" color="dark" fab small>
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_opaco_diferente > 0 ? tenda.lateral_opaco_diferente-- : tenda.lateral_opaco_diferente = 0" color="dark" fab small>
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
+
+                        <v-flex xs6 sm9>
+                            <v-text-field label="Transparente" readonly v-model="tenda.lateral_transparante_diferente" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_transparante_diferente = tenda.lateral_transparante_diferente+1" color="dark" fab small >
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_transparante_diferente > 0 ? tenda.lateral_transparante_diferente-- : tenda.lateral_transparante_diferente = 0" color="dark" fab small >
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
+
+                        <v-flex xs6 sm9>
+                            <v-text-field label="Blackout" readonly v-model="tenda.lateral_blackout_diferente" type="number"></v-text-field>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_blackout_diferente = tenda.lateral_blackout_diferente+1" color="dark" fab small >
+                                <v-icon >add</v-icon>
+                            </v-btn>
+                        </v-flex>
+                        <v-flex xs3 sm1 text-xs-right>
+                            <v-btn @click.native="tenda.lateral_blackout_diferente > 0 ? tenda.lateral_blackout_diferente-- : tenda.lateral_blackout_diferente = 0" color="dark" fab small >
+                                <v-icon >remove</v-icon>
+                            </v-btn>
+                        </v-flex>
                 </v-layout>
 
                 <v-layout row wrap v-if="show_cobertura">
@@ -221,7 +294,7 @@
             </v-card-text>
             </v-card>
             <v-btn color="primary" @click.native="calcularLateral()">Continue</v-btn>
-            <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
+            <!--<v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn> -->
         </v-stepper-content>
        <v-stepper-content step="4">
           <v-card >
@@ -258,27 +331,33 @@
           </v-card-text>
           </v-card>
           <v-btn color="primary" @click.native="calcularTriangulo()">Continue</v-btn>
-          <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
+        <!--<v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn> -->
         </v-stepper-content>
 
         <v-stepper-content step="5">
-            <v-layout row wrap class="text-xs-center">
-                <v-flex xs12 sm2 mx-3>
-                    <v-btn color="primary" dark slot="activator">New Item</v-btn>
-                </v-flex>
-                <v-flex xs12 sm6 mx-2>
-                    <v-text-field
-                        append-icon="search"
-                        label="Search"
-                        single-line
-                        hide-details
-                        v-model="search"
-                    ></v-text-field>
-                </v-flex>
-                <v-flex xs12 sm2 mx-1 >
-                    <v-btn color="primary" dark @click.native="adicionar_info_dialog = true" class="mb-2">PDF</v-btn>
-                </v-flex>
-            </v-layout>
+            <v-card>
+                <v-card-text>
+                    <v-container>
+                    <v-layout row wrap class="text-xs-center">
+                        <v-flex xs12 sm2 mx-3>
+                            <v-btn color="primary" dark slot="activator">New Item</v-btn>
+                        </v-flex>
+                        <v-flex xs12 sm6 mx-2>
+                            <v-text-field
+                                append-icon="search"
+                                label="Search"
+                                single-line
+                                hide-details
+                                v-model="search"
+                            ></v-text-field>
+                        </v-flex>
+                        <v-flex xs12 sm2 mx-1 >
+                            <v-btn color="primary" dark @click.native="adicionar_info_dialog = true" class="mb-2">PDF</v-btn>
+                        </v-flex>
+                    </v-layout>
+                    </v-container>
+                </v-card-text>
+            </v-card>
             <v-dialog v-model="table_edit_dialog" max-width="500px">
             <v-card>
                 <v-card-title>
@@ -449,12 +528,19 @@ export default {
             v => !!v || "Introduzir Comprimento",
             v => (v >= 1 && v % 1.25 === 0) || "Comprimento (multiplo 1.25)"
         ],
+        maxCobertura: [
+          v => this.tenda.cobertura_opaco+this.tenda.cobertura_transparente+this.tenda.cobertura_blackout <= this.max_cobertura || "Demasiadas Coberturas"
+        ],
+        maxLaterais: [
+            v => this.tenda.lateral_opaco+this.tenda.lateral_transparente+this.tenda.lateral_blackout <= this.max_laterais || "Demasiados Laterais"
+        ],
         tipo_fixacao: ["Estacas", "Pesos", "Estrado"],
         tipo_de_telas: ["Transparente", "Blackout", "Opaco"],
         dialog_tendas: false,
         form_estrutura: false,
         cabecalho_form: false,
         cabecalho_dialog: false,
+        maxCobertura: 0,
         lateral_diferente: 0,
         local_montagem: "",
         dia_evento: "",

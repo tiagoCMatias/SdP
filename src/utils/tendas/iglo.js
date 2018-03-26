@@ -284,7 +284,8 @@ function calcularTopoDireitoIglo(tenda)
             { qt: 2 * quantidade, title: 'Entrega Canto Regua Aluminio Iglo*'+tenda.largura, codigo:''},
             { qt: 1 * quantidade, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
             { qt: 1 * quantidade, title: 'Entrega Normal Regua Aluminio Iglo*'+tenda.largura, codigo:''},
-            { qt: 3 * quantidade, title: 'Fita Esticar Iglo*'+tenda.largura, codigo:''}
+            { qt: 3 * quantidade, title: 'Fita Esticar Iglo*'+tenda.largura, codigo:''},
+            { qt: 1 * quantidade, title: 'União Prumo Viga Iglo*'+tenda.largura, codigo:''}
         );
     }
 
