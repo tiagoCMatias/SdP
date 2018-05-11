@@ -21,7 +21,7 @@
                 <v-subheader>Quantidade</v-subheader>
             </v-flex>
             <v-flex mr-5>
-            <v-text-field box 
+            <v-text-field box
                 v-model="quantidade_tendas"
                 required></v-text-field>
             </v-flex>
@@ -47,12 +47,12 @@
                 <v-subheader>Comprimento</v-subheader>
             </v-flex>
             <v-flex mr-2>
-            <v-text-field box 
+            <v-text-field box
                 v-model="tenda.comprimento"
                 :rules="comprimentoRules"
                 required></v-text-field>
             </v-flex>
-        </v-layout>  
+        </v-layout>
         <v-layout row >
             <v-flex xs3 hidden-xs-only>
                 <v-subheader>Altura do Pé</v-subheader>
@@ -70,7 +70,7 @@
                     ></v-select>
                 </v-flex>
             </v-flex>
-        </v-layout>              
+        </v-layout>
         <v-layout row>
             <v-flex xs3 hidden-xs-only>
                 <v-subheader>Fixação</v-subheader>
@@ -385,8 +385,6 @@
                 </v-card-actions>
             </v-card>
             </v-dialog>
-
-
             <v-data-table
                 v-bind:headers="header"
                 :items="items"
@@ -408,7 +406,7 @@
                 </td>
                 </template>
             </v-data-table>
-            
+
             <v-btn color="primary" @click.native="mySlider = 1">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn>
 
@@ -417,7 +415,7 @@
                 <v-card>
                     <v-card-title>
                         Preencher Cabeçalho
-                    </v-card-title>   
+                    </v-card-title>
 
                     <v-form v-model="info_form" ref="info_form">
                     <v-layout row wrap>
@@ -451,7 +449,7 @@
                                 <v-spacer></v-spacer>
                                 <v-btn color="primary"  @click="data_evento_dialog = false">Cancel</v-btn>
                                 <v-btn color="primary" class="text-xs-right" @click="data_evento_dialog = false">OK</v-btn>
-                            
+
                             </v-card>
                         </v-dialog>
                         </v-flex>
@@ -460,7 +458,7 @@
                         <v-btn @click="adicionar_info_dialog = false;">Cancelar</v-btn>
                         <v-btn class="primary" @click="generatePDF()">Ok</v-btn>
                     </v-flex>
-                    </v-form> 
+                    </v-form>
                 </v-card>
             </v-dialog>
 
@@ -485,7 +483,8 @@ export default {
         ],
         altura_do_pe: [ "3", "4" ],
         search: '',
-        tenda: {
+        tenda:{},
+        estrutura: {
             tipo: "",
             largura: "",
             comprimento: "",
@@ -499,7 +498,7 @@ export default {
             lateral_opaco: 0,
             lateral_transparente: 0,
             lateral_blackout: 0,
-            
+
             lateral_opaco_diferente: 0,
             lateral_transparante_diferente: 0,
             lateral_blackout_diferente: 0,
@@ -529,10 +528,10 @@ export default {
             v => (v >= 1 && v % 1.25 === 0) || "Comprimento (multiplo 1.25)"
         ],
         maxCobertura: [
-          v => this.tenda.cobertura_opaco+this.tenda.cobertura_transparente+this.tenda.cobertura_blackout <= this.max_cobertura || "Demasiadas Coberturas"
+          v => this.estrutura.cobertura_opaco+this.estrutura.cobertura_transparente+this.estrutura.cobertura_blackout <= this.max_cobertura || "Demasiadas Coberturas"
         ],
         maxLaterais: [
-            v => this.tenda.lateral_opaco+this.tenda.lateral_transparente+this.tenda.lateral_blackout <= this.max_laterais || "Demasiados Laterais"
+            v => this.estrutura.lateral_opaco+this.estrutura.lateral_transparente+this.estrutura.lateral_blackout <= this.max_laterais || "Demasiados Laterais"
         ],
         tipo_fixacao: ["Estacas", "Pesos", "Estrado"],
         tipo_de_telas: ["Transparente", "Blackout", "Opaco"],
@@ -612,8 +611,8 @@ export default {
 
     mockAguas: function() {
         this.max_cobertura = 0;
-        let modulos_5 = Math.floor(this.tenda.comprimento/5);
-        let modulo_especial = this.tenda.comprimento%5;
+        let modulos_5 = Math.floor(this.estrutura.comprimento/5);
+        let modulo_especial = this.estrutura.comprimento%5;
 
         //console.log("Especial -" + modulo_especial);
         if(modulo_especial != 0)
@@ -626,26 +625,26 @@ export default {
 
         let n_triangulo = 0;
 
-        n_triangulo = Math.floor(this.tenda.largura/5)*2;
-        
-        if(this.tenda.largura%5)
+        n_triangulo = Math.floor(this.estrutura.largura/5)*2;
+
+        if(this.estrutura.largura%5)
             n_triangulo -= 2;
-        if(this.tenda.largura == 12.5)
-            n_triangulo =Math.floor(this.tenda.largura/5)*2;
+        if(this.estrutura.largura == 12.5)
+            n_triangulo =Math.floor(this.estrutura.largura/5)*2;
         this.max_laterais = modulos_5*2 + n_triangulo;
         this.max_cobertura += modulos_5;
         this.max_laterais_triangulo = 4;
-        
-        if(this.tenda.largura == 12.5)
+
+        if(this.estrutura.largura == 12.5)
             this.max_laterais_triangulo = 2;
-        if(this.tenda.largura == 7.5  || this.tenda.largura == 17.5)
+        if(this.estrutura.largura == 7.5  || this.estrutura.largura == 17.5)
             this.lateral_diferente = 3.75;
-        else if(this.tenda.largura == 12.5)
+        else if(this.estrutura.largura == 12.5)
             this.lateral_diferente = 2.5;
-        let resposta = calcularAguas(this.tenda);
+        let resposta = calcularAguas(this.estrutura);
         resposta.forEach(element => {
             this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
@@ -654,12 +653,12 @@ export default {
 
     },
     calcularCobertura: function() {
-    
-        let resposta = calcularCobertura(this.tenda);
+
+        let resposta = calcularCobertura(this.estrutura);
         console.log(resposta);
         resposta.forEach(element => {
             this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
@@ -667,13 +666,13 @@ export default {
         this.goToNextSlider();
     },
     calcularTriangulo: function() {
-        console.log(this.tenda.triangulo_1);
-        console.log(this.tenda.triangulo_2);
-        let resposta = calcularTriangulo(this.tenda);
+        console.log(this.estrutura.triangulo_1);
+        console.log(this.estrutura.triangulo_2);
+        let resposta = calcularTriangulo(this.estrutura);
         console.log(resposta);
         resposta.forEach(element => {
             this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
@@ -683,23 +682,23 @@ export default {
         this.items = [];
         new_items.forEach(element => {
             this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
         });
 
-        
+
 
 
         this.goToNextSlider();
     },
     calcularLateral: function () {
-        let resposta = calcularLaterais(this.tenda);
+        let resposta = calcularLaterais(this.estrutura);
         console.log(resposta);
         resposta.forEach(element => {
             this.items.push({
-                codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                 title: element.title,
                 qt: element.qt
             });
@@ -731,8 +730,8 @@ export default {
             //doc.addImage(imgData, 'JPEG', 350, 20, 180, 160);
             doc.setFontSize(14);
             doc.text(100, 80, "Data: "+ this.date);
-            
-            doc.text(100, 120, "Dimensões - "+ this.tenda.largura + "x"+this.tenda.comprimento );
+
+            doc.text(100, 120, "Dimensões - "+ this.estrutura.largura + "x"+this.estrutura.comprimento );
 
             doc.text(100, 160, "Local: "+this.local_montagem);
             doc.autoTable(columns, rows, { startY: 200});

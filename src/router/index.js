@@ -7,6 +7,10 @@ import MenuTendas from '@/components/tendas'
 import Aguas from '@/components/tendas/aguas'
 import Iglo from '@/components/tendas/iglo'
 import Conica from '@/components/tendas/conicas'
+import CenaDoMal from '@/components/tendas/iglo/iglo'
+import uConicas from '@/components/tendas/conicas/conica'
+import uAguas from '@/components/tendas/aguas/aguas'
+
 
 Vue.use(Router)
 
@@ -46,6 +50,21 @@ export default new Router({
       path: '/iglo',
       name: 'Iglo',
       component: Iglo
+    },
+    {
+      path: '/mal',
+      name: 'Mal',
+      component: CenaDoMal
+    },
+    {
+      path: '/uconica',
+      name: 'Conicas',
+      component: uConicas
+    },
+    {
+      path: '/uaguas',
+      name: 'aguas',
+      component: uAguas
     }
   ],
   mode: 'history'

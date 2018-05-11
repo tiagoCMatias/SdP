@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-card-text>
-            
+
     <v-stepper v-model="mySlider">
         <v-stepper-header>
             <v-stepper-step step="1" :complete="mySlider > 1">Estrutura</v-stepper-step>
@@ -20,7 +20,7 @@
                 <v-subheader>Quantidade</v-subheader>
             </v-flex>
             <v-flex mr-5>
-            <v-text-field box 
+            <v-text-field box
                 v-model="quantidade_tendas"
                 required></v-text-field>
             </v-flex>
@@ -40,7 +40,7 @@
                 required
                 ></v-select>
             </v-flex>
-        </v-layout>               
+        </v-layout>
         <v-layout row>
             <v-flex xs3 hidden-xs-only>
                 <v-subheader>Fixação</v-subheader>
@@ -58,7 +58,7 @@
             </v-flex>
         </v-layout>
         <v-btn color="primary" @click.native="estrutura_form()">Continue</v-btn>
-        <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn> 
+        <v-btn flat @click.native="dialog_slider = false">Cancel</v-btn>
         </v-form>
         </v-stepper-content>
         <v-stepper-content step="2">
@@ -76,7 +76,7 @@
                     required
                     ></v-select>
                 </v-flex>
-            </v-layout>                        
+            </v-layout>
             <v-btn color="primary" @click.native="cobertura_form()">Continue</v-btn>
             <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>
         </v-stepper-content>
@@ -111,7 +111,7 @@
             </v-card-text>
             </v-card>
             <v-btn color="primary" @click.native="laterais_form()">Continue</v-btn>
-            <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>                    
+            <v-btn flat @click.native="mySlider = mySlider -  1">Cancel</v-btn>
         </v-stepper-content>
         <v-stepper-content step="4">
             <v-dialog v-model="table_edit_dialog" max-width="500px">
@@ -162,7 +162,7 @@
                 </td>
                 </template>
               </v-data-table>
-              
+
               <v-btn color="primary" @click.native="mySlider = 1">Continue</v-btn>
               <v-btn flat @click.native="mySlider = mySlider - 1">Cancel</v-btn>
           </v-stepper-content>
@@ -178,7 +178,7 @@ import { calcularEstruturaConica, calcularCoberturaConica, calcularLateraisConic
 export default {
   data() {
     return {
-      tenda: {
+      estrutura: {
           tipo: "",
           largura: "",
           comprimento: "",
@@ -218,7 +218,7 @@ export default {
           v => v <= 4 || "Bad"
       ],
       lateral_rules: [
-          v => ( v.lateral_opaco + v.lateral_transparante + v.lateral_blackout ) <= 4 || "Quantidade errada" 
+          v => ( v.lateral_opaco + v.lateral_transparante + v.lateral_blackout ) <= 4 || "Quantidade errada"
       ],
 
       comprimentoRules: [
@@ -275,12 +275,12 @@ export default {
   methods: {
     laterais_form() {
       this.mySlider = 4;
-      let resposta = calcularLateraisConica(this.tenda);
+      let resposta = calcularLateraisConica(this.estrutura);
       console.log(resposta);
 
           resposta.forEach(element => {
               this.items.push({
-                  codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                  codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                   title: element.title,
                   qt: element.qt
               });
@@ -288,7 +288,7 @@ export default {
     },
     cobertura_form(){
         this.mySlider = 3;
-        let resposta = calcularCoberturaConica(this.tenda);
+        let resposta = calcularCoberturaConica(this.estrutura);
         console.log(resposta);
             this.items.push({
             codigo: "",
@@ -300,11 +300,11 @@ export default {
         if (this.$refs.form_estrutura.validate()) {
             this.items = [];
             this.mySlider = 2;
-            let resposta = calcularEstruturaConica(this.tenda);
+            let resposta = calcularEstruturaConica(this.estrutura);
             console.log(resposta);
             resposta.forEach(element => {
                 this.items.push({
-                    codigo: "1.1." + this.tenda.largura + "." + element.codigo,
+                    codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                     title: element.title,
                     qt: element.qt
                 });
