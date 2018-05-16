@@ -1,16 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Estrado from '@/components/estrado'
-import Login from '@/components/login'
-import MainMenu from '@/components/mainMenu'
-import MenuTendas from '@/components/tendas'
-import Aguas from '@/components/tendas/aguas'
-import Iglo from '@/components/tendas/iglo'
-import Conica from '@/components/tendas/conicas'
-import CenaDoMal from '@/components/tendas/iglo/iglo'
-import uConicas from '@/components/tendas/conicas/conica'
-import uAguas from '@/components/tendas/aguas/aguas'
-
+import Estrado from '@/components/estrado/estrado'
+import Login from '@/components/login/login'
+import MainMenu from '@/components/Menu/mainMenu'
+import MenuTendas from '@/components/Menu/tendas'
+import Aguas from '@/components/tendas/aguas/aguas'
+import Iglo from '@/components/tendas/iglo/iglo'
+import Conica from '@/components/tendas/conicas/conica'
+import CRM from '@/components/CRM/crm'
 
 Vue.use(Router)
 
@@ -52,19 +49,9 @@ export default new Router({
       component: Iglo
     },
     {
-      path: '/mal',
-      name: 'Mal',
-      component: CenaDoMal
-    },
-    {
-      path: '/uconica',
-      name: 'Conicas',
-      component: uConicas
-    },
-    {
-      path: '/uaguas',
-      name: 'aguas',
-      component: uAguas
+      path: '/crm',
+      name: 'CRM',
+      component: CRM
     }
   ],
   mode: 'history'

@@ -51,7 +51,7 @@ import {
   calcularCoberturaConica,
   calcularLateraisConica,
   UpdateRepeatedValues
-} from "@/utils/tendas/conicas_teste.js";
+} from "@/utils/tendas/conicas.js";
 
 export default {
   components: {StepOne, StepTwo, StepThree, StepFour},

@@ -5,7 +5,7 @@
           <v-subheader class="display-1" >Laterais - {{ maxLaterais }}</v-subheader>
       </v-flex>
       <v-flex xs6 sm9>
-          <v-text-field label="Opaco" readonly v-model="lateral.opaco" type="number"></v-text-field>
+          <v-text-field label="Opaco" readonly :rules="rulesLaterais" v-model="lateral.opaco" type="number"></v-text-field>
       </v-flex>
       <v-flex xs3 sm1 text-xs-right>
           <v-btn @click.native="lateral.opaco = lateral.opaco+1" color="dark" fab small>
@@ -19,7 +19,7 @@
       </v-flex>
 
       <v-flex xs6 sm9>
-          <v-text-field label="Transparente" readonly v-model="lateral.transparente" type="number"></v-text-field>
+          <v-text-field label="Transparente" readonly :rules="rulesLaterais" v-model="lateral.transparente" type="number"></v-text-field>
       </v-flex>
       <v-flex xs3 sm1 text-xs-right>
           <v-btn @click.native="lateral.transparente = lateral.transparente+1" color="dark" fab small >
@@ -33,7 +33,7 @@
       </v-flex>
 
       <v-flex xs6 sm9>
-          <v-text-field label="Blackout" readonly v-model="lateral.blackout" type="number"></v-text-field>
+          <v-text-field label="Blackout" readonly :rules="rulesLaterais" v-model="lateral.blackout" type="number"></v-text-field>
       </v-flex>
       <v-flex xs3 sm1 text-xs-right>
           <v-btn @click.native="lateral.blackout = lateral.blackout+1" color="dark" fab small >
@@ -49,7 +49,7 @@
 
     <v-layout row wrap v-if="largura==7.5 || largura==17.5 || largura==12.5">
       <v-flex xs12 text-xs-center>
-          <v-subheader class="display-1">Laterais {{ lateralDiferente }}m - {{ maxTriangulo }}</v-subheader>
+          <v-subheader class="display-1">Laterais {{ tamanhoDiferente }}m - {{ maxTriangulo }}</v-subheader>
       </v-flex>
       <v-flex xs6 sm9>
           <v-text-field label="Opaco" readonly v-model="lateral.especialOpaco" type="number"></v-text-field>
@@ -96,9 +96,9 @@
 
     <v-layout row wrap v-if="mostrarEspecial">
       <v-flex xs3 hidden-xs-only>
-          <v-subheader class="display-1">Laterais Modulo {{ largura/5 }}</v-subheader>
+          <v-subheader class="display-1">Laterais Modulo {{ tamanhoDiferente }}</v-subheader>
       </v-flex>
-      <v-flex mr-2>
+      <v-flex mr-3>
           <v-select
           :items="tipo_de_telas"
           v-model="lateral.especial1"
@@ -109,7 +109,7 @@
           required
           ></v-select>
       </v-flex>
-      <v-flex mr-2>
+      <v-flex mr-3>
           <v-select
           :items="tipo_de_telas"
           v-model="lateral.especial2"
@@ -128,8 +128,7 @@
 
 <script>
   export default {    
-    props: ['largura', 'mostrarEspecial', 'maxLaterais'],
-
+    props: ['largura', 'mostrarEspecial', 'maxLaterais', 'maxTriangulo', 'tamanhoDiferente'],
     data() {
       return {
         formLateral: null,
@@ -157,6 +156,9 @@
         ],
         tipo_de_telas: ["Transparente", "Blackout", "Opaco"],
         tipo_fixacao: ["Estacas", "Pesos", "Estrado"],
+        rulesLaterais: [
+          v => this.lateral.opaco+this.lateral.transparente+this.lateral.blackout <= this.maxLaterais || "Demasiadas Laterais",
+        ]
       }
     },
     methods: {      

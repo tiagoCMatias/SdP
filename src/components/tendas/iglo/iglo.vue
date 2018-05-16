@@ -49,6 +49,7 @@
             <StepFive
               @formComplete="stepFourForm" 
               :items="this.tableItens"
+              :estrutura="this.estrutura"
             />
           </v-stepper-content>
 
@@ -65,7 +66,8 @@
   import StepThree from "./Steps/StepThree";
   import StepFour from "./Steps/StepFour";
   import StepFive from "./Steps/StepFive";
-  import { EstruturaIglo, CoberturaIglo, LateraisIglo, calcularTopoIglo, calcularBola, UpdateRepeatedValues } from "@/utils/tendas/iglo_teste.js";
+  import { EstruturaIglo, CoberturaIglo, LateraisIglo, calcularTopoIglo, calcularBola, UpdateRepeatedValues } from "@/utils/tendas/iglo.js";
+  import { calcularEstrado } from "../../../utils/helper";
   export default {
     components: {StepOne, StepTwo, StepThree, StepFour, StepFive},
     data() {
@@ -110,6 +112,11 @@
               });
           });
 
+          if(estrutura.fixacao == "Estrado"){
+            let componentesEstrado = calcularEstrado(estrutura.largura, estrutura.comprimento);
+            console.log(componentesEstrado);
+            this.componentesEstrutura.push(this, ... componentesEstrado);
+          }
           this.stepCount++;
       },
       stepTwoForm (cobertura) {
@@ -154,7 +161,7 @@
           if(this.estrutura.comprimento == this.estrutura.largura && (this.estrutura.tipo_topo_1 == "Redondo" && this.estrutura.tipo_topo_2 == "Redondo"))
             calcularEspecial();
           else {
-            let resposta =  (this.estrutura, bacalhau);
+            let resposta =  calcularTopoIglo(this.estrutura, bacalhau);
             console.log("Update");
             resposta.forEach(element => {
                 this.componentesBacalhau.push({
@@ -190,7 +197,7 @@
       calcularEspecial: function(){
             let resposta =  calcularBola(this.estrutura);
             resposta.forEach(element => {
-                  this.items.push({
+                  this.componentesEstrutura.push({
                       codigo: "1.1." + this.estrutura.largura + "." + element.codigo,
                       title: element.title,
                       qt: element.qt

@@ -16,12 +16,12 @@
     </v-navigation-drawer>
 -->
     <!-- Laptop -->
-    <v-toolbar dark >
+    <v-toolbar color="primary" >
       <v-toolbar-side-icon 
         @click.native.stop="sideNav = !sideNav"
         class="hidden-sm-and-up"></v-toolbar-side-icon>
       <v-toolbar-title >
-        <router-link to="/" style="cursor : pointer" v-text=title></router-link> 
+        <router-link to="/" color="white" style="cursor : pointer" ><font color="rgb(254, 121, 5)">{{this.title}}</font></router-link> 
       </v-toolbar-title>
       <v-spacer></v-spacer> 
       <v-menu offset-y v-if="$route.path!='/'">

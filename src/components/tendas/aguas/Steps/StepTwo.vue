@@ -95,7 +95,7 @@
       sendCobertura()
       {
         if(this.$refs.formCobertura.validate()){
-          this.$emit('formComplete', this.estrutura);
+          this.$emit('formComplete', this.cobertura);
         }
       }
     }

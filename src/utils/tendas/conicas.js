@@ -3,42 +3,42 @@ export function calcularEstruturaConica(tenda)
     return calcularEstruturaConica(tenda);
 }
 
-export function calcularLateraisConica(tenda)
+export function calcularLateraisConica(lateral, estrutura)
 {
     let laterais = [];
-    if(tenda.lateral_opaco > 0)
+    if(lateral.opaco > 0)
     {
-        laterais.push( {qt: tenda.lateral_opaco, title: "Conica Lateral Opaco*"+tenda.largura, codigo: ""});
+        laterais.push( {qt: lateral.opaco, title: "Conica Lateral Opaco*"+estrutura.tamanho, codigo: ""});
     }
-    if(tenda.lateral_transparante > 0)
+    if(lateral.transparente > 0)
     {
-        laterais.push( {qt: tenda.lateral_transparante, title: "Conica Lateral Transparente*"+tenda.largura, codigo: ""});
+        laterais.push( {qt: lateral.transparente, title: "Conica Lateral Transparente*"+estrutura.tamanho, codigo: ""});
     }
-    if(tenda.lateral_blackout > 0)
+    if(lateral.blackout > 0)
     {
-        laterais.push( {qt: tenda.lateral_blackout, title: "Conica Lateral Blackout*"+tenda.largura, codigo: ""});
+        laterais.push( {qt: lateral.blackout, title: "Conica Lateral Blackout*"+estrutura.tamanho, codigo: ""});
     }
 
     return laterais;
     
 }
 
-export function calcularCoberturaConica(tenda)
+export function calcularCoberturaConica(cobertura, estrutura)
 {
-    let cobertura = { qt: 1, title: "Cobertura Conica - "+tenda.cobertura+'*'+tenda.largura, codigo: 'x'}
-    return cobertura;
+    return { qt: 1, title: "Cobertura Conica - "+cobertura+'*'+estrutura.tamanho, codigo: 'x'};
 }
 
 function calcularEstruturaConica(tenda)
 {
+    let quantidade = 1;
     let componentes = [
-        { qt: 4 , title: 'Pé Conica '+tenda.largura+'*'+tenda.largura, codigo: '1' },
-        { qt: 4 , title: 'Viga Conica '+tenda.largura+'*'+tenda.largura, codigo: '2' },
-        { qt: 4 , title: 'Diagonal '+tenda.largura+'*'+tenda.largura, codigo: '3' },
-        { qt: 4 , title: 'Ferro esticar lateral '+tenda.largura+'*'+tenda.largura, codigo: '4'},
-        { qt: 1 , title: 'Cone '+tenda.largura+'*'+tenda.largura, codigo:'5.1'},
-        { qt: 1 , title: 'Ferro do Cone ' +tenda.largura+'*'+tenda.largura, codigo: '5.2' },
-        { qt: 1  , title: 'Cruzeta '+tenda.largura+'*'+tenda.largura,codigo: '5.3'},
+        { qt: 4 , title: 'Pé Conica '+tenda.tamanho+'*'+tenda.tamanho, codigo: '1' },
+        { qt: 4 , title: 'Viga Conica '+tenda.tamanho+'*'+tenda.tamanho, codigo: '2' },
+        { qt: 4 , title: 'Diagonal '+tenda.tamanho+'*'+tenda.tamanho, codigo: '3' },
+        { qt: 4 , title: 'Ferro esticar lateral '+tenda.tamanho+'*'+tenda.tamanho, codigo: '4'},
+        { qt: 1 , title: 'Cone '+tenda.tamanho+'*'+tenda.tamanho, codigo:'5.1'},
+        { qt: 1 , title: 'Ferro do Cone ' +tenda.tamanho+'*'+tenda.tamanho, codigo: '5.2' },
+        { qt: 1  , title: 'Cruzeta '+tenda.tamanho+'*'+tenda.tamanho,codigo: '5.3'},
         { qt: 4 , title: 'Parafusos M12 80', codigo: '5.4' },
         { qt: 4 , title: 'Chapa Fixação Ferro Lateral', codigo: '5.5'},
         { qt: 8 , title: 'Gulpilha R3.5', codigo: '5.6'},
@@ -51,5 +51,25 @@ function calcularEstruturaConica(tenda)
     else if(tenda.fixacao == "Pesos")
         componentes.push( { qt : 4, title: 'Pesos', codigo: '7' });
 
+    return componentes;
+}
+
+export function UpdateRepeatedValues(componentes)
+{
+    let repetidos;
+    console.log(componentes.length);
+    for(var i = 0; i < componentes.length; i++)
+    {
+        for(var j = 0 ; j < componentes.length; j++)
+        {
+            if(j != i && componentes[i].title == componentes[j].title)
+            {
+                componentes[i].qt += componentes[j].qt;
+                console.log("Repetido: " + componentes[i].title);
+                componentes.splice (j, 1);
+
+            }
+        }
+    }
     return componentes;
 }

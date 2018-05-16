@@ -7,6 +7,9 @@
           <v-flex xs12 sm12 >
             <v-btn large class="primary" router-link to='/tendas'>Calcular Tendas</v-btn>
           </v-flex>
+          <v-flex xs12 sm12 >
+            <v-btn large class="primary" router-link to='/crm'>CRM</v-btn>
+          </v-flex>
           <v-flex xs12 sm12
           v-for="itens in menuItens" :key="itens.title">
             <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>

@@ -42,7 +42,7 @@
 
 <script>
 
-import { signIn } from '../utils/configuration-manager'
+import { signIn } from '../../utils/configuration-manager'
 export default { 
     data: () => ({
         valid: true,
