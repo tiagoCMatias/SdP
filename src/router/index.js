@@ -8,6 +8,7 @@ import Aguas from '@/components/tendas/aguas/aguas'
 import Iglo from '@/components/tendas/iglo/iglo'
 import Conica from '@/components/tendas/conicas/conica'
 import CRM from '@/components/CRM/crm'
+import ListaMateriais from '@/components/materiais/lista'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/crm',
       name: 'CRM',
       component: CRM
+    },
+    {
+      path: '/lista',
+      name: 'Lista de Materiais',
+      component: ListaMateriais
     }
   ],
   mode: 'history'
