@@ -2,7 +2,7 @@
   <v-card>
     <v-container fluid grid-list-lg>
     <v-card-title>
-      Obras
+      Materiais
       <v-spacer></v-spacer>
       <v-text-field
         v-model="search"
@@ -20,10 +20,12 @@
       :rows-per-page-items="rows"
     >
       <template slot="items" slot-scope="props">
-        <td>{{ props.item.id }}</td>
-        <td class="text-xs-right">{{ props.item.local }}</td>
-        <td class="text-xs-right">{{ props.item.cliente }}</td>
-        <td class="text-xs-right">{{ props.item.dia }}</td>
+        <td>{{ props.item.nome }}</td>
+        <td class="text-xs-right">{{ props.item.descricao }}</td>
+        <td class="text-xs-right">{{ props.item.tendas }}</td>
+        <td class="text-xs-right">{{ props.item.familia }}</td>
+        <td class="text-xs-right">{{ props.item.genCodigo }}</td>
+        <td class="text-xs-right">{{ props.item.quantidade }}</td>
       </template>
       <v-alert slot="no-results" :value="true" color="error" icon="warning">
         Your search for "{{ search }}" found no results.
@@ -43,19 +45,21 @@
         rows: [15,25,{"text":"All","value":-1}],
         headers: [
           {
-            text: 'Obras',
+            text: 'Materiais',
             align: 'left',
             sortable: true,
-            value: 'id'
+            value: 'nome'
           },
-          { text: 'Local', value: 'local' },
-          { text: 'Cliente', value: 'cliente' },
-          { text: 'Dia', value: 'date' },
+          { text: 'Descricao', value: 'descricao' },
+          { text: 'Tendas', value: 'tendas' },
+          { text: 'Familia', value: 'familia' },
+          { text: 'Código Interno', value: 'genCodigo' },
+          { text: 'Quantidade', value: 'quantidade' },
         ],
       }
     },
     watch: {
-      listaDeObras: function(newVal, oldVal){
+      lista: function(newVal, oldVal){
         this.loadinState = false;
       }
     },

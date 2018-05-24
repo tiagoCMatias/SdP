@@ -1,91 +1,48 @@
 <template>
-    <v-container fluid>
-        <v-card>
-            <v-card-title>
-                Lista de Materiais
-            </v-card-title>
-            <v-container grid-list-sm class="text-xs-center" style="margin-bottom: 20px">
-                <v-form v-model="formNovoComponente" ref="formNovoComponente">
-                    <v-layout row wrap align-center>
-                        <v-flex  xs12 sm2 class="text-xs-center">
-                            <v-text-field
-                                v-model="componente"
-                                label="Nome de Componente"
-                                :rules="form_base_rule"
-                            ></v-text-field>
-                        </v-flex>
-                        <v-flex  xs12 sm2 >
-                            <v-text-field
-                                v-model="descricao"
-                                label="Descrição"
-                                :rules="form_base_rule"
-                            ></v-text-field>
-                        </v-flex>
-                        <v-flex  xs12 sm2 >
-                            <v-text-field
-                                v-model="tag"
-                                label="Tag"
-                            ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm2 >
-                            <v-select
-                                :items="listaFamilia"
-                                full-width="true"
-                                v-model="familia"
-                                item-text="nome"
-                                item-value="id"
-                                label="Familia"
-                                :rules="form_base_rule"
-                                autocomplete
-                            ></v-select>
-                        </v-flex>
-                        <v-flex  xs12 sm2 >
-                            <v-text-field
-                                v-model="quantidade"
-                                label="Quantidade"
-                                type="number"
-                            ></v-text-field>
-                        </v-flex>
-                        <v-flex xs12 sm2 class="text-xs-center">
-                            <v-btn color="info" right @click.native="novoComponente()">Novo Componente</v-btn>
-                        </v-flex>
-                    </v-layout>
-                </v-form>
-            </v-container>
-            
-        </v-card>
+    <v-container >
+        <NovoDialog 
+            :listaFamilia="this.listaFamilia"
+            :listaTendas="this.listaTendas"
+            @formComplete="updateView"
+        />
+        <v-spacer></v-spacer><v-spacer></v-spacer>
+        <Tabela 
+            :style="{ 'margin-top': '30px' }"
+            :lista="this.tabelaItens"
+        />
+        <mySnack
+            :snackbar="this.mySnack"
+            :text="this.mySnackText"
+        />
     </v-container>
 </template>
 
 <script>
 import Tabela from "./tabela/tabela";
-import {getFamilia}  from "../../utils/lista/lista-events";
+import NovoCompForm from "./form/novoComp";
+import NovoDialog from "./form/novoCompDialog";
+import mySnack from "../CRM/snackbar/mySnackbar"
+
+import {getFamilia, getConfigTendas, getListaComponentes}  from "../../utils/lista/lista-events";
+
+const filterValue = (obj, key, value) => obj.find(v => v[key] === value);
+
 export default {
-    components: {Tabela},
+    components: {Tabela, NovoCompForm, NovoDialog, mySnack},
     data(){
         return{
-            formNovoComponente: null,
             tabelaItens: [],
             listaFamilia: [],
-            familia: null,
-            componente: null,
-            quantidade: null,
-            tag: null,
-            descricao: null,
-            form_base_rule: [
-                v => !!v || "Introduzir Valor"
-            ],
+            listaTendas:[],
+            mySnack: false,
+            mySnackText: "",
         }
     },
     methods: {
-        novoComponente: function(){
-
-        },
-
         listarFamilia: function(){
             getFamilia()
                 .then(suc => {
-                    console.log(suc);
+                    //console.log(suc);
                     suc.data.forEach(element => {
                         this.listaFamilia.push( { id:element.id, nome:element.nome  } );
                     });
@@ -93,10 +50,56 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
-        }
+        },
+
+        obterTendas: function(){
+            getConfigTendas()
+                .then(suc =>{
+                    suc.data.forEach(element => {
+                        this.listaTendas.push( { id:element.id, tag:element.tag, descricao: element.descricao, tipo:element.tipo  } );
+                    });
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+
+        createTableContent: function() {
+            getListaComponentes()
+                .then(component =>{
+                    component.data.forEach(myComponent => {
+                        let tagTenda = "";
+                        myComponent.pertence.forEach(element => {
+                            tagTenda += "[" + this.listaTendas.find(v => v['id'] === element.tenda.id).tag + "] ";
+                        });
+                        this.tabelaItens.push({
+                            id: myComponent.id, 
+                            nome: myComponent.nome,
+                            descricao: myComponent.descricao,
+                            genCodigo: myComponent.genCodigo,
+                            familia: this.listaFamilia.find(v => v['id'] === myComponent.familia).nome,
+                            tendas: tagTenda,
+                            quantidade: myComponent.quantidade
+                        });
+                    });
+                    //console.log(this.tabelaItens)
+                })
+                .catch(err => {
+                    console.log(err);
+                });
+        },
+
+        updateView: function(){
+            this.mySnackText = "Registo com sucesso"
+            this.mySnack = true;
+            this.tabelaItens = [];
+            this.createTableContent();  
+        },
     },
     mounted(){
         this.listarFamilia();
+        this.obterTendas();
+        this.createTableContent();  
     }
 }
 </script>
