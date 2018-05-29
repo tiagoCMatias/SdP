@@ -1,18 +1,9 @@
 <template>
   <v-container class="text-xs-center" grid-list-xs>
       <v-layout row wrap>
-          <v-flex xs12 sm12>
-            <v-btn large class="primary" router-link to='/estrado'>Calcular Estrado</v-btn>
-          </v-flex>
-          <v-flex xs12 sm12 >
-            <v-btn large class="primary" router-link to='/tendas'>Calcular Tendas</v-btn>
-          </v-flex>
-          <v-flex xs12 sm12 >
-            <v-btn large class="primary" router-link to='/crm'>CRM</v-btn>
-          </v-flex>
           <v-flex xs12 sm12
-          v-for="itens in menuItens" :key="itens.title">
-            <v-btn large class="primary" disabled="" router :to="itens.link">{{itens.title}}</v-btn>
+            v-for="itens in menuItens" :key="itens.title">
+            <v-btn large class="primary" :disabled="itens.status" router :to="itens.link">{{itens.title}}</v-btn>
           </v-flex>
       </v-layout>
   </v-container>
@@ -24,9 +15,12 @@ export default {
   data() {
       return {
         menuItens: [
-            { icon: '', title: 'Obras', link: '/adicionar' },
-            { icon: '', title: 'Serralharia', link: '/adicionar' },
-            { icon: '', title: 'Gestão de Stock', link: '/stock' }
+            { icon: '', title: 'Calcular Estrado', link: '/estrado', status: false },
+            { icon: '', title: 'Calcular Tendas', link: '/tendas', status: false },
+            { icon: '', title: 'CRM', link: '/crm', status: false },
+            { icon: '', title: 'Stock', link: '/lista', status: false },
+            { icon: '', title: 'Serralharia', link: '/adicionar', status: true },
+            { icon: '', title: 'Gestão de Stock', link: '/stock', status:true }
         ]
       }
   },

@@ -7,7 +7,6 @@
       :right="x === 'right'"
       :left="x === 'left'"
       :multi-line="mode === 'multi-line'"
-      :vertical="mode === 'vertical'"
       v-model="snackbar"
       color="primary"
     >
@@ -22,9 +21,9 @@
     props: ['snackbar', 'text' ],
     data () {
       return {
-        y: 'top',
-        x: null,
-        mode: 'vertical',
+        y: 'bottom',
+        x: 'right',
+        mode: 'multi-line',
         timeout: 6000,
       }
     }

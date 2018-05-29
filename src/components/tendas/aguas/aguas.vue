@@ -47,8 +47,6 @@
               :estrutura="this.estrutura"
               />
             </v-stepper-content>
-              
-            
         </v-stepper-items>
       </v-stepper>
     </v-card>
