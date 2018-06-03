@@ -13,7 +13,7 @@
         >
         Try again.
         </v-alert>
-        <v-form v-model="valid" ref="form" lazy-validation>
+        <v-form v-model="loginForm" ref="loginForm" lazy-validation>
             <v-text-field
             label="Name"
             v-model="name"
@@ -34,8 +34,8 @@
               counter
             ></v-text-field>
 
-            <v-btn @click="submit()" :disabled="!valid" focused >Submeter</v-btn>
-            <v-btn @click="clear">Limpar</v-btn>
+            <v-btn id="submitButton" @click="submit()" focused >Submeter</v-btn>
+            <v-btn id="cleanButton" @click="clear()">Limpar</v-btn>
         </v-form>
   </v-container>
 </template>
@@ -45,14 +45,15 @@
 import { signIn } from '../../utils/configuration-manager'
 export default { 
     data: () => ({
-        valid: true,
+        loginForm: false,
         alert: false,
+        increment: 0,
         name: '',
         password: '',
         e1: true,
         nameRules: [
-        (v) => (!!v || 'Name is required'),
-        (v) => (v && v.length <= 10 || 'Name must be less than 10 characters')
+            (v) => (!!v || 'Name is required'),
+            (v) => (v && v.length <= 10 || 'Name must be less than 10 characters')
         ],
         email: '',
         emailRules: [
@@ -72,26 +73,30 @@ export default {
     },
 
     methods: {
-        submit () {
-            if (this.$refs.form.validate()) {
-                if((this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
-                {
-                    localStorage.setItem("userName", this.name);
-                    console.log(this.$store.getters.isLogged);
-                    this.$store.commit({ 
-                        type: 'login', 
-                        user: 'admin'
-                    });
-                    this.$router.push('/menu');
-                }
-                else
-                {
-                    this.alert = true;
-                }
+        submit: function () {
+            if (!this.$refs.loginForm.validate()) {
+                this.loginForm = false;
+                return false;
             }
+            if( this.loginForm === true && (this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
+            {
+                localStorage.setItem("userName", this.name);
+                console.log(this.$store.getters.isLogged);
+                this.$store.commit({ 
+                    type: 'login', 
+                    user: 'admin'
+                });
+                this.$router.push('/menu');
+            }
+            else
+            {
+                this.alert = true;
+            }
+            
         },
-        clear () { 
-        this.$refs.form.reset()
+        clear: function () {
+            this.name = null;
+            this.password = null;
         },
         
         onResize () {

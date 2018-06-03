@@ -64,7 +64,8 @@ export default {
       
     },
     accessMenu: function (){
-       return this.$route.name === 'login'
+       this.$router.push('/login');
+       //return this.$route.name === 'login'
     }
     
   },
