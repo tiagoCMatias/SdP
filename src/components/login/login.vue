@@ -6,102 +6,81 @@
             </v-layout>
         </v-slide-y-transition>
         <v-alert
-        color="error"
-        icon="check_circle"
-        :value="alert"
-        transition="scale-transition"
+          color="error"
+          icon="check_circle"
+          :value="alert"
+          transition="scale-transition"
         >
         Try again.
         </v-alert>
         <v-form v-model="loginForm" ref="loginForm" lazy-validation>
             <v-text-field
-            label="Name"
+            label="Username"
             v-model="name"
-            :rules="nameRules"
+            :rules="formRules"
             :counter="10"
             required
             ></v-text-field>
 
             <v-text-field
-              name="input-10-1"
-              label="Enter your password"
-              hint="At least 8 characters"
+              label="Password"
+              hint="User password"
               v-model="password"
-              min="8"
+              :rules="formRules"
               :append-icon="e1 ? 'visibility' : 'visibility_off'"
               :append-icon-cb="() => (e1 = !e1)"
               :type="e1 ? 'password' : 'text'"
               counter
+              required
             ></v-text-field>
 
-            <v-btn id="submitButton" @click="submit()" focused >Submeter</v-btn>
-            <v-btn id="cleanButton" @click="clear()">Limpar</v-btn>
+            <v-btn id="submitButton" @click="submit" focused >Submeter</v-btn>
+            <v-btn id="cleanButton" @click="clear">Limpar</v-btn>
         </v-form>
   </v-container>
 </template>
 
 <script>
-
-import { signIn } from '../../utils/configuration-manager'
-export default { 
-    data: () => ({
-        loginForm: false,
-        alert: false,
-        increment: 0,
-        name: '',
-        password: '',
-        e1: true,
-        nameRules: [
-            (v) => (!!v || 'Name is required'),
-            (v) => (v && v.length <= 10 || 'Name must be less than 10 characters')
-        ],
-        email: '',
-        emailRules: [
-        (v) => (!!v || 'E-mail is required'),
-        (v) => (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid')
-        ],
-        select: null,
-        checkbox: false
-    }),
-    mounted () {
-        this.onResize()
-    },
-    computed: {
-        doneTodosCount () {
-            return this.$store.getters.isLogged
-        }
-    },
-
-    methods: {
-        submit: function () {
-            if (!this.$refs.loginForm.validate()) {
-                this.loginForm = false;
-                return false;
-            }
-            if( this.loginForm === true && (this.name === "admin" || this.name === "Admin" ) && this.password === "facil" )
-            {
-                localStorage.setItem("userName", this.name);
-                console.log(this.$store.getters.isLogged);
-                this.$store.commit({ 
-                    type: 'login', 
-                    user: 'admin'
-                });
-                this.$router.push('/menu');
-            }
-            else
-            {
-                this.alert = true;
-            }
-            
-        },
-        clear: function () {
-            this.name = null;
-            this.password = null;
-        },
-        
-        onResize () {
-            this.windowSize = { x: window.innerWidth, y: window.innerHeight }
-        }
+import { signIn } from "../../utils/configuration-manager";
+import { mapActions } from "vuex";
+export default {
+  data: () => ({
+    loginForm: false,
+    alert: false,
+    name: "",
+    password: "",
+    e1: true,
+    formRules: [
+      v => !!v || "Campo Obrigatório"
+      //v => (v && v.length <= 10) || "Name must be less than 10 characters"
+    ]
+  }),
+  computed: {
+    doneTodosCount() {
+      return this.$store.getters.isLogged;
     }
-}
+  },
+
+  methods: {
+    submit: function() {
+      if (this.$refs.loginForm.validate()) {
+        this.$store
+          .dispatch("authLogin", {
+            username: this.name,
+            password: this.password
+          })
+          .then(suc => {
+            console.log(suc);
+          })
+          .catch(err => {
+            this.alert = !this.$store.getters.authResult;
+          });
+      }
+    },
+    clear: function() {
+      this.name = null;
+      this.password = null;
+    }
+  }
+};
 </script>

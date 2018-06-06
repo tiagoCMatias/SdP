@@ -43,32 +43,20 @@
 
 <script>
 export default {
-  data () {
+  data() {
     return {
-      title: 'Sitio do Passal',
+      title: "Sitio do Passal",
       menuitems: [
-        { title: "Menu" , link: '/menu'},
-        { title: "Logout" , link: '/'}
+        { title: "Menu", link: "/menu" },
+        { title: "Logout", link: "/" }
       ]
-    }
+    };
   },
-  created () {  
-    if(localStorage.getItem("userName") != 'admin')
-    {
-      this.$router.push('/');
-    }
-    this.accessMenu();
+  created() {
+    this.$store.dispatch("autoLogIn");
+    if (!this.$store.getters.isLoggedIn) this.$router.push("/");
   },
-  methods: {
-    redirect: function() {
-      
-    },
-    accessMenu: function (){
-       this.$router.push('/login');
-       //return this.$route.name === 'login'
-    }
-    
-  },
-  name: 'App'
-}
+
+  name: "App"
+};
 </script>

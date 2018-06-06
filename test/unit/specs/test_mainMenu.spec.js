@@ -2,7 +2,9 @@ import Vue from 'vue';
 // The path is relative to the project root.
 import MainMenu from '../../../src/components/Menu/mainMenu'
 
-import { shallowMount } from '@vue/test-utils'
+import {
+  shallowMount
+} from '@vue/test-utils'
 //import { mount } from 'avoriaz'
 
 
@@ -17,10 +19,6 @@ describe('mainMenu.vue', () => {
     const vm = wrapper.vm;
     const menuItens = vm.menuItens;
     expect(menuItens).to.be.an('array')
-  })
-
-  it('check for buttons', () => {
-    expect(wrapper.contains('v-btn')).to.equal(true)
   })
 
 });
