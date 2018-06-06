@@ -6,35 +6,47 @@ import * as Cookies from 'js-cookie'
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
-    state: {
-        user: '',
-        privilage: ''
+  state: {
+    user: '',
+    privilage: '',
+    jwt: ''
+  },
+  getters: {
+    isLogged(state) {
+      return state.user;
+    }
+  },
+  mutations: {
+    login(state, payload) {
+      state.user = payload.user;
+      state.jwt = payload.jwt;
     },
-    getters: {
-        isLogged (state) {
-            return state.user;
-        }
-    },
-    mutations: {
-        login (state, payload) {
-            state.user = payload.user;
-        },
-        logout(state){
-            state.user = null;
-        }
-    },
-    plugins: [
-        createPersistedState({
-            getState: (key) => {
-                //Cookies.getJSON(key)
-                Cookies.getJSON('username');
-            },
-            setState: (key, state) => {
-                Cookies.set('username', state.user, { expires: 3, secure: true });
-                //Cookies.set(key, state, { expires: 3, secure: true })
+    logout(state) {
+      state.user = null;
+      state.jwt = null;
+    }
+  },
+  plugins: [
+    createPersistedState({
+      getState: (key) => {
+        //Cookies.getJSON(key)
+        Cookies.getJSON('SdpCookie');
+      },
+      setState: (key, state) => {
+        Cookies.set(
+          'SdpCookie',
+          JSON.stringify({
+            username: state.username,
+            jwt: state.jwt
+          }), {
+            expires: 3,
+            secure: true
+          }
+        );
+        //Cookies.set(key, state, { expires: 3, secure: true })
 
-            },
-            //removeItem: key => Cookies.remove(key)
-        })
-    ]
+      },
+      //removeItem: key => Cookies.remove(key)
+    })
+  ]
 });

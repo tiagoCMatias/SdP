@@ -20,6 +20,27 @@ export function calcEstrado(largura, comprimento) {
 	});
 }
 
+export function calcularEstrado(largura, comprimento) {
+    let b_vertical = calcularBarras2Verticais(largura, comprimento);
+    let b_horizontais = calcularBarras2Horizontais(largura, comprimento);
+    let taipal = calcularTaipal( largura, comprimento );
+    let b_total = b_horizontais + b_vertical;
+
+    let b125 = calcularBarras125(largura, comprimento);
+
+    let pontoApoio = calcularPontosApoio(largura, comprimento);
+
+    let resposta = [
+        { qt: taipal, title:"Taipal Estrado", codigo: "" },
+        { qt: b_total, title: "Barras 2.5 Estrado", codigo: ""},
+        { qt: b125, title: "Barras 1.25 Estrado", codigo: ""},
+        { qt: pontoApoio, title: "Pontos de Apoio", codigo: ""}
+    ];
+
+    return resposta;
+        
+}
+
 
 function calcularBarras125(largura, comprimento){
     return calcularn1(largura, comprimento) 

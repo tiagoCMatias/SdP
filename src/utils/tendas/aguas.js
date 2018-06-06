@@ -1,21 +1,21 @@
-export function calcularAguas(tenda)
+export function calcularAguas(estrutura)
 {
-    let modulo_especial = tenda.comprimento%5;
-    let modulos_5 = Math.floor(tenda.comprimento/5);
+    let modulo_especial = estrutura.comprimento%5;
+    let modulos_5 = Math.floor(estrutura.comprimento/5);
 
 
     let components = [];
 
-    let quantidade = Math.floor((tenda.comprimento/5)+1);
+    let quantidade = Math.floor((estrutura.comprimento/5)+1);
     if(modulo_especial)
         quantidade++;
 
         console.log("quant: "+quantidade);
-    components = components.concat(calcularAsnas(tenda, quantidade));
-    components = components.concat(calcularFerroCabeca(tenda));
-    components = components.concat(cabosAco(tenda));
-    components = components.concat(ferragens(tenda, quantidade));
-    components = components.concat(modulosAguas(tenda));
+    components = components.concat(calcularAsnas(estrutura, quantidade));
+    components = components.concat(calcularFerroCabeca(estrutura));
+    components = components.concat(cabosAco(estrutura));
+    components = components.concat(ferragens(estrutura, quantidade));
+    components = components.concat(modulosAguas(estrutura));
     
     //console.log("Comp");
     //console.log(UpdateRepeatedValues(components));
@@ -24,63 +24,63 @@ export function calcularAguas(tenda)
     return UpdateRepeatedValues(components);
 }
 
-function calcularAsnas(tenda, quantidade)
+function calcularAsnas(estrutura, quantidade)
 {
     let components = [];
 
-    if(tenda.fixacao == "Estacas")
+    if(estrutura.fixacao == "Estacas")
     {
         components.push(
-            { qt: 2 * quantidade, title: "Sapata Chão "+tenda.largura, codigo:""},
+            { qt: 2 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo:""},
             { qt: 4 * quantidade, title: "Estacas", codigo:""},
         );
     }
-    else if(tenda.fixacao == "Pesos")
+    else if(estrutura.fixacao == "Pesos")
     {
         components.push(
-            { qt: 2 * quantidade, title: "Sapata Chão "+tenda.largura, codigo:""},
+            { qt: 2 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo:""},
             { qt: 1 * quantidade, title: "Pesos", codigo:""},
         );
     }
-    else if(tenda.fixacao == "Estrado")
+    else if(estrutura.fixacao == "Estrado")
     {
         components.push(
-            { qt: 2 * quantidade, title: "Sapata Estrado 2aguas*"+tenda.largura, codigo:""},
+            { qt: 2 * quantidade, title: "Sapata Estrado 2aguas*"+estrutura.largura, codigo:""},
             { qt: 2 * quantidade, title: "Gulpilha R3.5", codigo:""},
             { qt: 2 * quantidade, title: "Chaveta Meia-lua", codigo:""},
         );
     }
     components.push(
-        { qt: 2 * quantidade, title: "Pé 2aguas*"+tenda.largura+" - "+tenda.altura_do_pe, codigo:""},
+        { qt: 2 * quantidade, title: "Pé 2aguas*"+estrutura.largura+" - "+estrutura.alturaDoPe, codigo:""},
         { qt: 2 * quantidade, title: "Roquete Esticar", codigo:""},
         { qt: 2 * quantidade, title: "Fita Esticar", codigo:""},
         { qt: (2 * quantidade)-4, title: "Entrega Normal 10", codigo:""},
         { qt: 4, title: "Entrega Canto 10", codigo:""}
     );
 
-    let resto = tenda.largura%5;
+    let resto = estrutura.largura%5;
 
     if(resto)
     {
         components.push(
-            { qt: 2 *quantidade, title: "Viga "+ (tenda.largura-resto), codigo: "" },
+            { qt: 2 *quantidade, title: "Viga "+ (estrutura.largura-resto), codigo: "" },
             { qt: 2 *quantidade, title: "Viga Aumento "+resto, codigo: "" },
-            { qt: 4 *quantidade, title: "Chaveta da Cabeça 2aguas*"+tenda.largura, codigo: "" }
+            { qt: 4 *quantidade, title: "Chaveta da Cabeça 2aguas*"+estrutura.largura, codigo: "" }
         );
     }
     else{
         components.push(
-            { qt: 2 * quantidade, title: "Viga "+ (tenda.largura), codigo: "" }
+            { qt: 2 * quantidade, title: "Viga "+ (estrutura.largura), codigo: "" }
         );
     }
     
-    if(tenda.largura <= 12.5)
+    if(estrutura.largura <= 12.5)
     {
         components.push(
             { qt: 1 * quantidade, title: "Cabeça 10", codigo: "" }
         );
     }
-    else if(tenda.largura > 12.5)
+    else if(estrutura.largura > 12.5)
     {
         components.push(
             { qt: 1 * quantidade, title: "Cabeça 15", codigo: "" }
@@ -90,20 +90,20 @@ function calcularAsnas(tenda, quantidade)
     return components;
 }
 
-function calcularFerroCabeca(tenda)
+function calcularFerroCabeca(estrutura)
 {
     let ferroCabeca = [];
 
-    let asnas = tenda.comprimento/5;
-    let modulos_5 = Math.floor(tenda.comprimento/5);
-    let modulo_especial = tenda.comprimento%5;
+    let asnas = estrutura.comprimento/5;
+    let modulos_5 = Math.floor(estrutura.comprimento/5);
+    let modulo_especial = estrutura.comprimento%5;
 
-    if(tenda.largura == 12.5 || tenda.largura == 15)
+    if(estrutura.largura == 12.5 || estrutura.largura == 15)
     {
         if(modulo_especial)
         {
             ferroCabeca.push(
-                { qt: (1 * modulos_5)+2, title: "Ferro da Cabeça 2aguas*"+tenda.largura, codigo: "" },
+                { qt: (1 * modulos_5)+2, title: "Ferro da Cabeça 2aguas*"+estrutura.largura, codigo: "" },
                 { qt: (modulos_5+1)*2, title: "Gulpilha R3.5", codigo:"" },
                 { qt: 2*((1 * modulos_5)+2), title: "Chaveta Ferro da Cabeça", codigo:"" }
 
@@ -112,7 +112,7 @@ function calcularFerroCabeca(tenda)
         else
         {
             ferroCabeca.push(
-                { qt: (1 * modulos_5)+1, title: "Ferro da Cabeça 2aguas*"+tenda.largura, codigo: "" },
+                { qt: (1 * modulos_5)+1, title: "Ferro da Cabeça 2aguas*"+estrutura.largura, codigo: "" },
                 { qt: (modulos_5+1)*2, title: "Gulpilha R3.5", codigo:"" },
                 { qt: 2*((1 * modulos_5)+1), title: "Chaveta Ferro da Cabeça", codigo:"" }
 
@@ -120,12 +120,12 @@ function calcularFerroCabeca(tenda)
             );
         }
     }
-    if(tenda.largura > 15)
+    if(estrutura.largura > 15)
     {
         if(modulo_especial)
         {
             ferroCabeca.push(
-                { qt: (1 * modulos_5), title: "Ferro da Cabeça 2aguas*"+tenda.largura, codigo: "" },
+                { qt: (1 * modulos_5), title: "Ferro da Cabeça 2aguas*"+estrutura.largura, codigo: "" },
                 { qt: 2*(1 * modulos_5)-1, title: "Gulpilha R3.5", codigo:"" },
                 { qt: 2*((1 * modulos_5)+2), title: "Chaveta Ferro da Cabeça", codigo:"" }
             );
@@ -133,7 +133,7 @@ function calcularFerroCabeca(tenda)
         else
         {
             ferroCabeca.push(
-                { qt: (1 * modulos_5)-1, title: "Ferro da Cabeça 2aguas*"+tenda.largura, codigo: "" },
+                { qt: (1 * modulos_5)-1, title: "Ferro da Cabeça 2aguas*"+estrutura.largura, codigo: "" },
                 { qt: 2*(1 * modulos_5)-2, title: "Gulpilha R3.5", codigo:"" },
                 { qt: 2*((1 * modulos_5)-1), title: "Chaveta Ferro da Cabeça", codigo:"" }
 
@@ -145,49 +145,49 @@ function calcularFerroCabeca(tenda)
     return ferroCabeca;
 }
 
-function cabosAco(tenda)
+function cabosAco(estrutura)
 {
     let cabosAco = [];
-    let modulos_5 = Math.floor(tenda.comprimento/5);
+    let modulos_5 = Math.floor(estrutura.comprimento/5);
     let quantidade = Math.floor(modulos_5/5)+1;
-    if(tenda.largura <=15)
+    if(estrutura.largura <=15)
     {
         cabosAco.push(
-            { qt: 2 * quantidade, title: "Cabo Aço Tecto 2aguas*"+tenda.largura, codigo:"" },
-            { qt: 2 * quantidade, title: "Cabo Aço Pé " +tenda.altura_do_pe +"m 2aguas*"+tenda.largura, codigo: ""}
+            { qt: 2 * quantidade, title: "Cabo Aço Tecto 2aguas*"+estrutura.largura, codigo:"" },
+            { qt: 2 * quantidade, title: "Cabo Aço Pé " +estrutura.alturaDoPe +"m 2aguas*"+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.largura == 17.5)
+    if(estrutura.largura == 17.5)
     {
         cabosAco.push(
             { qt: 2 * quantidade, title: "Cabo Aço Tecto 20", codigo: ""},
             { qt: 2 * quantidade, title: "Cabo Aço Tecto 17.5", codigo: ""},
 
-            { qt: 2 * quantidade, title: "Cabo Aço Pé " +tenda.altura_do_pe +"m 2aguas*"+tenda.largura, codigo: ""}
+            { qt: 2 * quantidade, title: "Cabo Aço Pé " +estrutura.alturaDoPe +"m 2aguas*"+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.largura == 20)
+    if(estrutura.largura == 20)
     {
         cabosAco.push(
             { qt: 4 * quantidade, title: "Cabo Aço Tecto 20", codigo: ""},
-            { qt: 2 * quantidade, title: "Cabo Aço Pé " +tenda.altura_do_pe +"m 2aguas*"+tenda.largura, codigo: ""}
+            { qt: 2 * quantidade, title: "Cabo Aço Pé " +estrutura.alturaDoPe +"m 2aguas*"+estrutura.largura, codigo: ""}
         );
     }
     return cabosAco;
 }
 
-function ferragens(tenda, quantidade)
+function ferragens(estrutura, quantidade)
 {
     let ferragens = [];
 
     ferragens.push(
         { qt: 2 * quantidade, title: "Chaveta Sapata Pé 15", codigo:"" },
         { qt: 2 * quantidade, title: "Gulpilha R3.5", codigo:"" },
-        { qt: 4 * quantidade, title: "Chaveta Pé Asna 2aguas*"+tenda.largura, codigo:"" },
-        { qt: 4 * quantidade, title: "Chaveta da Cabeça 2aguas*"+tenda.largura, codigo:"" },
+        { qt: 4 * quantidade, title: "Chaveta Pé Asna 2aguas*"+estrutura.largura, codigo:"" },
+        { qt: 4 * quantidade, title: "Chaveta da Cabeça 2aguas*"+estrutura.largura, codigo:"" },
     );
     
-    if(tenda.largura <= 12.5)
+    if(estrutura.largura <= 12.5)
     {
         ferragens.push(
             { qt: 4 * quantidade, title: "Gulpilha R3.5", codigo:"" },
@@ -221,13 +221,13 @@ export function UpdateRepeatedValues(componentes)
 }
 
 
-function modulosAguas(tenda)
+function modulosAguas(estrutura)
 {
     let components = [];
-    let modulos_5 = Math.floor(tenda.comprimento/5);
-    let modulo_especial = tenda.comprimento%5;
+    let modulos_5 = Math.floor(estrutura.comprimento/5);
+    let modulo_especial = estrutura.comprimento%5;
 
-    if(tenda.largura <= 12.5)
+    if(estrutura.largura <= 12.5)
     {
         components.push(
             { qt: 2*modulos_5, title: 'Cortineiro 10m - 5', codigo: '' },
@@ -249,7 +249,7 @@ function modulosAguas(tenda)
         }
     }
 
-    if(tenda.largura == 10 || tenda.largura == 12.5)
+    if(estrutura.largura == 10 || estrutura.largura == 12.5)
     {
         components.push(
             { qt: 2*modulos_5, title: "Tranca Fina 10m", codigo: ''},
@@ -257,7 +257,7 @@ function modulosAguas(tenda)
         );
     }
 
-    if(tenda.largura >= 15 && tenda.largura < 20)
+    if(estrutura.largura >= 15 && estrutura.largura < 20)
     {
         components.push(
             { qt: 2*modulos_5, title: "Cortineiro 15m", codigo: ''},
@@ -282,7 +282,7 @@ function modulosAguas(tenda)
         }
     }
 
-    if(tenda.largura == 20)
+    if(estrutura.largura == 20)
     {
         components.push(
             { qt: 2*modulos_5, title: "Cortineiro 15m", codigo: ''},
@@ -313,158 +313,158 @@ function modulosAguas(tenda)
     return components;
 }
 
-export function calcularCobertura(tenda)
+export function calcularCobertura(estrutura, cobertura)
 {
-    let resto = tenda.comprimento%5;
-    let cobertura = [];
-    if(tenda.cobertura_opaco > 0)
+    let resto = estrutura.comprimento%5;
+    let componentesCobertura = [];
+    if(cobertura.opaco > 0)
     {
-        cobertura.push(
-            { qt: tenda.cobertura_opaco, title: "Cobertura Opaco 2Aguas "+tenda.largura, codigo: ""}
+        componentesCobertura.push(
+            { qt: cobertura.opaco, title: "Cobertura Opaco 2Aguas "+ estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.cobertura_transparente > 0)
+    if(cobertura.transparente > 0)
     {
-        cobertura.push(
-            { qt: tenda.cobertura_transparente, title: "Cobertura Transparente 2Aguas "+tenda.largura, codigo: ""}
+        componentesCobertura.push(
+            { qt: cobertura.transparente, title: "Cobertura Transparente 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.cobertura_blackout > 0)
+    if(cobertura.blackout > 0)
     {
-        cobertura.push(
-            { qt: tenda.cobertura_blackout, title: "Cobertura Blackout 2Aguas "+tenda.largura, codigo: ""}
+        componentesCobertura.push(
+            { qt: cobertura.blackout, title: "Cobertura Blackout 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.cobertura_especial != null)
+    if(cobertura.especial != null)
     {
-        cobertura.push(
-            { qt: 1, title: "Cobertura "+tenda.cobertura_especial+" 2Aguas "+resto+ " - " +tenda.largura, codigo: ""}
+        componentesCobertura.push(
+            { qt: 1, title: "Cobertura "+cobertura.especial+" 2Aguas "+resto+ " - " +estrutura.largura, codigo: ""}
         );
     }
 
-    console.log(cobertura);
-    return cobertura;
+    console.log(componentesCobertura);
+    return componentesCobertura;
 }
 
-export function calcularLaterais(tenda)
+export function calcularLaterais(estrutura, lateral)
 {
-    let laterais = [];
-    let resto = tenda.comprimento%5;
-    if(tenda.lateral_opaco > 0)
+    let componentesLaterais = [];
+    let resto = estrutura.comprimento%5;
+    if(lateral.opaco > 0)
     {
-        laterais.push(
-            { qt: tenda.lateral_opaco, title: "Lateral 5m Opaco Pé "+ tenda.altura_do_pe+" 2Aguas "+tenda.largura, codigo: ""}
+        componentesLaterais.push(
+            { qt: lateral.opaco, title: "Lateral 5m Opaco Pé "+ estrutura.alturaDoPe+" 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.lateral_transparente > 0)
+    if(lateral.transparente > 0)
     {
-        laterais.push(
-            { qt: tenda.lateral_transparente, title: "Lateral 5m Transparente Pé "+ tenda.altura_do_pe+" 2Aguas "+tenda.largura, codigo: ""}
+        componentesLaterais.push(
+            { qt: lateral.transparente, title: "Lateral 5m Transparente Pé "+ estrutura.alturaDoPe+" 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.lateral_blackout > 0)
+    if(lateral.blackout > 0)
     {
-        laterais.push(
-            { qt: tenda.lateral_blackout, title: "Lateral 5m Blackout Pé "+ tenda.altura_do_pe+" 2Aguas "+tenda.largura, codigo: ""}
+        componentesLaterais.push(
+            { qt: lateral.blackout, title: "Lateral 5m Blackout Pé "+ estrutura.alturaDoPe+" 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
-    if(tenda.lateral_especial_1 != null)
+    if(lateral.especial1 != null)
     {
-        laterais.push(
-            { qt: 1, title: "Lateral "+ resto + "m "+tenda.lateral_especial_1+" Pé "+ tenda.altura_do_pe+" 2Aguas "+tenda.largura, codigo: ""}
-        );
-    }
-
-    if(tenda.lateral_especial_2 != null)
-    {
-        laterais.push(
-            { qt: 1, title: "Lateral "+ resto + "m "+tenda.lateral_especial_1+" Pé "+ tenda.altura_do_pe+" 2Aguas "+tenda.largura, codigo: ""}
+        componentesLaterais.push(
+            { qt: 1, title: "Lateral "+ resto + "m "+lateral.especial1+" Pé "+ estrutura.alturaDoPe+" 2Aguas "+estrutura.largura, codigo: ""}
         );
     }
 
-    if(tenda.lateral_opaco_diferente > 0)
+    if(lateral.especial2 != null)
     {
-        if(tenda.largura == 7.5 || tenda.largura == 17.5)
-            laterais.push({ qt: tenda.lateral_opaco_diferente, title: "Lateral 3.75m Opaco Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""});
-        else
-            laterais.push({ qt: tenda.lateral_opaco_diferente, title: "Lateral 2.5m Opaco Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""});
+        componentesLaterais.push(
+            { qt: 1, title: "Lateral "+ resto + "m "+lateral.especial2+" Pé "+ estrutura.alturaDoPe+" 2Aguas "+estrutura.largura, codigo: ""}
+        );
     }
-    if(tenda.lateral_transparante_diferente > 0)
+
+    if(lateral.especialOpaco > 0)
     {
-        if(tenda.largura == 7.5 || tenda.largura == 17.5)
-            laterais.push({ qt: tenda.lateral_transparante_diferente, title: "Lateral 3.75m Transparente Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""});
+        if(estrutura.largura == 7.5 || estrutura.largura == 17.5)
+            componentesLaterais.push({ qt: lateral.especialOpaco, title: "Lateral 3.75m Opaco Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""});
         else
-            laterais.push({ qt: tenda.lateral_transparante_diferente, title: "Lateral 2.5m Transparente Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""});
+            componentesLaterais.push({ qt: lateral.especialOpaco, title: "Lateral 2.5m Opaco Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""});
     }
-    if(tenda.lateral_blackout_diferente > 0)
+    if(lateral.especialTransparente > 0)
     {
-        if(tenda.largura == 7.5 || tenda.largura == 17.5)
+        if(estrutura.largura == 7.5 || estrutura.largura == 17.5)
+            componentesLaterais.push({ qt: lateral.especialTransparente, title: "Lateral 3.75m Transparente Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""});
+        else
+            componentesLaterais.push({ qt: lateral.especialTransparente, title: "Lateral 2.5m Transparente Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""});
+    }
+    if(lateral.especialBlackout > 0)
+    {
+        if(estrutura.largura == 7.5 || estrutura.largura == 17.5)
         {
-            laterais.push(
-                { qt: tenda.lateral_blackout_diferente, title: "Lateral 3.75m Blackout Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""},
+            componentesLaterais.push(
+                { qt: lateral.especialBlackout, title: "Lateral 3.75m Blackout Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""},
                 { qt: 2, title: "Ferro Esticar Lateral 3.75m", codigo: ""}
             );
 
         }
         else
         {
-            laterais.push(
-                { qt: tenda.lateral_blackout_diferente, title: "Lateral 2.5m Blackout Pé "+ tenda.altura_do_pe+" 2Aguas", codigo: ""},
+            componentesLaterais.push(
+                { qt: lateral.especialBlackout, title: "Lateral 2.5m Blackout Pé "+ estrutura.alturaDoPe+" 2Aguas", codigo: ""},
                 { qt: 2, title: "Ferro Esticar Lateral 2.5m", codigo: ""}
             );
 
         }
     }
 
-    //console.log(laterais);
-    return laterais;
+    //console.log(componentesLaterais);
+    return componentesLaterais;
 }
 
 
-export function calcularTriangulo(tenda)
+export function calcularTriangulo(estrutura, triangulo)
 {
-    let triangulo = [];
+    let componentesTriangulo = [];
     let quantidade = 2;
 
-    triangulo.push(
-        { qt: 1 , title: "Triangulo "+tenda.triangulo_1 + " 2Aguas "+tenda.largura, codigo: ""}, 
-        { qt: 1 , title: "Triangulo "+tenda.triangulo_2 + " 2Aguas "+tenda.largura, codigo: ""},                        
+    componentesTriangulo.push(
+        { qt: 1 , title: "Triangulo "+triangulo.one + " 2Aguas "+estrutura.largura, codigo: ""}, 
+        { qt: 1 , title: "Triangulo "+triangulo.two + " 2Aguas "+estrutura.largura, codigo: ""},                        
     );
-    if(tenda.largura == 5)
+    if(estrutura.largura == 5)
     {
-        triangulo.push(
+        componentesTriangulo.push(
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas - 5", codigo: ""},
             { qt: 1 * quantidade, title: "Régua Aluminio Esticar Cobertura - 5", codigo: ""},
             { qt: 2 * quantidade, title: "Roquete Esticar", codigo: ""},
             { qt: 2 * quantidade, title: "Peça U para esticar lateral", codigo: ""},
             { qt: 2 * quantidade, title: "Fita Esticar", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Canto 10 ", codigo: ""},   
-            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+tenda.largura, codigo: ""},
+            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+estrutura.largura, codigo: ""},
             { qt: 1 * quantidade, title: "Ferro Esticar Lateral 10m", codigo: ""}
 
         );
     }
-    else if(tenda.largura == 7.5 || tenda.largura == 10)
+    else if(estrutura.largura == 7.5 || estrutura.largura == 10)
     {
-        triangulo.push(
-            { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas"+tenda.largura, codigo: ""},
-            { qt: 2 * quantidade, title: "Régua Aluminio Esticar Cobertura - "+(tenda.largura/2), codigo: ""},
+        componentesTriangulo.push(
+            { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas"+estrutura.largura, codigo: ""},
+            { qt: 2 * quantidade, title: "Régua Aluminio Esticar Cobertura - "+(estrutura.largura/2), codigo: ""},
             { qt: 3 * quantidade, title: "Roquete Esticar", codigo: ""},
             { qt: 3 * quantidade, title: "Fita Esticar", codigo: ""},
             { qt: 3 * quantidade, title: "Peça U para esticar lateral", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Canto 10", codigo: ""},
             { qt: 1 * quantidade, title: "Entrega Normal 10", codigo: ""},
-            { qt: 1 * quantidade, title: "Prumo Topo "+tenda.largura + " Altura do Pé "+ tenda.altura_do_pe, codigo: ""},
+            { qt: 1 * quantidade, title: "Prumo Topo "+estrutura.largura + " Altura do Pé "+ estrutura.alturaDoPe, codigo: ""},
             { qt: 1 * quantidade, title: "Gulpilha R3.5", codigo: ""},
-            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+tenda.largura, codigo: ""},
-            { qt: 2 * quantidade, title: (tenda.largura == 7.5) ? ("Ferro Esticar Lateral 3.75m") : "Ferro Esticar Lateral 10m", codigo: ""}
+            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+estrutura.largura, codigo: ""},
+            { qt: 2 * quantidade, title: (estrutura.largura == 7.5) ? ("Ferro Esticar Lateral 3.75m") : "Ferro Esticar Lateral 10m", codigo: ""}
         );
     }
-    else if(tenda.largura == 12.5)
+    else if(estrutura.largura == 12.5)
     {
-        triangulo.push(
-            { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas"+tenda.largura, codigo: ""},
-            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+tenda.largura, codigo: ""},
+        componentesTriangulo.push(
+            { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas"+estrutura.largura, codigo: ""},
+            { qt: 2 * quantidade, title: "Peça L tranca cortineiro Topo"+estrutura.largura, codigo: ""},
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas 2.5", codigo: ""},
             { qt: 2 * quantidade, title: "Régua Aluminio Esticar Cobertura  - 5", codigo: ""},
             { qt: 1 * quantidade, title: "Régua Aluminio Esticar Cobertura - 2.5", codigo: ""},
@@ -474,15 +474,15 @@ export function calcularTriangulo(tenda)
             { qt: 2 * quantidade, title: "Entrega Canto 10", codigo: ""},
             { qt: 1 * quantidade, title: "Gulpilha R3.5", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Normal 10", codigo: ""},
-            { qt: 2 * quantidade, title: "Prumo Topo 10" + " Altura do Pé "+ tenda.altura_do_pe, codigo: ""},
+            { qt: 2 * quantidade, title: "Prumo Topo 10" + " Altura do Pé "+ estrutura.alturaDoPe, codigo: ""},
             { qt: 2 * quantidade, title: "Ferro Esticar Lateral 10m", codigo: ""},
             { qt: 1 * quantidade, title: "Ferro Esticar Lateral 2.5m", codigo: ""}
 
         );
     }
-    else if(tenda.largura == 15)
+    else if(estrutura.largura == 15)
     {
-        triangulo.push(
+        componentesTriangulo.push(
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Esquerdo 15", codigo: ""},
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Direito 15", codigo: ""},
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Central", codigo: ""},
@@ -491,15 +491,15 @@ export function calcularTriangulo(tenda)
             { qt: 4 * quantidade, title: "Fita Esticar", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Canto 10", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Normal 10", codigo: ""},
-            { qt: 2 * quantidade, title: "Prumo Topo 15 " + " Altura do Pé "+ tenda.altura_do_pe, codigo: ""},
+            { qt: 2 * quantidade, title: "Prumo Topo 15 " + " Altura do Pé "+ estrutura.alturaDoPe, codigo: ""},
             { qt: 3 * quantidade, title: "Ferro Esticar Lateral 15m", codigo: ""},
             { qt: 6 * quantidade, title: "Parafuso Esticar Lateral", codigo: ""}
 
         );
     } 
-    else if(tenda.largura == 17.5)
+    else if(estrutura.largura == 17.5)
     {
-        triangulo.push(
+        componentesTriangulo.push(
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Esquerdo 15", codigo: ""},
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Direito 15", codigo: ""},
             { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Central 3.75", codigo: ""},
@@ -509,7 +509,7 @@ export function calcularTriangulo(tenda)
             { qt: 5 * quantidade, title: "Fita Esticar", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Canto 10", codigo: ""},
             { qt: 3 * quantidade, title: "Entrega Normal 10", codigo: ""},
-            { qt: 3 * quantidade, title: "Prumo Topo 15" + " Altura do Pé "+ tenda.altura_do_pe, codigo: ""},
+            { qt: 3 * quantidade, title: "Prumo Topo 15" + " Altura do Pé "+ estrutura.alturaDoPe, codigo: ""},
             { qt: 1 * quantidade, title: "Aumento Prumo Central 17.5", codigo: ""},
             { qt: 2 * quantidade, title: "Ferro Esticar Lateral 15m", codigo: ""},
             { qt: 2 * quantidade, title: "Ferro Esticar Lateral 3.75m", codigo: ""},
@@ -517,9 +517,9 @@ export function calcularTriangulo(tenda)
 
         );
     }
-    else if(tenda.largura == 20)
+    else if(estrutura.largura == 20)
     {
-        triangulo.push(
+        componentesTriangulo.push(
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Esquerdo 15", codigo: ""},
             { qt: 1 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Direito 15", codigo: ""},
             { qt: 2 * quantidade, title: "Tranca Cortineiro Topo 2Aguas Central", codigo: ""},
@@ -530,96 +530,94 @@ export function calcularTriangulo(tenda)
             { qt: 5 * quantidade, title: "Fita Esticar", codigo: ""},
             { qt: 2 * quantidade, title: "Entrega Canto 10", codigo: ""},
             { qt: 3 * quantidade, title: "Entrega Normal 10", codigo: ""},
-            { qt: 2 * quantidade, title: "Prumo Topo 15"+ " Altura do Pé "+ tenda.altura_do_pe, codigo: ""},
+            { qt: 2 * quantidade, title: "Prumo Topo 15"+ " Altura do Pé "+ estrutura.alturaDoPe, codigo: ""},
             { qt: 1 * quantidade, title: "Prumo Topo Central 20", codigo: ""},
             { qt: 4 * quantidade, title: "Ferro Esticar Lateral 15m", codigo: ""},
             { qt: 8 * quantidade, title: "Parafuso Esticar Lateral", codigo: ""}
 
         );
     }
-    else if(tenda.largura== 25)
+    else if(estrutura.largura== 25)
     {
         console.log("Não existe");
     }
 
-    if(tenda.fixacao == "Estacas" || tenda.fixacao == "Pesos")
+    if(estrutura.fixacao == "Estacas" || estrutura.fixacao == "Pesos")
     {
-        
-        
-        if(tenda.largura > 5 && tenda.largura < 12.5)
+        if(estrutura.largura > 5 && estrutura.largura < 12.5)
         {
             //console.log("Sapat");
-            triangulo.push(
-                { qt: 1 * quantidade, title: "Sapata Chão "+tenda.largura, codigo: ""},
+            componentesTriangulo.push(
+                { qt: 1 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo: ""},
                 { qt: 1 * quantidade, title: "Chaveta Sapata Pé 10", codigo: ""}
             );
-            if(tenda.fixacao == "Estacas")
+            if(estrutura.fixacao == "Estacas")
             {
-                triangulo.push(
+                componentesTriangulo.push(
                     { qt: 2 * quantidade, title: "Estacas", codigo: ""}
                 );
             }
-            if(tenda.fixacao == "Pesos")
+            if(estrutura.fixacao == "Pesos")
         {
-            triangulo.push(
+            componentesTriangulo.push(
                 { qt: 1 * quantidade, title: "Pesos", codigo: ""}
             );
         }
             
         }
-        else if(tenda.largura == 12.5)
+        else if(estrutura.largura == 12.5)
         {
-            triangulo.push(
-                { qt: 2 * quantidade, title: "Sapata Chão "+tenda.largura, codigo: ""},
+            componentesTriangulo.push(
+                { qt: 2 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo: ""},
                 { qt: 2 * quantidade, title: "Chaveta Sapata Pé 10", codigo: ""}
             );
 
-            if(tenda.fixacao == "Estacas")
+            if(estrutura.fixacao == "Estacas")
             {
-                triangulo.push(
+                componentesTriangulo.push(
                     { qt: 4 * quantidade, title: "Estacas", codigo: ""}
                 );
             }
-            if(tenda.fixacao == "Pesos")
+            if(estrutura.fixacao == "Pesos")
         {
-            triangulo.push(
+            componentesTriangulo.push(
                 { qt: 2 * quantidade, title: "Pesos", codigo: ""}
             );
         }
         }
-        else if(tenda.largura == 15)
+        else if(estrutura.largura == 15)
         {
-            triangulo.push(
-                { qt: 2 * quantidade, title: "Sapata Chão "+tenda.largura, codigo: ""},
+            componentesTriangulo.push(
+                { qt: 2 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo: ""},
                 { qt: 2 * quantidade, title: "Chaveta Sapata Pé 15", codigo: ""}
 
             );
-            if(tenda.fixacao == "Estacas")
+            if(estrutura.fixacao == "Estacas")
             {
-                triangulo.push(
+                componentesTriangulo.push(
                     { qt: 4 * quantidade, title: "Estacas", codigo: ""}
                 );
             }
-            if(tenda.fixacao == "Pesos")
+            if(estrutura.fixacao == "Pesos")
             {
-                triangulo.push(
+                componentesTriangulo.push(
                     { qt: 2 * quantidade, title: "Pesos", codigo: ""}
                 );
             }
         }
-        else if(tenda.largura > 15 && tenda.largura <= 20)
+        else if(estrutura.largura > 15 && estrutura.largura <= 20)
         {
-            triangulo.push(
-                { qt: 3 * quantidade, title: "Sapata Chão "+tenda.largura, codigo: ""},
+            componentesTriangulo.push(
+                { qt: 3 * quantidade, title: "Sapata Chão "+estrutura.largura, codigo: ""},
                 { qt: 3 * quantidade, title: "Chaveta Sapata Pé 15", codigo: ""},
             );
-            if(tenda.fixacao == "Estacas")
+            if(estrutura.fixacao == "Estacas")
             {
-                triangulo.push(
+                componentesTriangulo.push(
                     { qt: 6 * quantidade, title: "Estacas", codigo: ""}
                 );
             }
-            if(tenda.fixacao == "Pesos")
+            if(estrutura.fixacao == "Pesos")
             {
                 triangulo.push(
                     { qt: 3 * quantidade, title: "Pesos", codigo: ""}
@@ -627,27 +625,27 @@ export function calcularTriangulo(tenda)
             }
         }
     }
-    if(tenda.fixacao == "Estrado" )
+    if(estrutura.fixacao == "Estrado" )
     {
-        if(tenda.largura > 5 && tenda.largura <= 12.5)
+        if(estrutura.largura > 5 && estrutura.largura <= 12.5)
         {
-            triangulo.push(
+            componentesTriangulo.push(
                 { qt: 1 * quantidade, title: "Sapata Estrado Topo", codigo: ""},
                 { qt: 1 * quantidade, title: "Chaveta Sapata Pé", codigo: ""},
                 { qt: 1 * quantidade, title: "Chaveta Meia-lua", codigo: ""},
             );
         }
-        else if(tenda.largura == 15)
+        else if(estrutura.largura == 15)
         {
-            triangulo.push(
+            componentesTriangulo.push(
                 { qt: 2 * quantidade, title: "Sapata Estrado Topo", codigo: ""},
                 { qt: 2 * quantidade, title: "Chaveta Sapata Pé", codigo: ""},
                 { qt: 2 * quantidade, title: "Chaveta Meia-lua", codigo: ""},
             );
         }
-        else if(tenda.largura > 15 && tenda.largura <= 20)
+        else if(estrutura.largura > 15 && estrutura.largura <= 20)
         {
-            triangulo.push(
+            componentesTriangulo.push(
                 { qt: 3 * quantidade, title: "Sapata Estrado Topo", codigo: ""},
                 { qt: 3 * quantidade, title: "Chaveta Sapata Pé 15", codigo: ""},
                 { qt: 3 * quantidade, title: "Chaveta Meia-lua", codigo: ""},
@@ -655,6 +653,6 @@ export function calcularTriangulo(tenda)
         }
     }
 
-    console.log(triangulo);
-    return UpdateRepeatedValues(triangulo);
+    console.log(componentesTriangulo);
+    return UpdateRepeatedValues(componentesTriangulo);
 }

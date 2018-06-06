@@ -11,7 +11,7 @@
 
 
 <script>
-import { calcularTenda, calcularEstrutura, calcularCobertura, calcularLaterais, calcularIglo } from "../utils/tendas";
+import { calcularTenda, calcularEstrutura, calcularCobertura, calcularLaterais, calcularIglo } from "../../utils/tendas";
 
 export default {
     data() {
