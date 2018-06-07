@@ -68,71 +68,74 @@
 
 
 <script>
-import tabela from "./tabela/tabela"
-import mySnack from "./snackbar/mySnackbar"
-import {getClientes, getObras, novaObra}  from "@/utils/CRM/crm-events.js"
+import tabela from "./tabela/tabela";
+import mySnack from "./snackbar/mySnackbar";
+import { getClientes, getObras, novaObra } from "@/utils/CRM/crm-events.js";
 export default {
-    components: {tabela, mySnack},
-    data(){
-        return{
-            novoCliente: [],
-            clientes: [],
-            local: null,
-            date: null,
-            dateModal: false,
-            formNovaObra: null,
-            listaDeObras: [],
-            form_base_rule: [
-                v => !!v || "Introduzir Valor"
-            ],
-            mySnack: false,
-            mySnackText: '',
-        }
+  components: { tabela, mySnack },
+  data() {
+    return {
+      novoCliente: [],
+      clientes: [],
+      local: null,
+      date: null,
+      dateModal: false,
+      formNovaObra: null,
+      listaDeObras: [],
+      form_base_rule: [v => !!v || "Introduzir Valor"],
+      mySnack: false,
+      mySnackText: ""
+    };
+  },
+  methods: {
+    listarClientes: function() {
+      getClientes()
+        .then(suc => {
+          suc.data.forEach(element => {
+            this.clientes.push(element.nome);
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    methods:{
-        listarClientes: function(){
-            getClientes()
-            .then(suc => {
-                suc.data.forEach(element => {
-                    this.clientes.push( element.nome );
-                });
-            }).catch(err => {
-                console.log(err);
+    listarObras: function() {
+      getObras()
+        .then(suc => {
+          suc.data.forEach(element => {
+            this.listaDeObras.push({
+              id: element.id,
+              local: element.local,
+              cliente: element.cliente,
+              dia: element.date
             });
-        },
-        listarObras: function(){
-            getObras()
-            .then(suc => {
-                suc.data.forEach(element => {
-                    this.listaDeObras.push(
-                        { id:element.id, local: element.local, cliente: element.cliente, dia:element.date }
-                    );
-                });
-            }).catch(err => {
-                console.log(err);
-            });
-        },
-        novaObraClick: function(){
-            if(this.$refs.formNovaObra.validate()){
-                console.log(this.novoCliente);
-                console.log(this.local);
-                console.log(this.date);
-                novaObra(this.local, this.novoCliente, this.date)
-                    .then(suc => {
-                        this.mySnackText = "Registo com sucesso"
-                        this.mySnack = true;
-                    })
-                    .catch(err =>{
-                        console.log(err)
-                        this.mySnackText = "Erro no registo"
-                        this.mySnack = true;
-                    });
-            }
-        }
+          });
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
-    mounted(){
-        this.listarObras();
-        this.listarClientes();
+    novaObraClick: function() {
+      if (this.$refs.formNovaObra.validate()) {
+        //console.log(this.novoCliente);
+        //console.log(this.local);
+        //console.log(this.date);
+        novaObra(this.local, this.novoCliente, this.date)
+          .then(suc => {
+            this.mySnackText = "Registo com sucesso";
+            this.mySnack = true;
+          })
+          .catch(err => {
+            console.log(err);
+            this.mySnackText = "Erro no registo";
+            this.mySnack = true;
+          });
+      }
     }
-}
+  },
+  mounted() {
+    this.listarObras();
+    this.listarClientes();
+  }
+};
 </script>
