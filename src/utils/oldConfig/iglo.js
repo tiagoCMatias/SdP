@@ -53,107 +53,107 @@ export function EstruturaIglo(tenda)
     //return iglo;
 }
 
-export function CoberturaIglo(cobertura, estrutura)
+export function CoberturaIglo(tenda)
 {
-    let new_comprimento = estrutura.comprimento;
-    if(estrutura.tipo_topo_1 == "Redondo")
-        new_comprimento -= (estrutura.largura/2);
-    if(estrutura.tipo_topo_2 == "Redondo")
-        new_comprimento -= (estrutura.largura/2);
+    let new_comprimento = tenda.comprimento;
+    if(tenda.tipo_topo_1 == "Redondo")
+        new_comprimento -= (tenda.largura/2);
+    if(tenda.tipo_topo_2 == "Redondo")
+        new_comprimento -= (tenda.largura/2);
 
     let resto = new_comprimento%5;
     console.log(resto);
     //let modulos_5 = Math.floor(estrutura.comprimento/5);
-    let componentesCobertura = [];
-    if(cobertura.opaco > 0)
+    let cobertura = [];
+    if(tenda.cobertura_opaco > 0)
     {
-        componentesCobertura.push({qt: cobertura.opaco, title: "Cobertura Opaco Iglo*"+ estrutura.largura, codigo:'x'});
+        cobertura.push({qt: tenda.cobertura_opaco, title: "Cobertura Opaco Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(cobertura.transparente > 0)
+    if(tenda.cobertura_transparent > 0)
     {
-        componentesCobertura.push({qt: cobertura.transparente, title: "Cobertura Transparente Iglo*"+ estrutura.largura, codigo:'x'});
+        cobertura.push({qt: tenda.cobertura_transparent, title: "Cobertura Transparente Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(cobertura.blackout > 0)
+    if(tenda.cobertura_blackout > 0)
     {
-        componentesCobertura.push({qt: cobertura.blackout, title: "Cobertura Blackout Iglo*"+ estrutura.largura, codigo:'x'});
+        cobertura.push({qt: tenda.cobertura_blackout, title: "Cobertura Blackout Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(cobertura.especial != null)
+    if(tenda.cobertura_especial != null)
     {
-        componentesCobertura.push({qt: 1, title: "Cobertura "+ cobertura.especial+" Iglo*"+ resto, codigo:'x'});
+        cobertura.push({qt: 1, title: "Cobertura "+tenda.cobertura_especial+" Iglo*"+resto, codigo:'x'});
     }
 
-    return componentesCobertura;
+    return cobertura;
 }
 
-export function LateraisIglo(lateral, estrutura)
+export function LateraisIglo(tenda)
 {
-    let new_comprimento = estrutura.comprimento;
-    if(estrutura.tipo_topo_1 == "Redondo")
-        new_comprimento -= (estrutura.largura/2);
-    if(estrutura.tipo_topo_2 == "Redondo")
-        new_comprimento -= (estrutura.largura/2);
+    let new_comprimento = tenda.comprimento;
+    if(tenda.tipo_topo_1 == "Redondo")
+        new_comprimento -= (tenda.largura/2);
+    if(tenda.tipo_topo_2 == "Redondo")
+        new_comprimento -= (tenda.largura/2);
 
     let resto = new_comprimento%5;
 
-    let componentesLaterais = [];
-    if(lateral.opaco > 0)
+    let lateral = [];
+    if(tenda.lateral_opaco > 0)
     {
         console.log("push opaco");
-        componentesLaterais.push({qt: lateral.opaco, title: "Lateral Opaco Iglo*"+ estrutura.largura, codigo:'x'});
+        lateral.push({qt: tenda.lateral_opaco, title: "Lateral Opaco Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(lateral.transparente > 0)
+    if(tenda.lateral_transparente > 0)
     {
-        console.log("transparente: " + lateral.transparente);
-        componentesLaterais.push({qt: lateral.transparente, title: "Lateral Transparente Iglo*"+estrutura.largura, codigo:'x'});
+        console.log("transparente: " + tenda.lateral_transparente);
+        lateral.push({qt: tenda.lateral_transparente, title: "Lateral Transparente Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(lateral.blackout > 0)
+    if(tenda.lateral_blackout > 0)
     {
         console.log("blackout");
-        componentesLaterais.push({qt: lateral.blackout, title: "Lateral Blackout Iglo*"+estrutura.largura, codigo:'x'});
+        lateral.push({qt: tenda.lateral_blackout, title: "Lateral Blackout Iglo*"+tenda.largura, codigo:'x'});
     }
-    if(lateral.especial1 != null)
+    if(tenda.lateral_especial_1 != null)
     {
-        componentesLaterais.push({qt: 1, title: "Lateral "+lateral.especial1+" Iglo*"+resto, codigo:'x'});
+        lateral.push({qt: 1, title: "Lateral "+tenda.lateral_especial_1+" Iglo*"+resto, codigo:'x'});
     }
-    if(lateral.especial2 != null)
+    if(tenda.lateral_especial_2 != null)
     {
-        componentesLaterais.push({qt: 1, title: "Lateral "+lateral.especial2+" Iglo*"+resto, codigo:'x'});
+        lateral.push({qt: 1, title: "Lateral "+tenda.lateral_especial_2+" Iglo*"+resto, codigo:'x'});
     }
 
-    if(estrutura.tipo_topo_1 == "Direito")
+    if(tenda.tipo_topo_1 == "Direito")
     {
-        componentesLaterais.push(
-            {qt: 1, title: "Lateral de Angulo Direito "+lateral.topoDireito1+" Iglo*"+estrutura.largura, codigo:'x'},
-            {qt: 1, title: "Lateral de Angulo Esquerdo "+lateral.topoEsquerdo1+" Iglo*"+estrutura.largura, codigo:'x'}
+        lateral.push(
+            {qt: 1, title: "Lateral de Angulo Direito "+tenda.lateral_direito_1+" Iglo*"+tenda.largura, codigo:'x'},
+            {qt: 1, title: "Lateral de Angulo Esquerdo "+tenda.lateral_esquerdo_1+" Iglo*"+tenda.largura, codigo:'x'}
         );
     }
-    if(estrutura.tipo_topo_2 == "Direito")
+    if(tenda.tipo_topo_2 == "Direito")
     {
-        componentesLaterais.push(
-            {qt: 1, title: "Lateral de Angulo Direito "+lateral.topoDireito2+" Iglo*"+estrutura.largura, codigo:'x'},
-            {qt: 1, title: "Lateral de Angulo Esquerdo "+lateral.topoEsquerdo2+" Iglo*"+estrutura.largura, codigo:'x'}
+        lateral.push(
+            {qt: 1, title: "Lateral de Angulo Direito "+tenda.lateral_direito_2+" Iglo*"+tenda.largura, codigo:'x'},
+            {qt: 1, title: "Lateral de Angulo Esquerdo "+tenda.lateral_esquerdo_2+" Iglo*"+tenda.largura, codigo:'x'}
         );
     }
-    if(lateral.topoRedondo1 != null)
+    if(tenda.lateral_topo_redondo_1 != null)
     {
-        componentesLaterais.push(
-            {qt: (estrutura.largura/5)+2, title: "Lateral Topo Redondo "+lateral.topoRedondo1+" Iglo*"+estrutura.largura, codigo:'x'},
-            {qt: (estrutura.largura/5)+2, title: "Ferro Esticar Topo Redondo Iglo*"+estrutura.largura, codigo:'x'}
+        lateral.push(
+            {qt: (tenda.largura/5)+2, title: "Lateral Topo Redondo "+tenda.lateral_topo_redondo_1+" Iglo*"+tenda.largura, codigo:'x'},
+            {qt: (tenda.largura/5)+2, title: "Ferro Esticar Topo Redondo Iglo*"+tenda.largura, codigo:'x'}
         );
     }
-    if(lateral.topoRedondo2 != null)
+    if(tenda.lateral_topo_redondo_2 != null)
     {
-        componentesLaterais.push(
-            {qt: (estrutura.largura/5)+2, title: "Lateral Topo Redondo "+lateral.topoRedondo2+" Iglo*"+estrutura.largura, codigo:'x'},
-            {qt: (estrutura.largura/5)+2, title: "Ferro Esticar Topo Redondo Iglo*"+estrutura.largura, codigo:'x'}
+        lateral.push(
+            {qt: (tenda.largura/5)+2, title: "Lateral Topo Redondo "+tenda.lateral_topo_redondo_2+" Iglo*"+tenda.largura, codigo:'x'},
+            {qt: (tenda.largura/5)+2, title: "Ferro Esticar Topo Redondo Iglo*"+tenda.largura, codigo:'x'}
         );
     }
 
     //console.log(lateral);
-    return componentesLaterais;
+    return lateral;
 }
 
-export function TrianguloIglo(bacalhau)
+export function TrianguloIglo(tenda)
 {
     let triangulos = [];
     if(tenda.triangulo_opaco > 0)
@@ -214,7 +214,7 @@ export function calcularBola(tenda)
 }
 
 
-function calcularTopoDireitoIglo(tenda, bacalhau)
+function calcularTopoDireitoIglo(tenda)
 {
 
     let topo = [];
@@ -237,16 +237,16 @@ function calcularTopoDireitoIglo(tenda, bacalhau)
         { qt: (tenda.largura/5) * quantidade, title: 'Ferro Esticar Lateral 5m Iglo*'+tenda.largura, codigo:''}
 
     );
-    if(bacalhau.triangulo1 != null)
+    if(tenda.triangulo_1 != null)
     {
         topo.push(
-            { qt: 1, title: 'Triangulo Topo Direito ' + bacalhau.triangulo1+ ' Iglo*'+tenda.largura, codigo:''}
+            { qt: 1, title: 'Triangulo Topo Direito ' + tenda.triangulo_1+ ' Iglo*'+tenda.largura, codigo:''}
         );
     }
-    if(bacalhau.triangulo2 != null)
+    if(tenda.triangulo_2 != null)
     {
         topo.push(
-            { qt: 1, title: 'Triangulo Topo Direito ' + bacalhau.triangulo2+ ' Iglo*'+tenda.largura, codigo:''}
+            { qt: 1, title: 'Triangulo Topo Direito ' + tenda.triangulo_2+ ' Iglo*'+tenda.largura, codigo:''}
         );
     }
     if(tenda.largura >= 15)
@@ -308,10 +308,10 @@ function calcularTopoDireitoIglo(tenda, bacalhau)
         );
     }
 
-    //console.log("topoDireito");
-    //console.log(topo);
-    //console.log("quant: ");
-    //console.log(quantidade);
+    console.log("topoDireito");
+    console.log(topo);
+    console.log("quant: ");
+    console.log(quantidade);
 
     return UpdateRepeatedValues(topo);
 }
@@ -533,7 +533,7 @@ function calcularMeioModulo(tenda, quantidade)
     return meio_modulo;
 }
 
-export function calcularTopoIglo(tenda, bacalhau)
+export function calcularTopoIglo(tenda)
 {
     let topo_1 = [];
     let topo_2 = [];
@@ -544,16 +544,16 @@ export function calcularTopoIglo(tenda, bacalhau)
 
     if(tenda.tipo_topo_1 != tenda.tipo_topo_2)
     {
-        topo_direito = calcularTopoDireitoIglo(tenda, bacalhau);
-        topo_redondo = calcularTopoRedondo(tenda, bacalhau);
+        topo_direito = calcularTopoDireitoIglo(tenda);
+        topo_redondo = calcularTopoRedondo(tenda);
     }
     else if(tenda.tipo_topo_1 == "Direito" || tenda.tipo_topo_2 == "Direito")
     {
-        topo_direito = calcularTopoDireitoIglo(tenda, bacalhau);
+        topo_direito = calcularTopoDireitoIglo(tenda);
     }
     else {
-        topo_redondo = calcularTopoRedondo(tenda, bacalhau);
-        topo_redondo = topo_redondo.concat(calcularTopoRedondo(tenda, bacalhau));
+        topo_redondo = calcularTopoRedondo(tenda);
+        topo_redondo = topo_redondo.concat(calcularTopoRedondo(tenda));
     }
 
     /*
@@ -580,7 +580,7 @@ export function calcularTopoIglo(tenda, bacalhau)
     return UpdateRepeatedValues(comp);
 }
 
-function calcularTopoRedondo(tenda, bacalhau)
+function calcularTopoRedondo(tenda)
 {
     let topo = [];
     let quantidade = (tenda.largura/5)+2;
@@ -600,23 +600,23 @@ function calcularTopoRedondo(tenda, bacalhau)
             { qt: 1 , title: 'Chapeu Chines ', codigo: ''},
         );
     }
-    if(bacalhau.opaco > 0 )
+    if(tenda.bacalhau_opaco > 0 )
     {
-        console.log("bacalhau.opaco");
+        console.log("bacalhau_opaco");
         topo.push(
-            { qt: bacalhau.opaco , title: 'Bacalhau Opaco Iglo*'+tenda.largura, codigo: ''},
+            { qt: tenda.bacalhau_opaco , title: 'Bacalhau Opaco Iglo*'+tenda.largura, codigo: ''},
         );
     }
-    if(bacalhau.transparente > 0 )
+    if(tenda.bacalhau_transparente > 0 )
     {
         topo.push(
-            { qt: bacalhau.transparente , title: 'Bacalhau Transparente Iglo*'+tenda.largura, codigo: ''},
+            { qt: tenda.bacalhau_transparente , title: 'Bacalhau Transparente Iglo*'+tenda.largura, codigo: ''},
         );
     }
-    if(bacalhau.blackout > 0 )
+    if(tenda.bacalhau_blackout > 0 )
     {
         topo.push(
-            { qt: bacalhau.blackout , title: 'Bacalhau Blackout Iglo*'+tenda.largura, codigo: ''},
+            { qt: tenda.bacalhau_blackout , title: 'Bacalhau Blackout Iglo*'+tenda.largura, codigo: ''},
         );
     }
 
