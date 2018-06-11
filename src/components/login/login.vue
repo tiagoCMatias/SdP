@@ -66,7 +66,7 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.$store
           .dispatch("authLogin", {
-            username: this.name,
+            username: this.name.toLowerCase(),
             password: this.password
           })
           .then(suc => {

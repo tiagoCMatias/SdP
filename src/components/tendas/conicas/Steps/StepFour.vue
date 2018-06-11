@@ -3,7 +3,7 @@
             <v-container grid-list-md>
             <v-layout row wrap class="text-xs-center">
                 <v-flex xs12 sm2 mx-3>
-                    <v-btn color="primary" dark slot="activator">New Item</v-btn>
+                    <v-btn color="primary" @click.native="table_edit_dialog = true" dark slot="activator">New Item</v-btn>
                 </v-flex>
                 <v-flex xs12 sm6 mx-2>
                     <v-text-field

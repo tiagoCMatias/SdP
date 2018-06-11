@@ -1,58 +1,52 @@
 import Vue from 'vue';
+import Vuex from 'vuex'
 import Login from '../../../src/components/login/login'
-import MainMenu from '../../../src/components/Menu/mainMenu'
 import sinon from 'sinon'
-import Router from 'vue-router'
+import router from '../../../src/router'
 import {
   shallowMount,
   createLocalVue
-
 } from '@vue/test-utils'
+
 import {
-  store
-} from '../../../src/store'
+  mount
+} from 'avoriaz'
+
 import {
   Vuetify,
   VForm,
   VBtn
 } from 'vuetify'
 
-Vue.use(Vuetify, {
-  components: {
-    VForm,
-    VBtn
-  }
-})
 
-const localVue = createLocalVue()
-localVue.use(Router)
-
-const routes = [{
-    path: '/menu',
-    name: 'menu',
-    component: MainMenu
-  },
-  {
-    path: '/',
-    name: 'login',
-    component: Login
-  },
-]
-const router = new Router({
-  routes
-})
 
 describe('login.vue', () => {
-  let wrapper = null;
+  let wrapper;
+  let store;
   //Mount component
   beforeEach(function () {
-    wrapper = shallowMount(Login, {
-
+    store = new Vuex.Store({
+      state: {
+        token: null,
+        user: null,
+        auth: false,
+      }
+    });
+    const localVue = createLocalVue();
+    localVue.use(router);
+    localVue.use(Vuex);
+    localVue.use(Vuetify);
+    localVue.use(VForm);
+    wrapper = mount(Login, {
+      router,
+      Vuex,
+      Vuetify,
+      VForm
     });
   });
   // Inspect the raw component options
   it('should mount component and pass', () => {
-    expect(wrapper.isVueInstance()).to.be.true;
+    expect(wrapper.contains('v-layout')).to.equal(true)
     //expect(wrapper.vm.$route).to.be.an('object');
   });
 

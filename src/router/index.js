@@ -9,12 +9,12 @@ import Iglo from '@/components/tendas/iglo/iglo'
 import Conica from '@/components/tendas/conicas/conica'
 import CRM from '@/components/CRM/crm'
 import ListaMateriais from '@/components/materiais/lista'
+import AccountSettings from "@/components/Account/account"
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
-    {
+  routes: [{
       path: '/',
       name: 'login',
       component: Login
@@ -58,6 +58,11 @@ export default new Router({
       path: '/lista',
       name: 'Lista de Materiais',
       component: ListaMateriais
+    },
+    {
+      path: '/account',
+      name: 'Account Settings',
+      component: AccountSettings
     }
   ],
   mode: 'history'

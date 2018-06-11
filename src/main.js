@@ -29,6 +29,7 @@ import {
   VRadioGroup,
   VSlider,
   VSnackbar,
+  VAvatar,
   VForm,
   VCard,
   VToolbar,
@@ -39,6 +40,7 @@ import '../node_modules/vuetify/src/stylus/app.styl'
 Vue.use(Vuetify, {
   components: {
     VApp,
+    VAvatar,
     VNavigationDrawer,
     VFooter,
     VList,

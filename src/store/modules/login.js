@@ -11,6 +11,7 @@ const state = {
   token: null,
   user: null,
   auth: false,
+  userLevel: null,
 };
 
 const getters = {
@@ -22,6 +23,15 @@ const getters = {
   },
   authResult: state => {
     return state.auth;
+  },
+  isAdmin: state => {
+    return state.user !== 'Admin';
+  },
+  getAccountName: state => {
+    return state.user;
+  },
+  getUserLevel: state => {
+    return state.userLevel;
   }
 }
 
@@ -29,6 +39,7 @@ const mutations = {
   login: (state, payload) => {
     state.token = payload.token;
     state.user = payload.user;
+    state.userLevel = payload.userLevel;
     state.auth = true;
   },
   logout: (state) => {
@@ -37,6 +48,7 @@ const mutations = {
     state.token = null;
     state.user = null;
     state.auth = false;
+    state.userLevel = null;
     router.replace('/');
   }
 }
@@ -54,11 +66,13 @@ const actions = {
   }) {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
+    const userLevel = localStorage.getItem("userLevel");
     if (!token || !username)
       return;
     commit('login', {
       'token': token,
-      'user': username
+      'user': username,
+      'userLevel': userLevel
     });
   },
   authLogin: ({
@@ -71,9 +85,11 @@ const actions = {
         .then(suc => {
           localStorage.setItem("token", suc.data.jwt);
           localStorage.setItem("username", suc.data.username);
+          localStorage.setItem("userLevel", suc.data.level_id);
           commit('login', {
             'token': suc.data.jwt,
-            'user': suc.data.username
+            'user': suc.data.username,
+            'userLevel': suc.data.level_id
           });
           dispatch('setLogoutTime', 3600);
           router.replace('/menu');
