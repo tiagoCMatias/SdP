@@ -8,11 +8,12 @@
         v-for="item in menuItems" 
         :key="item.title" 
         router :to="item.link"
+        @click.native="menuClick(item)"
         > 
         <v-icon>
             {{item.icon}}
         </v-icon>
-        {{item.title}}
+          {{item.title}}
         </v-btn>
     </v-toolbar-items>
   </v-toolbar>
@@ -27,6 +28,9 @@ export default {
   methods: {
     drawerClick: function() {
       this.$emit("drawerClick");
+    },
+    menuClick: function(item) {
+      if (item.action !== null) this.$emit(item.action);
     }
   }
 };

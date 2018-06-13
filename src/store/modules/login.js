@@ -3,9 +3,8 @@ import {
 } from "../../utils/configuration-manager";
 
 import router from '../../router'
-import {
-  SSL_OP_ALLOW_UNSAFE_LEGACY_RENEGOTIATION
-} from "constants";
+
+const ADMIN_LEVEL = 1;
 
 const state = {
   token: null,
@@ -25,7 +24,7 @@ const getters = {
     return state.auth;
   },
   isAdmin: state => {
-    return state.user !== 'Admin';
+    return state.userLevel === ADMIN_LEVEL;
   },
   getAccountName: state => {
     return state.user;
@@ -54,19 +53,15 @@ const mutations = {
 }
 
 const actions = {
-  setLogoutTime({
-    commit
-  }, expirationTime) {
+  setLogoutTime({ commit }, expirationTime) {
     setTimeout(() => {
       commit('logout')
     }, expirationTime * 1000) // miliseconds to seconds
   },
-  autoLogIn({
-    commit
-  }) {
+  autoLogIn({ commit }) {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
-    const userLevel = localStorage.getItem("userLevel");
+    const userLevel = parseInt(localStorage.getItem("userLevel"));
     if (!token || !username)
       return;
     commit('login', {
@@ -75,12 +70,8 @@ const actions = {
       'userLevel': userLevel
     });
   },
-  authLogin: ({
-    commit,
-    dispatch
-  }, payload) => {
+  authLogin: ({ commit, dispatch }, payload) => {
     return new Promise((resolve, reject) => {
-      // Do something here... lets say, a http call using vue-resource
       signIn(payload.username, payload.password)
         .then(suc => {
           localStorage.setItem("token", suc.data.jwt);
@@ -95,10 +86,10 @@ const actions = {
           router.replace('/menu');
           resolve(true);
         })
-        .catch(err => {
-          commit('logout')
-          reject(Error("An error has occurred! Please try again."))
-        })
+        .catch(() => {
+            commit('logout');
+            reject(Error("An error has occurred! Please try again."));
+          })
     })
   },
 

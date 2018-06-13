@@ -1,12 +1,12 @@
 <template>
     <v-navigation-drawer v-model="drawerState" color="primary" temporary="" fixed app>
     <v-list>
-      <v-list-tile v-for="item in menuItems" :key="item.title" router :to="item.link">
-        <v-list-tile-action>
+      <v-list-tile v-for="item in menuItems" :key="item.title" router :to="item.link" >
+        <v-list-tile-action @click.native="menuClick(item)">
           <v-icon>{{ item.icon }}</v-icon>
         </v-list-tile-action>
         <v-list-tile-content>
-          <v-list-tile-title>{{ item.title }}</v-list-tile-title>
+          <v-list-tile-title >{{ item.title }}</v-list-tile-title>
         </v-list-tile-content>
       </v-list-tile>
     </v-list>
@@ -24,6 +24,9 @@ export default {
   watch: {
     drawer: function(newVal, oldVal) {
       this.drawerState = newVal;
+    },
+    menuClick: function(item) {
+      if (item.action !== null) this.$emit(item.action);
     }
   }
 };
