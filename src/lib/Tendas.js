@@ -44,9 +44,6 @@ class Conica extends Tenda{
         this.calcularDiagonais();
     }
 
-    /**
-     * @param {object}  tipo_de_lateral  
-     */
     calcularLaterais(tipo_de_lateral){
         this.tipo_de_lateral = tipo_de_lateral;
         this.lateral = [];
