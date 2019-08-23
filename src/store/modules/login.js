@@ -53,12 +53,16 @@ const mutations = {
 }
 
 const actions = {
-  setLogoutTime({ commit }, expirationTime) {
+  setLogoutTime({
+    commit
+  }, expirationTime) {
     setTimeout(() => {
       commit('logout')
     }, expirationTime * 1000) // miliseconds to seconds
   },
-  autoLogIn({ commit }) {
+  autoLogIn({
+    commit
+  }) {
     const token = localStorage.getItem("token");
     const username = localStorage.getItem("username");
     const userLevel = parseInt(localStorage.getItem("userLevel"));
@@ -70,26 +74,46 @@ const actions = {
       'userLevel': userLevel
     });
   },
-  authLogin: ({ commit, dispatch }, payload) => {
+  authLogin: ({
+    commit,
+    dispatch
+  }, payload) => {
     return new Promise((resolve, reject) => {
-      signIn(payload.username, payload.password)
-        .then(suc => {
-          localStorage.setItem("token", suc.data.jwt);
-          localStorage.setItem("username", suc.data.username);
-          localStorage.setItem("userLevel", suc.data.level_id);
-          commit('login', {
-            'token': suc.data.jwt,
-            'user': suc.data.username,
-            'userLevel': suc.data.level_id
-          });
-          dispatch('setLogoutTime', 3600);
-          router.replace('/menu');
-          resolve(true);
-        })
-        .catch(() => {
-            commit('logout');
-            reject(Error("An error has occurred! Please try again."));
-          })
+      console.log(payload.username, payload.password)
+      if (payload.username == 'admin' && payload.password == 'admin') {
+        localStorage.setItem("token", 'token');
+        localStorage.setItem("username", payload.username);
+        localStorage.setItem("userLevel", '1');
+        commit('login', {
+          'token': 'token',
+          'user': payload.username,
+          'userLevel': '1'
+        });
+        dispatch('setLogoutTime', 3600);
+        router.replace('/menu');
+        resolve(true);
+      } else {
+        commit('logout');
+        reject(Error("An error has occurred! Please try again."));
+      }
+      // signIn(payload.username, payload.password)
+      //   .then(suc => {
+      //     localStorage.setItem("token", suc.data.jwt);
+      //     localStorage.setItem("username", suc.data.username);
+      //     localStorage.setItem("userLevel", suc.data.level_id);
+      //     commit('login', {
+      //       'token': suc.data.jwt,
+      //       'user': suc.data.username,
+      //       'userLevel': suc.data.level_id
+      //     });
+      //     dispatch('setLogoutTime', 3600);
+      //     router.replace('/menu');
+      //     resolve(true);
+      //   })
+      //   .catch(() => {
+      //       commit('logout');
+      //       reject(Error("An error has occurred! Please try again."));
+      //     })
     })
   },
 
